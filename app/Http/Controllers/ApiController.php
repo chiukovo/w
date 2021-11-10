@@ -15,7 +15,14 @@ class ApiController extends Controller
 
     public function rate()
     {
-        return Probability::where('probability', '!=', 0)->get(['name', 'gradeId', 'probability'])->toArray();
+        $rate = Probability::where('probability', '!=', 0)->get(['name', 'gradeId', 'probability'])->toArray();
+
+        foreach($rate as $key => $data) {
+            $rate[$key]['count'] = 0;
+            $rate[$key]['myProbability'] = 0;
+        }
+
+        return $rate;
     }
 
     public function lottery()
