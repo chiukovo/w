@@ -1,0 +1,194 @@
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Sans-Serif;
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+  background-color: #0f0c1d;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.card-in {
+  width: 500px !important;
+  height: 500px !important;
+}
+
+.card {
+  text-align: left;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  font-family: Arial, Sans-Serif;
+  width: 200px;
+  height: 200px;
+  color: white;
+  display: inline-block;
+  margin: 10px;
+}
+.card.flip {
+  transform: rotateY(180deg);
+  transition: transform 0.5s;
+}
+.card .face {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transform: translateZ(0.1px);
+}
+.card .back {
+  transform: rotateY(180deg);
+}
+.card .face {
+  border-radius: 10px;
+}
+.card .front {
+  color: #ffffff;
+  background-color: #101010;
+}
+.card .front .logo {
+  width: 100px;
+  padding: 10px;
+}
+.card .back {
+  font-size: 18px;
+  line-height: 1.4em;
+  background: url(http://imagesci.com/img/2013/12/space-stars-background-3245-hd-wallpapers.jpg) #333333;
+  background-size: cover;
+  color: #FFE81F;
+}
+.rate {
+  color: #FFF;
+}
+.g-1 {
+  color: #939393 !important;
+}
+.gb-1 {
+  border-bottom: 3px double #939393 !important;
+}
+
+.g-2 {
+  color: #40fb4fed !important;
+}
+.gb-2 {
+  border-bottom: 3px double #40fb4fed !important;
+}
+.g-3 {
+  color: #4da5ff !important;
+}
+.gb-3 {
+  border-bottom: 3px double #4da5ff !important;
+}
+.g-4 {
+  color: #ff4c4c !important;
+}
+.gb-4 {
+  border-bottom: 3px double #ff4c4c !important;
+}
+
+.img_content {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.card .back img {
+  width: 100%;
+}
+.card .back .description {
+  padding: 30px;
+}
+.card .back .logo {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  padding: 10px;
+  border: none;
+}
+.card h2 {
+  text-transform: uppercase;
+  font-size: 58px;
+  position: absolute;
+  bottom: 70px;
+  margin: 0;
+  line-height: 0.7em;
+  padding: 10px;
+}
+.card h2 small {
+  font-size: 42px;
+}
+.card cite {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 20px;
+}
+.card cite a {
+  color: white;
+}
+.card cite a:visited {
+  text-decoration: none;
+  color: #aaaaaa;
+}
+
+.item h2 {
+  font-size: 108px;
+  line-height: 0.55em;
+  bottom: 80px;
+}
+.item .front {
+  background-size: 190%;
+  background-position: 50% 50%;
+  transition: background 0.3s;
+}
+.item .front:hover {
+  background-size: 200%;
+  background-position: 20% 30%;
+  transition: background 0.5s;
+}
+
+.luke .front {
+  background-image: url(http://pre07.deviantart.net/8aae/th/pre/i/2013/035/a/1/luke_skywalker_by_saturnoarg-d5ttl97.jpg);
+  background-size: 200%;
+  background-position: 25% 20%;
+  transition: background 0.3s;
+}
+.luke .front:hover {
+  background-size: 300%;
+  background-position: 50% 10%;
+  transition: background 0.5s;
+}
+
+.mememe {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 10px;
+}
+.mememe a {
+  color: #eeff44;
+}
+.mememe a:visited {
+  color: #eeff44;
+}

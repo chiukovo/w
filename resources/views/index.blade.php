@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>W</title>
+	<link rel="stylesheet" href="/css/aos.css" />
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/lity.min.css">
+</head>
+
+<body>
+	<div id="app">
+		<div class="rate">
+			機率:
+			<span v-for="data in rate">@{{ data.name }}: @{{ data.probability }}%</span>
+		</div>
+		<div>
+			<button @click="lottery">上級變身抽卡11次(1,200)</button>
+			<button @click="allOpen">全部開啟</button>
+		</div>
+		<div
+			class="card item"
+			:data-aos="!isCardOpen ? 'fade-down' : ''"
+			:data-aos-delay="index * 50"
+			:class="item.flip ? 'flip' : ''"
+			v-for="(item, index) in items"
+			v-if="items.length"
+			@click="cardClick(item)"
+		>
+			<div class="face front" :style="checkCardBg(item)">
+				<h2><small></small></h2>
+			</div>
+			<div class="face back" :class="'g-' + item.gradeId">
+				<div class="img_content" :class="'gb-' + item.gradeId">
+					<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" />
+					<img :src="item.image" :alt="item.name" v-else />
+				</div>
+				<div class="description">
+					@{{ item.name }}
+				</div>
+			</div>
+		</div>
+		<div id="inline" class="lity-hide">
+			<div>
+				<div class="card item card-in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="detail.flip = true">
+					<div class="face front" style="background-image: url('/img/smile.jpg')">
+						<h2><small></small></h2>
+					</div>
+					<div class="face back" :class="'g-' + detail.gradeId">
+						<div class="img_content" :class="'gb-' + detail.gradeId">
+							<img src="/img/in.jpg" :alt="detail.name" v-if="detail.image == ''" />
+							<img :src="detail.image" :alt="detail.name" v-else />
+						</div>
+						<div class="description">
+							@{{ detail.name }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="/js/jquery.js"></script>
+<script src="/js/vue.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/aos.js"></script>
+<script src="/js/lity.min.js"></script>
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+			flip: false,
+			isCardOpen: false,
+			items: [],
+			detail: '',
+			rate: [],
+		},
+		mounted() {
+			AOS.init();
+			this.getRate()
+		},
+		methods: {
+			getRate() {
+				const _this = this
+				axios.get('/api/rate').then(function (response) {
+					const result = response.data
+					_this.rate = result
+        });
+			},
+			lottery() {
+				const _this = this
+
+				this.items = []
+				this.detail = ''
+				this.isCardOpen = false
+
+				axios.post('/api/lottery').then(function (response) {
+					const result = response.data
+					_this.items = result.data
+        });
+			},
+			allOpen() {
+				this.isCardOpen = true
+				this.items = this.items.map(function (value, index) {
+					if (value.gradeId < 3) {
+						value.flip = true
+					}
+					
+					return value
+				})
+			},
+			checkCardBg(item) {
+				if (item.gradeId < 3) {
+					return "background-image: url('/img/default.jpg')"
+				} else {
+					return "background-image: url('/img/nice.jpg')"
+				}
+			},
+			cardClick(item) {
+				this.isCardOpen = true
+				if (item.gradeId < 3) {
+					item.flip = !item.flip
+				} else {
+					lity('#inline')
+				}
+
+				this.detail = item
+				this.detail.flip = false
+				lity('#inline')
+			}
+		}
+	})
+</script>
+
+</html>
