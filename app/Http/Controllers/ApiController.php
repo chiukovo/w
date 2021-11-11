@@ -91,8 +91,13 @@ class ApiController extends Controller
 
             //在隨機一個
             $countFindData = count($findTransform);
-            $randKey = rand(0, $countFindData - 1);
-            $randData = $findTransform[$randKey];
+            
+            if ($countFindData > 0) {
+                $randKey = rand(0, $countFindData - 1);
+                $randData = $findTransform[$randKey];
+            } else {
+                $randData = $allTransform[0];
+            }
 
             switch ($randData['gradeId']) {
                 case 1:
