@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>天堂W模擬抽</title>
+	<title>94i抽 - 天堂W模擬抽</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/style.css">
@@ -15,7 +15,7 @@
 	<div id="app" v-cloak>
 		<header>
 			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-				<a class="navbar-brand" href="#">天堂W模擬抽</a>
+				<a class="navbar-brand" href="#">94i抽 - 天堂W模擬抽卡</a>
 			</nav>
 		</header>
 
@@ -31,6 +31,7 @@
 										<h5 class="mt-0">GYMAN</h5>
 										<p>小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡</p>
 										<p>先來這抽抽看, 試試臉黑不黑( ^.＜ ) </p>
+										<p>抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span></p>
 									</div>
 							</div>
 						</div>
@@ -203,6 +204,10 @@
 					return
 				}
 
+				if (this.loading) {
+					return
+				}
+
 				this.loading = true
 				this.items = []
 				this.detail = ''
@@ -244,6 +249,7 @@
 			},
 			cardClick(item) {
 				this.isCardOpen = true
+
 				if (item.gradeId < 3) {
 					item.flip = !item.flip
 				} else {
