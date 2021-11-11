@@ -311,9 +311,9 @@
         const audio = document.getElementById('bg-music')
 
 				if (start) {
-					audio.play()
+					//audio.play()
 				} else {
- 					audio.pause()
+ 					//audio.pause()
 				}
 			}
 		}
