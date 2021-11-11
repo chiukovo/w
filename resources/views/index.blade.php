@@ -4,7 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>94i抽 - 天堂W模擬抽</title>
+  <meta name="description"  content="在課金之前 先來試試手氣吧! 自製天堂w抽卡 0元免費抽" />
+	<title>94i抽 - 天堂W模擬抽卡</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/style.css?v=2">
