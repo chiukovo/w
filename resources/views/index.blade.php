@@ -38,24 +38,27 @@
 					</section>
 				</div>
 				<div class="row">
-					<div
-						class="card item col-2"
-						:data-aos="!isCardOpen ? 'fade-down' : ''"
-						:data-aos-delay="index * 50"
-						:class="item.flip ? 'flip' : ''"
+					<div class="col-6 col-sm-4 col-lg-3 mb-2" 
 						v-for="(item, index) in items"
 						v-if="items.length"
+						:data-aos="!isCardOpen ? 'fade-down' : ''"
+						:data-aos-delay="index * 50"
 						@click="cardClick(item)"
 					>
-						<div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)">
-						</div>
-						<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
-							<div class="img_content" :class="'gb-' + item.gradeId">
-								<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" style="height: 120px;" />
-								<img :src="item.image" :alt="item.name" v-else />
+						<div
+							class="card item"
+							:class="item.flip ? 'flip' : ''"
+						>
+							<div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)">
 							</div>
-							<div class="description">
-								@{{ item.name }}
+							<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
+								<div class="img_content" :class="'gb-' + item.gradeId">
+									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" style="height: 120px;" />
+									<img :src="item.image" :alt="item.name" v-else />
+								</div>
+								<div class="description">
+									@{{ item.name }}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -118,13 +121,13 @@
 		<footer class="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col">
+					<div class="col-12 col-md-6">
 						<div class="f-button-div">
 							<button type="button" class="btn btn-primary btn-lg shadow-lg p-3 mb-5 rounded" @click="lottery" v-if="!start" :disabled="loading">上級變身抽卡11次</button>
 							<button type="button" class="btn btn-success btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else :disabled="loading">全部開啟٩(^ᴗ^)۶</button>
 						</div>
 					</div>
-					<div class="col">
+					<div class="col-12 col-md-6">
 						<ul class="list-group list-group-flush" style="margin: 20px;">
 							<li class="list-group-item">已抽次數: <span>@{{ numberDraws }}</span></li>
 							<li class="list-group-item">花費鑽石: <span>@{{ 1200 * numberDraws }}</span></li>
