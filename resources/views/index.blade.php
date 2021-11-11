@@ -153,6 +153,15 @@
 <script src="/js/axios.min.js"></script>
 <script src="/js/aos.js"></script>
 <script src="/js/lity.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-D4DRBBS5S0');
+</script>
 <script>
 	new Vue({
 		el: '#app',
