@@ -124,7 +124,10 @@
 					<div class="col-12 col-md-6">
 						<div class="f-button-div">
 							<button type="button" class="btn btn-primary btn-lg shadow-lg p-3 mb-5 rounded" @click="lottery" v-if="!start" :disabled="loading">上級變身抽卡11次</button>
-							<button type="button" class="btn btn-success btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else :disabled="loading">全部開啟٩(^ᴗ^)۶</button>
+							<button type="button" class="btn btn-danger btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else :disabled="loading">
+								<span v-if="isAllOpen">全部開啟٩(^ᴗ^)۶</span>
+								<span v-else>牙起來牙起來!!</span>
+							</button>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
@@ -173,6 +176,7 @@
 			detail: '',
 			rate: [],
 			start: false,
+			isAllOpen: true,
 			numberDraws: 0,
 			result_text: '',
 		},
@@ -234,20 +238,21 @@
         });
 			},
 			allOpen() {
+				const _this = this
 				this.isCardOpen = true
-				let isAllOpen = true
+				this.isAllOpen = true
 
 				this.items = this.items.map(function (value, index) {
 					if (value.gradeId < 3) {
 						value.flip = true
 					} else {
-						isAllOpen = false
+						_this.isAllOpen = false
 					}
 					
 					return value
 				})
 
-				if (isAllOpen) {
+				if (this.isAllOpen) {
 					this.start = false
 				}
 			},
