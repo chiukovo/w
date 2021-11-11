@@ -134,7 +134,10 @@
 					<div class="col-12 col-md-6">
 						<ul class="list-group list-group-flush" style="margin: 20px;">
 							<li class="list-group-item">已抽次數: <span>@{{ numberDraws }}</span></li>
-							<li class="list-group-item">花費鑽石: <span>@{{ 1200 * numberDraws }}</span></li>
+							<li class="list-group-item">
+                花費鑽石: <span>@{{ 1200 * numberDraws }} = 台幣 @{{ 750 * numberDraws }}</span>
+                <br><small class="text-muted">@{{ ps_memo }}</small>
+              </li>
 							<li class="list-group-item">
 								<span v-for="data in rate" style="padding-right: 5px;" >@{{ data.name }}: @{{ data.count }}</span>
 							</li>
@@ -147,9 +150,6 @@
 				</p>
 			</div>
 		</footer>
-		<audio id="bg-music" controls style="display: none;">
-			<source src="/music/bg-music.mp3" type="audio/mpeg">
-		</audio>
 	</div>
 </body>
 <script src="/js/jquery.js"></script>
@@ -180,12 +180,16 @@
 			isAllOpen: true,
 			numberDraws: 0,
 			result_text: '',
+      ps_memo: '',
 		},
 		mounted() {
 			AOS.init();
 			this.getRate()
 		},
 		watch: {
+      numberDraws(num) {
+
+      },
 			start(type) {
 				if (!type) {
 					const _this = this
@@ -228,7 +232,6 @@
 				this.items = []
 				this.detail = ''
 				this.isCardOpen = false
-				this.playSound(false)
 				
 				axios.post('/api/lottery').then(function (response) {
 					const result = response.data
@@ -276,7 +279,6 @@
 					this.detail.flip = false
 					this.detail.gold = false
 					this.result_text = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
-					this.playSound(true)
 				}
 			},
 			openDetail() {
@@ -311,15 +313,6 @@
 					return 'background-image: url(/img/gold.jpg)'
 				} else {
 					return 'background-image: url(/img/smile2.jpg)'
-				}
-			},
-			playSound(start) {
-        const audio = document.getElementById('bg-music')
-
-				if (start) {
-					//audio.play()
-				} else {
- 					//audio.pause()
 				}
 			}
 		}
