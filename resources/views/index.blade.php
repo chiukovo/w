@@ -20,7 +20,7 @@
 		</header>
 
 		<!-- Begin page content -->
-		<main role="main" class="container-xl">
+		<main role="main" class="container-xl" style="position: relative;z-index: 1">
 			<div>
 				<div v-if="items.length == 0">
 					<section class="jumbotron" style="margin-top: 50px;">
@@ -38,7 +38,7 @@
 					</section>
 				</div>
 				<div class="row">
-					<div class="col-6 col-sm-4 col-lg-3 mb-2" 
+					<div class="col-4 col-lg-3 mb-2" 
 						v-for="(item, index) in items"
 						v-if="items.length"
 						:data-aos="!isCardOpen ? 'fade-down' : ''"
@@ -53,7 +53,7 @@
 							</div>
 							<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
 								<div class="img_content" :class="'gb-' + item.gradeId">
-									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" style="height: 120px;" />
+									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" class="img-in" />
 									<img :src="item.image" :alt="item.name" v-else />
 								</div>
 								<div class="description">
