@@ -27,6 +27,8 @@ class ApiController extends Controller
 
     public function lottery()
     {
+        usleep(500000);
+        
         $allTransform = Transform::with(['probability'])
             ->where('gradeId', '!=', 5)
             ->get()

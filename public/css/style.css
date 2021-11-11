@@ -1,3 +1,10 @@
+:root {
+  --color1: rgb(0, 231, 255);
+  --color2: rgb(255, 0, 231);
+}
+[v-cloak] {
+  display: none;
+}
 html {
   margin: 0;
   padding: 0;
@@ -6,7 +13,6 @@ html {
 }
 
 body {
-  perspective: 1500px;
   perspective-origin: 50% 50%;
   text-align: center;
   margin: 0;
@@ -21,9 +27,55 @@ body {
   background-position: center center;
 }
 
-.card-in {
-  width: 500px !important;
-  height: 500px !important;
+.surprise {
+  box-shadow: 0px 0px 10px 10px rgb(255 255 255 / 40%);
+}
+
+.surprise:before,
+.surprise:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  mix-blend-mode: color-dodge;
+  transition: all 0.33s ease;
+}
+
+.surprise:before {
+  background-position: 50% 50%;
+  background-size: 300% 300%;
+  background-image: linear-gradient(115deg, transparent 0%, var(--color1) 25%, transparent 47%, transparent 53%, var(--color2) 75%, transparent 100%);
+  opacity: 0.5;
+  filter: brightness(0.5) contrast(1);
+  z-index: 1;
+}
+
+.surprise:after {
+  opacity: 1;
+  background-image: url("/img/sparkles.gif"), url("/img/holo.webp"), linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
+  z-index: 2;
+  filter: brightness(1) contrast(1);
+  transition: all 0.33s ease;
+  mix-blend-mode: color-dodge;
+  opacity: 0.75;
+}
+
+.in_content .card_in {
+  width: 300px;
+  height: 350px;
+}
+
+.in_content .card_in .img_content {
+  height: 120px;
+  height: 250px;
+}
+
+.card_in .description {
+  font-size: 25px !important;
 }
 
 .card {
@@ -36,11 +88,14 @@ body {
       -ms-user-select: none;
           user-select: none;
   cursor: pointer;
-  width: 200px;
-  height: 250px;
+  box-shadow: 0px 0px 10px 10px rgb(0 0 0 / 40%);
+  width: 25%;
+  height: 200px;
   color: white;
   display: inline-block;
   margin: 10px;
+  border: none;
+  background-color: transparent;
 }
 .card.flip {
   transform: rotateY(180deg);
@@ -107,21 +162,31 @@ body {
 
 .in_banners {
   width: 100%;
-  height: 250px;
+  height: 200px;
   background-size: 110%;
-  background-position: 50% 50%;
-  background-image: url('/img/smile.jpg');
+  background-position: 50% 100%;
+  background-image: url('/img/smile1.jpg');
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+.open {
+  display: block !important;
+}
+
+.transparent {
+  opacity:0;
 }
 
 .in_content {
-  width: 500px;
-  height: 550px;
-  background-color: #fff;
+  width: 650px;
 }
 
 .img_content {
   width: 100%;
-  height: 160px;
+  height: 120px;
   overflow: hidden;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -130,7 +195,9 @@ body {
   width: 100%;
 }
 .card .back .description {
-  padding: 30px;
+  padding: 10px;
+  font-size: 16px;
+  text-align: center;
 }
 .card .back .logo {
   position: absolute;
@@ -140,58 +207,45 @@ body {
   padding: 10px;
   border: none;
 }
-.card h2 {
-  text-transform: uppercase;
-  font-size: 58px;
-  position: absolute;
-  bottom: 70px;
-  margin: 0;
-  line-height: 0.7em;
-  padding: 10px;
-}
-.card h2 small {
-  font-size: 42px;
-}
-.card cite {
-  position: absolute;
-  left: 0px;
-  bottom: 0px;
-  font-size: 10px;
-  text-transform: uppercase;
-  padding: 20px;
-}
-.card cite a {
-  color: white;
-}
-.card cite a:visited {
-  text-decoration: none;
-  color: #aaaaaa;
-}
 
-.item h2 {
-  font-size: 108px;
-  line-height: 0.55em;
-  bottom: 80px;
-}
 .item .front {
-  background-size: 240%;
+  background-size:cover;
   background-position: 50% 50%;
   transition: background 0.3s;
 }
 .item .front:hover {
-  background-size: 230%;
+  background-size:cover;
   background-position: 30% 30%;
   transition: background 0.5s;
 }
 
-.mememe {
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 10px;
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 225px;
+  background-color: #f5f5f5;
 }
-.mememe a {
-  color: #eeff44;
+
+.footer .memo {
+  font-size: 12px;
 }
-.mememe a:visited {
-  color: #eeff44;
+
+main {
+  padding-top: 70px;
+  padding-bottom: 150px;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.f-button-div {
+  position: relative;
+  top: 30%;
+}
+
+.f-button-div button{
+  height: 80px;
 }

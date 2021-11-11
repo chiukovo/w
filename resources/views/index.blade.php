@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>W</title>
+	<title>天堂W模擬抽</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/style.css">
@@ -12,81 +12,136 @@
 </head>
 
 <body>
-	<div id="app">
-		<div class="container">
-			<div class="rate">
-				機率:
-				<span v-for="data in rate">@{{ data.name }}: @{{ data.probability }}%</span>
-			</div>
+	<div id="app" v-cloak>
+		<header>
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<a class="navbar-brand" href="#">天堂W模擬抽</a>
+			</nav>
+		</header>
+
+		<!-- Begin page content -->
+		<main role="main" class="container-xl">
 			<div>
-				<button class="btn btn-success" @click="lottery" v-if="!start">上級變身抽卡11次</button>
-				<button class="btn btn-danger" @click="allOpen" v-else>全部開啟</button>
-			</div>
-			<div
-				class="card item"
-				:data-aos="!isCardOpen ? 'fade-down' : ''"
-				:data-aos-delay="index * 50"
-				:class="item.flip ? 'flip' : ''"
-				v-for="(item, index) in items"
-				v-if="items.length"
-				@click="cardClick(item)"
-			>
-				<div class="face front" :style="checkCardBg(item)">
-					<h2><small></small></h2>
-				</div>
-				<div class="face back" :class="'g-' + item.gradeId">
-					<div class="img_content" :class="'gb-' + item.gradeId">
-						<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" />
-						<img :src="item.image" :alt="item.name" v-else />
-					</div>
-					<div class="description">
-						@{{ item.name }}
-					</div>
-				</div>
-			</div>
-			<div id="inline" class="lity-hide">
-				<div class="in_content">
-					<div class="in_banners" :style="detail.gold ? 'background-image: url(/img/gold.jpg)' : ''" style="box-shadow: 6px 6px 9px black;"></div>
-					<div class="card item" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 27%;">
-						<div class="face front" style="background-image: url('/img/nice.jpg')">
-							<h2><small></small></h2>
+				<div v-if="items.length == 0">
+					<section class="jumbotron" style="margin-top: 50px;">
+						<div class="container" style="text-align: left;">
+							<div class="media">
+								<img src="/img/gyman.jpg" class="align-self-start mr-3 img-thumbnail rounded">
+									<div class="media-body">
+										<h5 class="mt-0">GYMAN</h5>
+										<p>小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡</p>
+										<p>先來這抽抽看, 試試臉黑不黑( ^.＜ ) </p>
+									</div>
+							</div>
 						</div>
-						<div class="face back" :class="'g-' + detail.gradeId">
-							<div class="img_content" :class="'gb-' + detail.gradeId">
-								<img src="/img/in.jpg" :alt="detail.name" v-if="detail.image == ''" style="height: 160px;"/>
-								<img :src="detail.image" :alt="detail.name" v-else />
+					</section>
+				</div>
+				<div class="row">
+					<div
+						class="card item col-2"
+						:data-aos="!isCardOpen ? 'fade-down' : ''"
+						:data-aos-delay="index * 50"
+						:class="item.flip ? 'flip' : ''"
+						v-for="(item, index) in items"
+						v-if="items.length"
+						@click="cardClick(item)"
+					>
+						<div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)">
+						</div>
+						<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
+							<div class="img_content" :class="'gb-' + item.gradeId">
+								<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" style="height: 120px;" />
+								<img :src="item.image" :alt="item.name" v-else />
 							</div>
 							<div class="description">
-								@{{ detail.name }}
+								@{{ item.name }}
 							</div>
 						</div>
 					</div>
 				</div>
+				<div id="inline" class="lity-hide">
+					<div class="in_content">
+						<div class="in_banners" :style="computedResultBanner()" style="box-shadow: 6px 6px 9px black;"></div>
+
+						<div class="card item card_in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 27%;">
+							<div class="face front" :class="detail.gradeId > 2 ? 'surprise' : ''" style="background-image: url('/img/nice.jpg')">
+								<h2><small></small></h2>
+							</div>
+							<div class="face back" :class="['g-' + detail.gradeId, detail.gradeId > 2 ? 'surprise' : '']">
+								<div class="img_content" :class="'gb-' + detail.gradeId">
+									<img src="/img/in.jpg" :alt="detail.name" v-if="detail.image == ''" style="height: 160px;"/>
+									<img :src="detail.image" :alt="detail.name" v-else />
+								</div>
+								<div class="description">
+									@{{ detail.name }}
+								</div>
+							</div>
+						</div>
+						<p class="h1 text-danger text-center">
+							@{{ result_text }}
+						</p>
+					</div>
+				</div>
+				<!--統計-->
+				<div class="mt-4" style="background-color: #eee;">
+					<table class="table table-dark">
+						<thead>
+							<tr>
+								<th></th>
+								<th>抽到數量</th>
+								<th>抽到機率</th>
+								<th>官方機率</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="data in rate">
+								<td>
+									<span :class="'g-' + data.gradeId">@{{ data.name }}</span>
+								</td>
+								<td>@{{ data.count }}</td>
+								<td>@{{ data.myProbability }}%</td>
+								<td>@{{ data.probability }}%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="alert alert-warning" role="alert">
+					<div class="rate">
+						機率:
+						<span v-for="data in rate">@{{ data.name }}: @{{ data.probability }}%</span>
+					</div>
+				</div>
 			</div>
-			<!--統計-->
-			<div style="background-color: #eee;">
-				<p>已抽次數: @{{ numberDraws }}</p>
-				<p>花費鑽石: @{{ 1200 * numberDraws }}</p>
-				<table class="table table-dark">
-					<thead>
-						<tr>
-							<th></th>
-							<th>抽到數量</th>
-							<th>抽到機率</th>
-							<th>官方機率</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="data in rate">
-							<td>@{{ data.name }}</td>
-							<td>@{{ data.count }}</td>
-							<td>@{{ data.myProbability }}%</td>
-							<td>@{{ data.probability }}%</td>
-						</tr>
-					</tbody>
-				</table>
+		</main>
+
+		<footer class="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="f-button-div">
+							<button type="button" class="btn btn-primary btn-lg shadow-lg p-3 mb-5 rounded" @click="lottery" v-if="!start">上級變身抽卡11次</button>
+							<button type="button" class="btn btn-success btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else>全部開啟٩(^ᴗ^)۶</button>
+						</div>
+					</div>
+					<div class="col">
+						<ul class="list-group list-group-flush" style="margin: 20px;">
+							<li class="list-group-item">已抽次數: <span>@{{ numberDraws }}</span></li>
+							<li class="list-group-item">花費鑽石: <span>@{{ 1200 * numberDraws }}</span></li>
+							<li class="list-group-item">
+								<span v-for="data in rate" style="padding-right: 5px;" >@{{ data.name }}: @{{ data.count }}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<p class="memo">
+					本站無任何營利 如有任何侵權 請來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br>
+					copyright © QUNIIII All rights reserved.
+				</p>
 			</div>
-		</div>
+		</footer>
+		<audio id="bg-music" controls style="display: none;">
+			<source src="/music/bg-music.mp3" type="audio/mpeg">
+		</audio>
 	</div>
 </body>
 <script src="/js/jquery.js"></script>
@@ -94,17 +149,20 @@
 <script src="/js/axios.min.js"></script>
 <script src="/js/aos.js"></script>
 <script src="/js/lity.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 	new Vue({
 		el: '#app',
 		data: {
 			flip: false,
+			loading: false,
 			isCardOpen: false,
 			items: [],
 			detail: '',
 			rate: [],
 			start: false,
 			numberDraws: 0,
+			result_text: '',
 		},
 		mounted() {
 			AOS.init();
@@ -123,7 +181,6 @@
 							}
 						})
 
-
 						value.myProbability = ((value.count / (_this.numberDraws * 11)) * 100).toFixed(4);
 						return value
 					})
@@ -133,6 +190,7 @@
 		methods: {
 			getRate() {
 				const _this = this
+
 				axios.get('/api/rate').then(function (response) {
 					const result = response.data
 					_this.rate = result
@@ -141,15 +199,22 @@
 			lottery() {
 				const _this = this
 
+				if (this.start) {
+					return
+				}
+
+				this.loading = true
 				this.items = []
 				this.detail = ''
 				this.isCardOpen = false
-				this.start = true
-
+				this.playSound(false)
+				
 				axios.post('/api/lottery').then(function (response) {
 					const result = response.data
 					_this.items = result.data
 					_this.numberDraws++
+					_this.start = true
+					_this.loading = false
         });
 			},
 			allOpen() {
@@ -174,7 +239,7 @@
 				if (item.gradeId < 3) {
 					return "background-image: url('/img/default.jpg')"
 				} else {
-					return "background-image: url('/img/nice.jpg');0px 0px 19px 2px rgb(116 116 116)"
+					return "background-image: url('/img/nice.jpg');"
 				}
 			},
 			cardClick(item) {
@@ -187,6 +252,8 @@
 					this.detail = item
 					this.detail.flip = false
 					this.detail.gold = false
+					this.result_text = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
+					this.playSound(true)
 				}
 			},
 			openDetail() {
@@ -195,6 +262,29 @@
 
 				if (this.detail.gradeId == 4) {
 					this.detail.gold = true
+					this.result_text = '(ﾟд⊙): KO !!!!!!!!!!!!!!!!!!!!'
+				} else {
+					this.result_text = '(‘⊙д-): K.......ㄜ'
+				}
+			},
+			computedResultBanner() {
+				if (this.start) {
+					return ''
+				}
+
+				if (this.detail.gold) {
+					return 'background-image: url(/img/gold.jpg)'
+				} else {
+					return 'background-image: url(/img/smile2.jpg)'
+				}
+			},
+			playSound(start) {
+        const audio = document.getElementById('bg-music')
+
+				if (start) {
+					audio.play()
+				} else {
+ 					audio.pause()
 				}
 			}
 		}
