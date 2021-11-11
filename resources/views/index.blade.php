@@ -120,8 +120,8 @@
 				<div class="row">
 					<div class="col">
 						<div class="f-button-div">
-							<button type="button" class="btn btn-primary btn-lg shadow-lg p-3 mb-5 rounded" @click="lottery" v-if="!start">上級變身抽卡11次</button>
-							<button type="button" class="btn btn-success btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else>全部開啟٩(^ᴗ^)۶</button>
+							<button type="button" class="btn btn-primary btn-lg shadow-lg p-3 mb-5 rounded" @click="lottery" v-if="!start" :disabled="loading">上級變身抽卡11次</button>
+							<button type="button" class="btn btn-success btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else :disabled="loading">全部開啟٩(^ᴗ^)۶</button>
 						</div>
 					</div>
 					<div class="col">
@@ -264,13 +264,25 @@
 			},
 			openDetail() {
 				this.detail.flip = true
-				this.start = false
 
 				if (this.detail.gradeId == 4) {
 					this.detail.gold = true
 					this.result_text = '(ﾟд⊙): KO !!!!!!!!!!!!!!!!!!!!'
 				} else {
 					this.result_text = '(‘⊙д-): K.......ㄜ'
+				}
+
+				//檢查是不是全部已開
+				let check = true
+
+				this.items.forEach(function(item) {
+					if (!item.flip) {
+						check = false
+					}
+				})
+
+				if (check) {
+					this.start = false
 				}
 			},
 			computedResultBanner() {
