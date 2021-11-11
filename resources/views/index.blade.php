@@ -13,76 +13,80 @@
 
 <body>
 	<div id="app">
-		<div class="rate">
-			機率:
-			<span v-for="data in rate">@{{ data.name }}: @{{ data.probability }}%</span>
-		</div>
-		<div>
-			<button class="btn btn-success" @click="lottery" v-if="!start">上級變身抽卡11次</button>
-			<button class="btn btn-danger" @click="allOpen" v-else>全部開啟</button>
-		</div>
-		<div
-			class="card item"
-			:data-aos="!isCardOpen ? 'fade-down' : ''"
-			:data-aos-delay="index * 50"
-			:class="item.flip ? 'flip' : ''"
-			v-for="(item, index) in items"
-			v-if="items.length"
-			@click="cardClick(item)"
-		>
-			<div class="face front" :style="checkCardBg(item)">
-				<h2><small></small></h2>
+		<div class="container">
+			<div class="rate">
+				機率:
+				<span v-for="data in rate">@{{ data.name }}: @{{ data.probability }}%</span>
 			</div>
-			<div class="face back" :class="'g-' + item.gradeId">
-				<div class="img_content" :class="'gb-' + item.gradeId">
-					<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" />
-					<img :src="item.image" :alt="item.name" v-else />
-				</div>
-				<div class="description">
-					@{{ item.name }}
-				</div>
+			<div>
+				<button class="btn btn-success" @click="lottery" v-if="!start">上級變身抽卡11次</button>
+				<button class="btn btn-danger" @click="allOpen" v-else>全部開啟</button>
 			</div>
-		</div>
-		<div id="inline" class="lity-hide">
-			<div class="in_content">
-				<div class="in_banners" :style="detail.gold ? 'background-image: url(/img/gold.jpg)' : ''" style="box-shadow: 6px 6px 9px black;"></div>
-				<div class="card item" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 27%;">
-					<div class="face front" style="background-image: url('/img/nice.jpg')">
-						<h2><small></small></h2>
+			<div
+				class="card item"
+				:data-aos="!isCardOpen ? 'fade-down' : ''"
+				:data-aos-delay="index * 50"
+				:class="item.flip ? 'flip' : ''"
+				v-for="(item, index) in items"
+				v-if="items.length"
+				@click="cardClick(item)"
+			>
+				<div class="face front" :style="checkCardBg(item)">
+					<h2><small></small></h2>
+				</div>
+				<div class="face back" :class="'g-' + item.gradeId">
+					<div class="img_content" :class="'gb-' + item.gradeId">
+						<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" />
+						<img :src="item.image" :alt="item.name" v-else />
 					</div>
-					<div class="face back" :class="'g-' + detail.gradeId">
-						<div class="img_content" :class="'gb-' + detail.gradeId">
-							<img src="/img/in.jpg" :alt="detail.name" v-if="detail.image == ''" />
-							<img :src="detail.image" :alt="detail.name" v-else />
-						</div>
-						<div class="description">
-							@{{ detail.name }}
-						</div>
+					<div class="description">
+						@{{ item.name }}
 					</div>
 				</div>
 			</div>
+			<div id="inline" class="lity-hide">
+				<div class="in_content">
+					<div class="in_banners" :style="detail.gold ? 'background-image: url(/img/gold.jpg)' : ''" style="box-shadow: 6px 6px 9px black;"></div>
+					<div class="card item" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 27%;">
+						<div class="face front" style="background-image: url('/img/nice.jpg')">
+							<h2><small></small></h2>
+						</div>
+						<div class="face back" :class="'g-' + detail.gradeId">
+							<div class="img_content" :class="'gb-' + detail.gradeId">
+								<img src="/img/in.jpg" :alt="detail.name" v-if="detail.image == ''" style="height: 160px;"/>
+								<img :src="detail.image" :alt="detail.name" v-else />
+							</div>
+							<div class="description">
+								@{{ detail.name }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--統計-->
+			<div style="background-color: #eee;">
+				<p>已抽次數: @{{ numberDraws }}</p>
+				<p>花費鑽石: @{{ 1200 * numberDraws }}</p>
+				<table class="table table-dark">
+					<thead>
+						<tr>
+							<th></th>
+							<th>抽到數量</th>
+							<th>抽到機率</th>
+							<th>官方機率</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="data in rate">
+							<td>@{{ data.name }}</td>
+							<td>@{{ data.count }}</td>
+							<td>@{{ data.myProbability }}%</td>
+							<td>@{{ data.probability }}%</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-		<!--統計-->
-		<p>已抽次數: @{{ numberDraws }}</p>
-		<p>花費鑽石: @{{ 1200 * numberDraws }}</p>
-		<table class="table table-dark">
-			<thead>
-				<tr>
-					<th></th>
-					<th>次數</th>
-					<th>抽到機率</th>
-					<th>官方機率</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="data in rate">
-					<td>@{{ data.name }}</td>
-					<td>@{{ data.count }}</td>
-					<td>@{{ data.myProbability }}%</td>
-					<td>@{{ data.probability }}%</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 </body>
 <script src="/js/jquery.js"></script>
@@ -170,7 +174,7 @@
 				if (item.gradeId < 3) {
 					return "background-image: url('/img/default.jpg')"
 				} else {
-					return "background-image: url('/img/nice.jpg')"
+					return "background-image: url('/img/nice.jpg');0px 0px 19px 2px rgb(116 116 116)"
 				}
 			},
 			cardClick(item) {
