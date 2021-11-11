@@ -7,7 +7,7 @@
 	<title>94i抽 - 天堂W模擬抽</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/style.css?v=1">
 	<link rel="stylesheet" href="/css/lity.min.css">
 </head>
 
@@ -153,7 +153,6 @@
 <script src="/js/axios.min.js"></script>
 <script src="/js/aos.js"></script>
 <script src="/js/lity.min.js"></script>
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 	new Vue({
 		el: '#app',
