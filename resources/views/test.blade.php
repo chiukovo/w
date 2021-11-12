@@ -8,7 +8,7 @@
 	<title>94i抽 - 天堂W模擬抽卡</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/style.css?v=3">
+	<link rel="stylesheet" href="/css/style.css?v=5">
 	<link rel="stylesheet" href="/css/lity.min.css">
 </head>
 
@@ -21,13 +21,13 @@
 		</header>
 
 		<!-- Begin page content -->
-		<main role="main" class="container-xl" style="position: relative;z-index: 1">
+		<main role="main" class="container-xl">
 			<div>
 				<div v-if="items.length == 0">
 					<section class="jumbotron" style="margin-top: 20px;">
 						<div class="container" style="text-align: left;">
 							<div class="media">
-								<img src="/img/gyman.jpg" class="align-self-start mr-3 img-thumbnail rounded">
+								<img src="/img/gyman.jpg" class="align-self-start mr-3 img-thumbnail rounded" alt="94i抽 - 天堂W模擬抽卡">
 									<div class="media-body">
 										<h5 class="mt-0">GYMAN</h5>
 										<p>小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡</p>
@@ -40,7 +40,7 @@
 					</section>
 				</div>
 				<div class="row">
-					<div class="col-4 col-lg-3 mb-2" 
+					<div class="col-4 col-lg-3 mb-2 base-card" 
 						v-for="(item, index) in items"
 						v-if="items.length"
 						:data-aos="!isCardOpen ? 'fade-down' : ''"
@@ -55,7 +55,7 @@
 							</div>
 							<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
 								<div class="img_content" :class="'gb-' + item.gradeId">
-									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" class="img-in" />
+									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" class="img-in"/>
 									<img :src="item.image" :alt="item.name" v-else />
 								</div>
 								<div class="description">
@@ -69,7 +69,7 @@
 					<div class="in_content">
 						<div class="in_banners" :style="computedResultBanner()" style="box-shadow: 6px 6px 9px black;"></div>
 
-						<div class="card item card_in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 27%;">
+						<div class="card item card_in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 23%;">
 							<div class="face front" :class="detail.gradeId > 2 ? 'surprise' : ''" style="background-image: url('/img/nice.jpg')">
 								<h2><small></small></h2>
 							</div>
