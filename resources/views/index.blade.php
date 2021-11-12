@@ -183,7 +183,7 @@
       ps_memo: '',
 		},
 		mounted() {
-			AOS.init();
+			AOS.init({ disable: 'mobile' });
 			this.getRate()
 		},
 		watch: {
