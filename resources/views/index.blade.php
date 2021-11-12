@@ -27,7 +27,7 @@
 					<section class="jumbotron" style="margin-top: 20px;">
 						<div class="container" style="text-align: left;">
 							<div class="media">
-								<img src="/img/gyman.jpg" class="align-self-start mr-3 img-thumbnail rounded">
+								<img src="/img/gyman.jpg" class="align-self-start mr-3 img-thumbnail rounded" alt="94i抽 - 天堂W模擬抽卡">
 									<div class="media-body">
 										<h5 class="mt-0">GYMAN</h5>
 										<p>小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡</p>
@@ -55,7 +55,7 @@
 							</div>
 							<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
 								<div class="img_content" :class="'gb-' + item.gradeId">
-									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" class="img-in" />
+									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" class="img-in"/>
 									<img :src="item.image" :alt="item.name" v-else />
 								</div>
 								<div class="description">
