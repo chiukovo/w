@@ -2,322 +2,288 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"  content="在課金之前 先來試試手氣吧! 自製天堂w抽卡 0元免費抽" />
-	<title>94i抽 - 天堂W模擬抽卡</title>
-	<link rel="stylesheet" href="/css/aos.css" />
-	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/style.css?v=5">
-	<link rel="stylesheet" href="/css/lity.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="在課金之前 先來試試手氣吧! 自製天堂w抽卡 0元免費抽">
+    <title>94i抽 - 天堂W模擬抽卡</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
 	<div id="app" v-cloak>
-		<header>
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-				<a class="navbar-brand" href="#">94i抽 - 天堂W模擬抽卡</a>
-			</nav>
+
+		<header id="header">
+				<div class="header__title">94i抽 - 天堂W模擬抽卡</div>
 		</header>
 
-		<!-- Begin page content -->
-		<main role="main" class="container-xl">
-			<div>
-				<div v-if="items.length == 0">
-					<section class="jumbotron" style="margin-top: 20px;">
-						<div class="container" style="text-align: left;">
-							<div class="media">
-								<img src="/img/gyman.jpg" class="align-self-start mr-3 img-thumbnail rounded" alt="94i抽 - 天堂W模擬抽卡">
-									<div class="media-body">
-										<h5 class="mt-0">GYMAN</h5>
-										<p>小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡</p>
-										<p>主要想讓大家認識一下 這個機率有多可怕 </p>
-										<p>先來這抽抽看, 試試臉黑不黑( ^.＜ ) </p>
-										<p>抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span></p>
-									</div>
-							</div>
+		<main id="main">
+			<div class="container">
+				<div class="row mb-4">
+					<div class="d-flex bg-light border rounded-3 p-5 author__info">
+						<div class="flex-shrink-0">
+							<img src="/img/gyman.jpg" alt="94i抽 - 天堂W模擬抽卡">
 						</div>
-					</section>
+						<div class="flex-grow-1 ms-3">
+							<h5 class="mt-0">GYMAN</h5>
+							<p>小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡<br>
+								主要想讓大家認識一下 這個機率有多可怕<br>
+								先來這抽抽看, 試試臉黑不黑( ^.＜ )<br>
+								抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span></p>
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+									Launch demo modal
+								</button>
+						</div>
+					</div>
 				</div>
-				<div class="row">
-					<div class="col-4 col-lg-3 mb-2 base-card" 
-						v-for="(item, index) in items"
-						v-if="items.length"
-						:data-aos="!isCardOpen ? 'fade-down' : ''"
-						:data-aos-delay="index * 50"
-						@click="cardClick(item)"
-					>
-						<div
-							class="card item"
-							:class="item.flip ? 'flip' : ''"
-						>
-							<div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)">
-							</div>
-							<div class="face back" :class="['g-' + item.gradeId, item.gradeId > 2 ? 'surprise' : '']">
-								<div class="img_content" :class="'gb-' + item.gradeId">
-									<img src="/img/in.jpg" :alt="item.name" v-if="item.image == ''" class="img-in"/>
-									<img :src="item.image" :alt="item.name" v-else />
+				<div class="row mb-4">
+					<!-- itme -->
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
 								</div>
-								<div class="description">
-									@{{ item.name }}
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div id="inline" class="lity-hide">
-					<div class="in_content">
-						<div class="in_banners" :style="computedResultBanner()" style="box-shadow: 6px 6px 9px black;"></div>
-
-						<div class="card item card_in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 23%;">
-							<div class="face front" :class="detail.gradeId > 2 ? 'surprise' : ''" style="background-image: url('/img/nice.jpg')">
-								<h2><small></small></h2>
-							</div>
-							<div class="face back" :class="['g-' + detail.gradeId, detail.gradeId > 2 ? 'surprise' : '']">
-								<div class="img_content" :class="'gb-' + detail.gradeId">
-									<img src="/img/in.jpg" :alt="detail.name" v-if="detail.image == ''" style="height: 160px;"/>
-									<img :src="detail.image" :alt="detail.name" v-else />
+					<!-- item end -->
+					<!-- item loop -->
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
 								</div>
-								<div class="description">
-									@{{ detail.name }}
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
 								</div>
 							</div>
 						</div>
-						<p class="h1 text-danger text-center">
-							@{{ result_text }}
-						</p>
 					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3 open">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text text-primary">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3 open">
+							<div class="face front surprise"></div>
+							<div class="face back surprise">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text text-danger">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 col-lg-2">
+						<div class="card text-white bg-dark mb-1 mb-lg-3">
+							<div class="face front"></div>
+							<div class="face back">
+								<div class="card-img-top"
+									style="background-image: url('https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Darkknightlsword.png')">
+								</div>
+								<div class="card-body">
+									<p class="card-text">黑騎士團戰士</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- item loop end -->
 				</div>
-				<!--統計-->
-				<div class="mt-4" style="background-color: #eee;">
+				<div class="row text-center">
 					<table class="table table-dark">
-						<thead>
-							<tr>
-								<th></th>
-								<th>抽到數量</th>
-								<th>抽到機率</th>
-								<th>官方機率</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="data in rate">
-								<td>
-									<span :class="'g-' + data.gradeId">@{{ data.name }}</span>
-								</td>
-								<td>@{{ data.count }}</td>
-								<td>@{{ data.myProbability }}%</td>
-								<td>@{{ data.probability }}%</td>
-							</tr>
-						</tbody>
+						<tr>
+							<td></td>
+							<td class="text-danger">英雄</td>
+							<td class="text-primary">稀有</td>
+							<td class="text-success">高級</td>
+							<td class="text-secondary">一般</td>
+						</tr>
+						<tr>
+							<td>總數</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>機率</td>
+							<td>0.0001%</td>
+							<td>0.3%</td>
+							<td>17%</td>
+							<td>30%</td>
+						</tr>
+						<tr>
+							<td>機率</td>
+							<td>0.0882%</td>
+							<td>0.5509%</td>
+							<td>20.2117%</td>
+							<td>79.1492%</td>
+						</tr>
 					</table>
-				</div>
-				<div class="alert alert-warning" role="alert">
-					<div class="rate">
-						機率:
-						<span v-for="data in rate">@{{ data.name }}: @{{ data.probability }}%</span>
+					<div role="alert" class="alert alert-warning">
+						<div class="rate">
+							*提示：本模擬器僅供娛樂，祝大家在系統上真的牙起來！
+						</div>
 					</div>
 				</div>
 			</div>
 		</main>
 
-		<footer class="footer">
-			<div class="container">
+		<footer id="footer" class="bg-light">
+			<div class="container-xl">
 				<div class="row">
-					<div class="col-12 col-md-6">
-						<div class="f-button-div">
-							<button type="button" class="btn btn-primary btn-lg shadow-lg p-3 mb-5 rounded" @click="lottery" v-if="!start" :disabled="loading">上級變身抽卡11次</button>
-							<button type="button" class="btn btn-danger btn-lg shadow-lg p-3 mb-5 rounded" @click="allOpen" v-else :disabled="loading">
-								<span v-if="isAllOpen">全部開啟٩(^ᴗ^)۶</span>
-								<span v-else>牙起來牙起來!!</span>
-							</button>
+					<div class="col-12 col-sm-6 p-2 order-sm-2">
+						<div class="d-grid h-100">
+							<button type="button" class="btn btn-primary shadow-lg rounded h-100">上級變身抽卡11次</button>
 						</div>
 					</div>
-					<div class="col-12 col-md-6">
-						<ul class="list-group list-group-flush" style="margin: 20px;">
-							<li class="list-group-item">已抽次數: <span>@{{ numberDraws }}</span></li>
+					<div class="col-12 col-sm-6 p-sm-2 order-sm-0">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">已抽次數: <span>0</span></li>
 							<li class="list-group-item">
-                花費鑽石: <span>@{{ 1200 * numberDraws }} = 台幣 @{{ 750 * numberDraws }}</span>
-                <br><small class="text-muted">@{{ ps_memo }}</small>
-              </li>
+								花費鑽石: <span>0</span> = 台幣 <span>0</span>
+							</li>
 							<li class="list-group-item">
-								<span v-for="data in rate" style="padding-right: 5px;" >@{{ data.name }}: @{{ data.count }}</span>
+								英雄: <span>0</span>
+								稀有: <span>0</span>
+								高級: <span>0</span>
+								一般: <span>0</span>
 							</li>
 						</ul>
 					</div>
+					<div class="col-12 order-sm-2">
+						<p class="memo">
+							本站無任何營利 如有任何侵權 請來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br>
+							copyright © 94ichouo All rights reserved.
+						</p>
+					</div>
 				</div>
-				<p class="memo">
-					本站無任何營利 如有任何侵權 請來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br>
-					copyright © 94ichouo All rights reserved.
-				</p>
 			</div>
 		</footer>
+
 	</div>
-</body>
-<script src="/js/jquery.js"></script>
-<script src="/js/vue.min.js"></script>
-<script src="/js/axios.min.js"></script>
-<script src="/js/aos.js"></script>
-<script src="/js/lity.min.js"></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="card-show">
+						<img src="https://wstatic-cdn.plaync.com/powerbook/lw/buffcard/Buffcard_Poly_Guardarcher.png">
+					</div>
+				</div>
+				<video autoplay muted loop id="myVideo">
+					<source src="/mp4/G.mp4" type="video/mp4">
+				</video>
+			</div>
+		</div>
 
-  gtag('config', 'G-D4DRBBS5S0');
-</script>
-<script>
-	new Vue({
-		el: '#app',
-		data: {
-			flip: false,
-			loading: false,
-			isCardOpen: false,
-			items: [],
-			detail: '',
-			rate: [],
-			start: false,
-			isAllOpen: true,
-			numberDraws: 0,
-			result_text: '',
-      ps_memo: '',
-		},
-		mounted() {
-			AOS.init();
-			this.getRate()
-		},
-		watch: {
-      numberDraws(num) {
-
-      },
-			start(type) {
-				if (!type) {
-					const _this = this
-					
-					//增加機率
-					this.rate = this.rate.map(function (value) {
-						_this.items.forEach(function(item) {
-							if (value.gradeId == item.gradeId) {
-								value.count++
-							}
-						})
-
-						value.myProbability = ((value.count / (_this.numberDraws * 11)) * 100).toFixed(4);
-						return value
-					})
-				}
-			}
-		},
-		methods: {
-			getRate() {
-				const _this = this
-
-				axios.get('/api/rate').then(function (response) {
-					const result = response.data
-					_this.rate = result
-        });
-			},
-			lottery() {
-				const _this = this
-
-				if (this.start) {
-					return
-				}
-
-				if (this.loading) {
-					return
-				}
-
-				this.loading = true
-				this.items = []
-				this.detail = ''
-				this.isCardOpen = false
-				
-				axios.post('/api/lottery').then(function (response) {
-					const result = response.data
-					_this.items = result.data
-					_this.numberDraws++
-					_this.start = true
-					_this.loading = false
-        });
-			},
-			allOpen() {
-				const _this = this
-				this.isCardOpen = true
-				this.isAllOpen = true
-
-				this.items = this.items.map(function (value, index) {
-					if (value.gradeId < 3) {
-						value.flip = true
-					} else {
-						_this.isAllOpen = false
-					}
-					
-					return value
-				})
-
-				if (this.isAllOpen) {
-					this.start = false
-				}
-			},
-			checkCardBg(item) {
-				if (item.gradeId < 3) {
-					return "background-image: url('/img/default.jpg')"
-				} else {
-					return "background-image: url('/img/nice.jpg');"
-				}
-			},
-			cardClick(item) {
-				this.isCardOpen = true
-
-				if (item.gradeId < 3) {
-					item.flip = !item.flip
-				} else {
-					lity('#inline')
-
-					this.detail = item
-					this.detail.flip = false
-					this.detail.gold = false
-					this.result_text = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
-				}
-			},
-			openDetail() {
-				this.detail.flip = true
-
-				if (this.detail.gradeId == 4) {
-					this.detail.gold = true
-					this.result_text = '(ﾟд⊙): KO !!!!!!!!!!!!!!!!!!!!'
-				} else {
-					this.result_text = '(‘⊙д-): K.......ㄜ'
-				}
-
-				//檢查是不是全部已開
-				let check = true
-
-				this.items.forEach(function(item) {
-					if (!item.flip) {
-						check = false
-					}
-				})
-
-				if (check) {
-					this.start = false
-				}
-			},
-			computedResultBanner() {
-				if (this.start) {
-					return ''
-				}
-
-				if (this.detail.gold) {
-					return 'background-image: url(/img/gold.jpg)'
-				} else {
-					return 'background-image: url(/img/smile2.jpg)'
-				}
-			}
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+	<style>
+		var elem = document.getElementById("myvideo");
+		if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		} else if (elem.mozRequestFullScreen) {
+			elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullscreen) {
+			elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) {
+			elem.msRequestFullscreen();
 		}
-	})
-</script>
+	</style>
+</body>
 
 </html>
