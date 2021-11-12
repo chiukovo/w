@@ -24,6 +24,17 @@ class PublicServices
                         'weaponTypeList' => json_encode($data['weaponTypeList'], JSON_UNESCAPED_UNICODE),
                         'buffBonusList' => json_encode($data['buffBonusList'], JSON_UNESCAPED_UNICODE),
                     ]);
+
+                    //update
+                    Transform::where('t_id', $data['id'])
+                        ->update([
+                            'name' => $data['name'],
+                            'image' => $data['image'],
+                            'gradeId' => $data['gradeId'],
+                            'weaponTypeList' => json_encode($data['weaponTypeList'], JSON_UNESCAPED_UNICODE),
+                            'buffBonusList' => json_encode($data['buffBonusList'], JSON_UNESCAPED_UNICODE),
+                        ]);
+
                 }
             }
 

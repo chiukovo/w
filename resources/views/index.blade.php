@@ -3,12 +3,12 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <meta name="description"  content="在課金之前 先來試試手氣吧! 自製天堂w抽卡 0元免費抽" />
 	<title>94i抽 - 天堂W模擬抽卡</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/style.css?v=5">
+	<link rel="stylesheet" href="/css/style.css?v=6">
 	<link rel="stylesheet" href="/css/lity.min.css">
 </head>
 
