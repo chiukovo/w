@@ -13,6 +13,11 @@ class ApiController extends Controller
         return view('index');
     }
 
+    public function test()
+    {
+        return view('test');
+    }
+
     public function rate()
     {
         $rate = Probability::where('probability', '!=', 0)->get(['name', 'gradeId', 'probability'])->toArray();
