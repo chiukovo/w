@@ -8,7 +8,7 @@
 	<title>94i抽 - 天堂W模擬抽卡</title>
 	<link rel="stylesheet" href="/css/aos.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/style.css?v=4">
+	<link rel="stylesheet" href="/css/style.css?v=5">
 	<link rel="stylesheet" href="/css/lity.min.css">
 </head>
 
@@ -21,7 +21,7 @@
 		</header>
 
 		<!-- Begin page content -->
-		<main role="main" class="container-xl" style="position: relative;z-index: 1">
+		<main role="main" class="container-xl">
 			<div>
 				<div v-if="items.length == 0">
 					<section class="jumbotron" style="margin-top: 20px;">
@@ -40,7 +40,7 @@
 					</section>
 				</div>
 				<div class="row">
-					<div class="col-4 col-lg-3 mb-2" 
+					<div class="col-4 col-lg-3 mb-2 base-card" 
 						v-for="(item, index) in items"
 						v-if="items.length"
 						:data-aos="!isCardOpen ? 'fade-down' : ''"
