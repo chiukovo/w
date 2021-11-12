@@ -27,11 +27,6 @@ body {
   background-position: center center;
 }
 
-.container-xl {
-  position: relative;
-  z-index: 1;
-}
-
 .base-card {
   position: relative;
   z-index: 0;

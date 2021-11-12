@@ -69,7 +69,7 @@
 					<div class="in_content">
 						<div class="in_banners" :style="computedResultBanner()" style="box-shadow: 6px 6px 9px black;"></div>
 
-						<div class="card item card_in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 27%;">
+						<div class="card item card_in" v-if="detail != ''" :class="detail.flip ? 'flip' : ''" @click="openDetail()" style="position: relative;left: 23%;">
 							<div class="face front" :class="detail.gradeId > 2 ? 'surprise' : ''" style="background-image: url('/img/nice.jpg')">
 								<h2><small></small></h2>
 							</div>
