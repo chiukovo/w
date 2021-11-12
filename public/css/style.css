@@ -180,6 +180,14 @@ body {
   opacity:0;
 }
 
+.aos-fix[data-aos][data-aos].aos-animate {
+  transform: unset;
+}
+
+.aos-fix[data-aos][data-aos].aos-animate {
+  transform: initial;
+}
+
 .img_content {
   width: 100%;
   height: 150px;
