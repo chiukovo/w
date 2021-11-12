@@ -158,6 +158,26 @@ class ApiController extends Controller
         foreach($rate as $key => $data) {
             $rate[$key]['count'] = 0;
             $rate[$key]['myProbability'] = 0;
+            
+            $color = '';
+
+            if ($data['gradeId'] == 1) {
+                $color = 'text-secondary';
+            }
+
+            if ($data['gradeId'] == 2) {
+                $color = 'text-success';
+            }
+
+            if ($data['gradeId'] == 3) {
+                $color = 'text-primary';
+            }
+
+            if ($data['gradeId'] == 4) {
+                $color = 'text-danger';
+            }
+
+            $rate[$key]['color'] = $color;
 
             if (!empty($record)) {
                 if (isset($record['g_' . $data['gradeId']])) {
