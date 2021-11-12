@@ -17,6 +17,22 @@
 		<header>
 			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 				<a class="navbar-brand" href="#">94i抽 - 天堂W模擬抽卡</a>
+        <div class="collapse navbar-collapse" v-if="!userDataLoading">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item"></li>
+          </ul>
+          <button class="btn btn-primary" type="button" @click="openLogin()" v-if="user == ''">登入</button>
+					<div v-else>
+						<div class="dropdown">
+							<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								您好 @{{ user.nickname }}
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="#" @click.prevent.stop="logout">登出</a>
+							</div>
+						</div>
+					</div>
+        </div>
 			</nav>
 		</header>
 
@@ -84,7 +100,7 @@
 							</div>
 						</div>
 						<p class="h1 text-danger text-center">
-							@{{ result_text }}
+							@{{ resultText }}
 						</p>
 					</div>
 				</div>
@@ -134,10 +150,10 @@
 					</div>
 					<div class="col-12 col-md-6">
 						<ul class="list-group list-group-flush" style="margin: 20px;">
-							<li class="list-group-item">已抽次數: <span>@{{ numberDraws }}</span></li>
+							<li class="list-group-item">今日已抽次數: <span>@{{ numberDraws }}</span></li>
 							<li class="list-group-item">
                 花費鑽石: <span>@{{ 1200 * numberDraws }} = 台幣 @{{ 750 * numberDraws }}</span>
-                <br><small class="text-muted">@{{ ps_memo }}</small>
+                <br><small class="text-muted">@{{ psMemo }}</small>
               </li>
 							<li class="list-group-item">
 								<span v-for="data in rate" style="padding-right: 5px;" >@{{ data.name }}: @{{ data.count }}</span>
@@ -151,9 +167,65 @@
 				</p>
 			</div>
 		</footer>
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom-0">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-title text-center">
+							<h4>@{{ !isLogin ? '註冊' : '登入'}}</h4>
+						</div>
+						<div class="d-flex flex-column text-center">
+							<div class="login" v-if="isLogin">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="請輸入帳號" v-model="loginData.account">
+								</div>
+								<div class="form-group">
+									<input type="password" class="form-control" placeholder="請輸入密碼" v-model="loginData.password">
+								</div>
+								<button type="button" class="btn btn-info btn-block btn-round" @click="doLoginOrSignIn">送出</button>
+							</div>
+							<div class="sign-in" v-else>
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="請輸入帳號" v-model="signInData.account">
+									<small class="form-text text-muted text-left">限定字數為 2~11</small>
+								</div>
+								<div class="form-group">
+									<input type="account" class="form-control" placeholder="請輸入暱稱" v-model="signInData.nickname">
+									<small class="form-text text-muted text-left">限定字數為 2~11</small>
+								</div>
+								<div class="form-group">
+									<input type="password" class="form-control" placeholder="請輸入密碼" v-model="signInData.password">
+									<small class="form-text text-muted text-left">限定字數為 2~11</small>
+								</div>
+								<div class="form-group">
+									<input type="password" class="form-control" placeholder="請重覆輸入密碼" v-model="signInData.password_confirmation">
+								</div>
+								<button type="button" class="btn btn-info btn-block btn-round" @click="doLoginOrSignIn">送出</button>
+							</div>
+					</div>
+				</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<div class="signup-section">註冊登入後即可加入排行榜, 使用歷史數據 ->
+							<a href="#" class="text-info" @click="isLogin = !isLogin">
+								@{{ isLogin ? '註冊' : '登入'}}
+							</a>
+						</div>
+					</div>
+			</div>
+		</div>
+		<!-- partial -->
 	</div>
 </body>
 <script src="/js/jquery.js"></script>
+<!-- Popper JS -->
+<script src='/js/popper.min.js'></script>
+<!-- Bootstrap JS -->
+<script src='/js/bootstrap.min.js'></script>
 <script src="/js/vue.min.js"></script>
 <script src="/js/axios.min.js"></script>
 <script src="/js/aos.js"></script>
@@ -173,6 +245,7 @@
 		data: {
 			flip: false,
 			loading: false,
+			userDataLoading: false,
 			isCardOpen: false,
 			items: [],
 			detail: '',
@@ -180,12 +253,25 @@
 			start: false,
 			isAllOpen: true,
 			numberDraws: 0,
-			result_text: '',
-      ps_memo: '',
+			resultText: '',
+      psMemo: '',
+			loginData: {
+				account: '',
+				password: '',
+			},
+			signInData: {
+				account: '',
+				nickname: '',
+				password: '',
+				password_confirmation: '',
+			},
+			isLogin: true,
+			user: ''
 		},
 		mounted() {
 			AOS.init();
 			this.getRate()
+			this.userData()
 		},
 		watch: {
       numberDraws(num) {
@@ -215,7 +301,8 @@
 
 				axios.get('/api/rate').then(function (response) {
 					const result = response.data
-					_this.rate = result
+					_this.rate = result.data
+					_this.numberDraws = result.count
         });
 			},
 			lottery() {
@@ -240,7 +327,69 @@
 					_this.numberDraws++
 					_this.start = true
 					_this.loading = false
-        });
+        })
+			},
+			logout() {
+				const _this = this
+
+				axios.post('/api/logout').then(function (response) {
+					_this.userData()
+        }).catch((error)=>{
+        })
+			},
+			userData() {
+				const _this = this
+				this.user = ''
+				this.userDataLoading = true
+
+				axios.post('/api/user').then(function (response) {
+					_this.user = response.data
+					_this.userDataLoading = false
+        }).catch((error)=>{
+          _this.userDataLoading = false
+        })
+			},
+			doLoginOrSignIn() {
+				let url = ''
+				let postData = []
+				const _this = this
+
+				if (this.isLogin) {
+					postData = this.loginData
+					url = '/api/login'
+				} else {
+					postData = this.signInData
+					url = '/api/signIn'
+
+					if (postData.account == '') {
+						alert('暱稱未輸入')
+						return
+					}
+
+					if (postData.password != postData.password_confirmation) {
+						alert('密碼重覆確認錯誤')
+						return
+					}
+				}
+
+				if (postData.account == '') {
+					alert('帳號未輸入')
+					return
+				}
+
+				if (postData.password == '') {
+					alert('密碼未輸入')
+					return
+				}
+
+				axios.post(url, postData).then(function (response) {
+					const result = response.data
+					alert('註冊登入成功!')
+					_this.userData()
+					$('#loginModal').modal('toggle')
+        }).catch((error)=>{
+          alert('失敗: ' +  error.response.data.message)
+        })
 			},
 			allOpen() {
 				const _this = this
@@ -261,6 +410,21 @@
 					this.start = false
 				}
 			},
+			openLogin() {
+				//清空
+				this.loginData = {
+					account: '',
+					password: '',
+				},
+				this.signInData = {
+					account: '',
+					nickname: '',
+					password: '',
+					password_confirmation: '',
+				},
+				this.isLogin = true
+				$('#loginModal').modal()
+			},
 			checkCardBg(item) {
 				if (item.gradeId < 3) {
 					return "background-image: url('/img/default.jpg')"
@@ -279,7 +443,7 @@
 					this.detail = item
 					this.detail.flip = false
 					this.detail.gold = false
-					this.result_text = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
+					this.resultText = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
 				}
 			},
 			openDetail() {
@@ -287,9 +451,9 @@
 
 				if (this.detail.gradeId == 4) {
 					this.detail.gold = true
-					this.result_text = '(ﾟд⊙): KO !!!!!!!!!!!!!!!!!!!!'
+					this.resultText = '(ﾟд⊙): KO !!!!!!!!!!!!!!!!!!!!'
 				} else {
-					this.result_text = '(‘⊙д-): K.......ㄜ'
+					this.resultText = '(‘⊙д-): K.......ㄜ'
 				}
 
 				//檢查是不是全部已開

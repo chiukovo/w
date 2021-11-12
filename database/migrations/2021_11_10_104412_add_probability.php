@@ -36,7 +36,7 @@ class AddProbability extends Migration
         DB::table('probability')->insert([
             'gradeId' => 4,
             'name' => '英雄',
-            'probability' => 0.0082,
+            'probability' => 0.0882,
             'created_at' => $date,
             'updated_at' => $date,
         ]);
@@ -54,7 +54,7 @@ class AddProbability extends Migration
         DB::table('probability')->insert([
             'gradeId' => 2,
             'name' => '高級',
-            'probability' => 15,
+            'probability' => 20.2117,
             'created_at' => $date,
             'updated_at' => $date,
         ]);
@@ -63,7 +63,7 @@ class AddProbability extends Migration
         DB::table('probability')->insert([
             'gradeId' => 1,
             'name' => '一般',
-            'probability' => 84.4409,
+            'probability' => 79.1492,
             'created_at' => $date,
             'updated_at' => $date,
         ]);
