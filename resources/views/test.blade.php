@@ -126,12 +126,12 @@
       <div class="modal" id="red-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" :class="detail.flip ? 'card-open' : ''">
           <div class="modal-content">
-            <div class="card-show" v-if="detail != '' && detail.flip">
+            <div class="card-show" v-show="detail != '' && detail.flip">
               <span class="text-card-name text-secondary" v-if="detail.gradeId == 1">@{{ detail.name }}</span>
               <span class="text-card-name text-success" v-if="detail.gradeId == 2">@{{ detail.name }}</span>
               <span class="text-card-name text-primary" v-if="detail.gradeId == 3">@{{ detail.name }}</span>
               <span class="text-card-name text-danger" v-if="detail.gradeId == 4">@{{ detail.name }}</span>
-              <div class="img surprise">
+              <div class="img" :class="detail.gradeId == 4 ? 'surprise' : ''">
                 <img :src="detail.image" :alt="detail.name" v-if="detail.image != ''"/>
                 <img src="/img/in.jpg" :alt="detail.name" v-else/>
               </div>
