@@ -7,7 +7,7 @@
     <title>94i抽 - 天堂W模擬抽卡</title>
     <link rel="stylesheet" href="/css/aos.css" />
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/main.css?v=2" />
+    <link rel="stylesheet" href="/css/main.css?v=3" />
   </head>
 
   <body>
