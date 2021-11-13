@@ -17,7 +17,7 @@
       </header>
 
       <main id="main">
-        <div class="container">
+        <div class="container-xl">
           <div class="bg-light border rounded-3 p-2 p-sm-4 author__info" v-if="items.length == 0">
             <div class="row">
               <div class="col-12 col-sm-3 mb-3">
@@ -40,7 +40,7 @@
           </div>
           <div class="row mb-4">
             <div
-              class="col-3 col-lg-2"
+              class="col-3 col-sm-2"
               v-for="(item, index) in items"
               v-if="items.length"
               :data-aos="!isCardOpen ? 'fade-down' : ''"
@@ -131,7 +131,7 @@
               <span class="text-card-name text-success" v-if="detail.gradeId == 2">@{{ detail.name }}</span>
               <span class="text-card-name text-primary" v-if="detail.gradeId == 3">@{{ detail.name }}</span>
               <span class="text-card-name text-danger" v-if="detail.gradeId == 4">@{{ detail.name }}</span>
-              <div class="img">
+              <div class="img surprise">
                 <img :src="detail.image" :alt="detail.name" v-if="detail.image != ''"/>
                 <img src="/img/in.jpg" :alt="detail.name" v-else/>
               </div>
