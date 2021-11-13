@@ -138,7 +138,7 @@
               <span class="text-theme">點擊螢幕關閉</span>
             </div>
           </div>
-          <video autoplay muted playsinline id="video" @ended="videoFinish" v-if="detail != ''">
+          <video muted playsinline id="video" @ended="videoFinish" v-show="detail != ''">
             <source :src="detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4'" type="video/mp4" />
           </video>
         </div>
@@ -205,7 +205,7 @@
           start(type) {
             if (!type) {
               const _this = this
-              
+
               //增加機率
               this.rate = this.rate.map(function (value) {
                 _this.items.forEach(function(item) {
@@ -395,6 +395,15 @@
                 this.detail.flip = false
                 this.detail.gold = false
                 this.resultText = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
+
+                //play
+                  const vid = document.getElementById("video")
+                  vid.currentTime = 0;
+                  vid.src = this.detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4';
+
+                  setTimeout(() => {
+                    vid.play()
+                  }, 500);
               }
             }, 600);
           },
