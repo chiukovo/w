@@ -7,7 +7,7 @@
     <title>94i抽 - 天堂W模擬抽卡</title>
     <link rel="stylesheet" href="/css/aos.css" />
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/main.css?v=1" />
   </head>
 
   <body>
@@ -150,7 +150,7 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/jquery.js"></script>
     <!-- Popper JS -->
     <script src='/js/popper.min.js'></script>
