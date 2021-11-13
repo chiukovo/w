@@ -50,8 +50,8 @@
               <div class="card text-white bg-dark mb-1 mb-lg-3" :class="item.flip ? 'open' : ''">
                 <div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)"></div>
                 <div class="face back">
-                  <div class="card-img-top" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
-                  <div class="card-img-top" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
+                  <div class="card-img-top" :class="item.gradeId > 2 ? 'surprise' : ''" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
+                  <div class="card-img-top" :class="item.gradeId > 2 ? 'surprise' : ''" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
                   <div class="card-body">
                     <p class="card-text">
                       <span class="text-secondary" v-if="item.gradeId == 1">@{{ item.name }}</span>
