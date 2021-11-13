@@ -47,7 +47,7 @@
 						  :data-aos-delay="index * 50"
               @click="cardClick(item)"
             >
-              <div class="card text-white bg-dark mb-1 mb-lg-3" :class="[item.flip ? 'open' : '', item.gradeId == 4 ? 'surprise' : '']">
+              <div class="card text-white bg-dark mb-1 mb-lg-3" :class="[item.flip ? 'open' : '', item.gradeId >= 3 ? 'surprise' : '']">
                 <div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)"></div>
                 <div class="face back">
                   <div class="card-img-top" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
