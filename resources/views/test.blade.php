@@ -47,11 +47,11 @@
 						  :data-aos-delay="index * 50"
               @click="cardClick(item)"
             >
-              <div class="card text-white bg-dark mb-1 mb-lg-3" :class="item.flip ? 'open' : ''">
+              <div class="card text-white bg-dark mb-1 mb-lg-3" :class="[item.flip ? 'open' : '', item.gradeId == 4 ? 'surprise' : '']">
                 <div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)"></div>
                 <div class="face back">
-                  <div class="card-img-top" :class="item.gradeId == 4 ? 'surprise' : ''" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
-                  <div class="card-img-top" :class="item.gradeId == 4 ? 'surprise' : ''" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
+                  <div class="card-img-top" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
+                  <div class="card-img-top" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
                   <div class="card-body">
                     <p class="card-text">
                       <span class="text-secondary" v-if="item.gradeId == 1">@{{ item.name }}</span>
@@ -126,7 +126,7 @@
       <div class="modal" id="red-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" :class="detail.flip ? 'card-open' : ''">
           <div class="modal-content">
-            <div class="card-show" v-if="detail != ''">
+            <div class="card-show" v-if="detail != '' && detail.flip">
               <span class="text-card-name text-secondary" v-if="detail.gradeId == 1">@{{ detail.name }}</span>
               <span class="text-card-name text-success" v-if="detail.gradeId == 2">@{{ detail.name }}</span>
               <span class="text-card-name text-primary" v-if="detail.gradeId == 3">@{{ detail.name }}</span>
@@ -386,7 +386,6 @@
             }
 
             this.detail = ''
-            this.isCardOpen = true
 
             if (item.gradeId >= 3) {
                 this.detail = item
@@ -405,6 +404,7 @@
                   vid.play()
                 }, 500)
             } else {
+              this.isCardOpen = true
               item.flip = true
             }
           },
