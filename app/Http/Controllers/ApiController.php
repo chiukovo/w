@@ -17,11 +17,6 @@ class ApiController extends Controller
         return view('index');
     }
 
-    public function test()
-    {
-        return view('test');
-    }
-
     public function login()
     {
         $postData = Request::input();
