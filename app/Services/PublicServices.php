@@ -16,10 +16,23 @@ class PublicServices
 
             if (isset($result['contents']) && !empty($result['contents'])) {
                 foreach ($result['contents'] as $data) {
+                    $filePath = '/img/cards/' . $data['id'] . '.jpg';
+
+                    if (!file_exists(public_path() . $filePath)) {
+                        if ($data['image'] != '') {
+                            $fileContent = file_get_contents($data['image']);
+                            Storage::disk('public_cards')->put($data['id'] . '.jpg', $fileContent);
+                        }
+                    }
+
+                    if ($data['image'] == '') {
+                        $filePath = '';
+                    }
+                    
                     Transform::firstOrCreate(['t_id' => $data['id']], [
                         't_id' => $data['id'],
                         'name' => $data['name'],
-                        'image' => $data['image'],
+                        'image' => $filePath,
                         'gradeId' => $data['gradeId'],
                         'weaponTypeList' => json_encode($data['weaponTypeList'], JSON_UNESCAPED_UNICODE),
                         'buffBonusList' => json_encode($data['buffBonusList'], JSON_UNESCAPED_UNICODE),
@@ -29,7 +42,7 @@ class PublicServices
                     Transform::where('t_id', $data['id'])
                         ->update([
                             'name' => $data['name'],
-                            'image' => $data['image'],
+                            'image' => $filePath,
                             'gradeId' => $data['gradeId'],
                             'weaponTypeList' => json_encode($data['weaponTypeList'], JSON_UNESCAPED_UNICODE),
                             'buffBonusList' => json_encode($data['buffBonusList'], JSON_UNESCAPED_UNICODE),
