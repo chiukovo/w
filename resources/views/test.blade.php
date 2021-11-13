@@ -386,12 +386,10 @@
             }
 
             this.detail = ''
-            setTimeout(() => {
-              this.isCardOpen = true
-              item.flip = true
-              if (item.gradeId < 3) {
-              } else {
-                $('#red-modal').modal('toggle')
+            this.isCardOpen = true
+
+            if (item.gradeId >= 3) {
+              $('#red-modal').modal('toggle')
                 this.detail = item
                 this.detail.flip = false
                 this.detail.gold = false
@@ -404,9 +402,10 @@
 
                 setTimeout(() => {
                   vid.play()
-                }, 500);
-              }
-            }, 600);
+                }, 500)
+            } else {
+              item.flip = true
+            }
           },
           openDetail() {
             this.detail.flip = true
