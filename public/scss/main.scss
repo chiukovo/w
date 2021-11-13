@@ -43,6 +43,7 @@ body {
 #footer {
   position: fixed;
   bottom: 0;
+  z-index: 99;
   width: 100%;
   height: 160px;
   overflow-x: hidden;
@@ -67,8 +68,24 @@ body {
   }
 }
 .card {
+  overflow: hidden;
   transition: transform .5s, opacity .6s;
   cursor: pointer;
+  &:hover {
+    .face {
+      &.front {
+        transform: scale(1.1) translateY(-2%);
+      }
+      &.back {
+        .card-img-top {
+          position: relative;
+          &::after {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
   &.open {
     transform: rotateY(180deg);
     .face {
@@ -81,6 +98,7 @@ body {
     }
   }
   .face {
+    transition: .3s transform ease;
     &.front {
       position: absolute;
       width: 100%;
@@ -128,6 +146,25 @@ body {
     &.back {
       transform: rotateY(180deg);
       opacity: 0;
+      .card-img-top {
+        position: relative;
+        &::after {
+          transition: .3s opacity ease;
+        }
+      }
+      &:not(.surprise) {
+        .card-img-top {
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color:rgba(0, 0, 0, .5);
+          }
+        }
+      }
     }
   }
   .card-img-top {
@@ -138,7 +175,14 @@ body {
   }
   .card-body {
     text-align: center;
-    padding: 4px;
+    padding: 4px 0;
+  }
+  .card-text {
+    span {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 }
 
@@ -200,12 +244,13 @@ body {
   max-width: 100%;
   height: 100%;
   &.card-open .modal-content {
-    transform: translateY(-50%) rotateY(0deg);
+    transform: translateY(-60%) rotateY(0deg);
     opacity: 1;
   }
 }
 .modal-content {
-  width: 40%;
+  min-width: 240px;
+  width: 24%;
   top: 50%;
   z-index: 3;
   transform: translateY(25%) rotateY(180deg);
@@ -235,19 +280,28 @@ body {
 }
 
 .card-show {
+  .img {
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: -20px -20px 30px -25px #54a29e, 20px 20px 30px -25px #a79d66, -7px -7px 10px -5px #5465a2, 7px 7px 10px -5px #a79d66, 0 0 13px 4px rgb(255 255 255 / 30%), 0 55px 35px -20px rgb(0 0 0 / 50%);
+  }
   img {
-    max-width: 100%;
+    max-width: 145%;
   }
 }
 
 #video {
-  position: fixed;
-  right: 0;
-  top: 50%;
-  z-index: 2;
-  min-width: 100%;
-  transform: translateY(-50%);
   pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 
 @media (max-width: 576px) {

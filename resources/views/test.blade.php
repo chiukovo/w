@@ -18,29 +18,33 @@
 
       <main id="main">
         <div class="container">
-          <div class="row mb-4" v-if="items.length == 0">
-            <div class="d-flex bg-light border rounded-3 p-5 author__info">
-              <div class="flex-shrink-0">
-                <img src="/img/gyman.jpg" alt="94i抽 - 天堂W模擬抽卡" />
+          <div class="bg-light border rounded-3 p-2 p-sm-4 author__info" v-if="items.length == 0">
+            <div class="row">
+              <div class="col-12 col-sm-3 mb-3">
+                <div class="flex-shrink-0">
+                  <img src="/img/gyman.jpg" alt="94i抽 - 天堂W模擬抽卡" />
+                </div>
               </div>
-              <div class="flex-grow-1 ms-3">
-                <h5 class="mt-0">GYMAN</h5>
-                <p>
-                  小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡<br />
-                  主要想讓大家認識一下 這個機率有多可怕<br />
-                  先來這抽抽看, 試試臉黑不黑( ^.＜ )<br />
-                  抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span>
-                </p>
+              <div class="col-12 col-sm-9">
+                <div class="flex-grow-1 ms-2">
+                  <h5 class="mt-0">GYMAN</h5>
+                  <p>
+                    小朋友們, 這遊戲很可怕的, 錢不好賺, 不要學網路上的叔叔們花大錢抽卡<br />
+                    主要想讓大家認識一下 這個機率有多可怕<br />
+                    先來這抽抽看, 試試臉黑不黑( ^.＜ )<br />
+                    抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
           <div class="row mb-4">
-            <div 
+            <div
               class="col-3 col-lg-2"
               v-for="(item, index) in items"
               v-if="items.length"
               :data-aos="!isCardOpen ? 'fade-down' : ''"
-              :data-aos-delay="index * 50"
+						  :data-aos-delay="index * 50"
               @click="cardClick(item)"
             >
               <div class="card text-white bg-dark mb-1 mb-lg-3" :class="item.flip ? 'open' : ''">
@@ -97,9 +101,9 @@
               <div class="d-grid h-100">
                 <button type="button" class="btn btn-primary shadow-lg rounded h-100" @click="lottery" v-if="!start" :disabled="loading">上級變身抽卡11次</button>
                 <button type="button" class="btn btn-danger  shadow-lg rounded h-100" @click="allOpen" v-else :disabled="loading">
-								<span v-if="isAllOpen">全部開啟٩(^ᴗ^)۶</span>
-								<span v-else>牙起來牙起來!!</span>
-							</button>
+                  <span v-if="isAllOpen">全部開啟٩(^ᴗ^)۶</span>
+                  <span v-else>牙起來牙起來!!</span>
+							  </button>
               </div>
             </div>
             <div class="col-12 col-sm-6 p-sm-2 order-sm-0">
@@ -192,6 +196,7 @@
           AOS.init();
           this.getRate()
           //this.userData()
+          $('#red-modal').on("hidden.bs.modal", this.videoFinish)
         },
         watch: {
           numberDraws(num) {
@@ -257,7 +262,7 @@
             this.items = []
             this.detail = ''
             this.isCardOpen = false
-            
+
             axios.post('/api/lottery').then(function (response) {
               const result = response.data
               _this.items = result.data
@@ -332,6 +337,7 @@
             const _this = this
             this.isCardOpen = true
             this.isAllOpen = true
+            let checkAllOpen = true
 
             this.items = this.items.map(function (value, index) {
               if (value.gradeId < 3) {
@@ -339,11 +345,15 @@
               } else {
                 _this.isAllOpen = false
               }
-              
+
+              if (!value.flip) {
+                checkAllOpen = false
+              }
+
               return value
             })
 
-            if (this.isAllOpen) {
+            if (this.isAllOpen || checkAllOpen) {
               this.start = false
             }
           },
@@ -370,17 +380,23 @@
             }
           },
           cardClick(item) {
-            this.isCardOpen = true
-
-            if (item.gradeId < 3) {
-              item.flip = !item.flip
-            } else {
-              $('#red-modal').modal('toggle')
-              this.detail = item
-              this.detail.flip = false
-              this.detail.gold = false
-              this.resultText = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
+            if (this.detail != '' && this.detail.t_id == item.t_id) {
+              return
             }
+
+            this.detail = ''
+            setTimeout(() => {
+              this.isCardOpen = true
+              item.flip = true
+              if (item.gradeId < 3) {
+              } else {
+                $('#red-modal').modal('toggle')
+                this.detail = item
+                this.detail.flip = false
+                this.detail.gold = false
+                this.resultText = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
+              }
+            }, 600);
           },
           openDetail() {
             this.detail.flip = true
