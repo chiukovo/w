@@ -119,11 +119,19 @@
         </div>
       </footer>
 
-      <div class="modal fade" id="red-modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+      <div class="modal" id="red-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" :class="detail.flip ? 'card-open' : ''">
           <div class="modal-content">
-            <div class="card-show">
-              <img :src="detail.image" :alt="detail.image" />
+            <div class="card-show" v-if="detail != ''">
+              <span class="text-card-name text-secondary" v-if="detail.gradeId == 1">@{{ detail.name }}</span>
+              <span class="text-card-name text-success" v-if="detail.gradeId == 2">@{{ detail.name }}</span>
+              <span class="text-card-name text-primary" v-if="detail.gradeId == 3">@{{ detail.name }}</span>
+              <span class="text-card-name text-danger" v-if="detail.gradeId == 4">@{{ detail.name }}</span>
+              <div class="img">
+                <img :src="detail.image" :alt="detail.name" v-if="detail.image != ''"/>
+                <img src="/img/in.jpg" :alt="detail.name" v-else/>
+              </div>
+              <span class="text-theme">點擊螢幕關閉</span>
             </div>
           </div>
           <video autoplay muted id="video" @ended="videoFinish" v-if="detail != ''">
@@ -210,6 +218,20 @@
         methods: {
           videoFinish() {
             //img show
+            this.detail.flip = true
+
+            //檢查是不是全部已開
+            let check = true
+
+            this.items.forEach(function(item) {
+              if (!item.flip) {
+                check = false
+              }
+            })
+
+            if (check) {
+              this.start = false
+            }
           },
           getRate() {
             const _this = this
