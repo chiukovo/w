@@ -389,11 +389,12 @@
             this.isCardOpen = true
 
             if (item.gradeId >= 3) {
-              $('#red-modal').modal('toggle')
                 this.detail = item
                 this.detail.flip = false
                 this.detail.gold = false
                 this.resultText = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
+
+                $('#red-modal').modal('toggle')
 
                 //play
                 const vid = document.getElementById("video")
