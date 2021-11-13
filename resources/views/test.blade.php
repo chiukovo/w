@@ -49,7 +49,12 @@
                   <div class="card-img-top" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
                   <div class="card-img-top" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
                   <div class="card-body">
-                    <p class="card-text">@{{ item.name }}</p>
+                    <p class="card-text">
+                      <span class="text-secondary" v-if="item.gradeId == 1">@{{ item.name }}</span>
+                      <span class="text-success" v-if="item.gradeId == 2">@{{ item.name }}</span>
+                      <span class="text-primary" v-if="item.gradeId == 3">@{{ item.name }}</span>
+                      <span class="text-danger" v-if="item.gradeId == 4">@{{ item.name }}</span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -121,8 +126,8 @@
               <img :src="detail.image" :alt="detail.image" />
             </div>
           </div>
-          <video autoplay muted id="video" @ended="videoFinish">
-            <source src="/mp4/G.mp4" type="video/mp4" />
+          <video autoplay muted id="video" @ended="videoFinish" v-if="detail != ''">
+            <source :src="detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4'" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -178,7 +183,7 @@
         mounted() {
           AOS.init();
           this.getRate()
-          this.userData()
+          //this.userData()
         },
         watch: {
           numberDraws(num) {
