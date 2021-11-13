@@ -50,8 +50,8 @@
               <div class="card text-white bg-dark mb-1 mb-lg-3" :class="item.flip ? 'open' : ''">
                 <div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)"></div>
                 <div class="face back">
-                  <div class="card-img-top" :class="item.gradeId > 2 ? 'surprise' : ''" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
-                  <div class="card-img-top" :class="item.gradeId > 2 ? 'surprise' : ''" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
+                  <div class="card-img-top" :class="item.gradeId == 4 ? 'surprise' : ''" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
+                  <div class="card-img-top" :class="item.gradeId == 4 ? 'surprise' : ''" style="background-image: url(/img/in.jpg);    background-size: 210%;" v-else></div>
                   <div class="card-body">
                     <p class="card-text">
                       <span class="text-secondary" v-if="item.gradeId == 1">@{{ item.name }}</span>
@@ -381,6 +381,7 @@
           },
           cardClick(item) {
             if (this.detail != '' && this.detail.t_id == item.t_id) {
+              item.flip = true
               return
             }
 
@@ -397,13 +398,13 @@
                 this.resultText = '(;ﾟдﾟ): 歐拉歐拉歐拉~~歐拉'
 
                 //play
-                  const vid = document.getElementById("video")
-                  vid.currentTime = 0;
-                  vid.src = this.detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4';
+                const vid = document.getElementById("video")
+                vid.currentTime = 0;
+                vid.src = this.detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4';
 
-                  setTimeout(() => {
-                    vid.play()
-                  }, 500);
+                setTimeout(() => {
+                  vid.play()
+                }, 500);
               }
             }, 600);
           },
