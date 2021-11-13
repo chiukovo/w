@@ -6,7 +6,7 @@
     <meta name="description" content="在課金之前 先來試試手氣吧! 自製天堂w抽卡 0元免費抽" />
     <title>94i抽 - 天堂W模擬抽卡</title>
     <link rel="stylesheet" href="/css/aos.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/main.css" />
   </head>
 
