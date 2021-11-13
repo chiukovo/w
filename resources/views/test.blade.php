@@ -138,7 +138,7 @@
               <span class="text-theme">點擊螢幕關閉</span>
             </div>
           </div>
-          <video autoplay muted id="video" @ended="videoFinish" v-if="detail != ''">
+          <video autoplay muted playsinline id="video" @ended="videoFinish" v-if="detail != ''">
             <source :src="detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4'" type="video/mp4" />
           </video>
         </div>
