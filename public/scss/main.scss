@@ -264,11 +264,11 @@ body {
   width: 24%;
   top: 50%;
   z-index: 3;
-  transform: translateY(25%) rotateY(180deg);
+  transform: translateY(10%) rotateY(90deg);
   background-color: transparent;
   margin: 0 auto;
   border: 0;
-  transition: .3s transform cubic-bezier(0.075, 0.82, 0.165, 1), .3s opacity cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: .5s transform ease,.5s opacity ease;
   opacity: 0;
   .text-card-name {
     text-shadow: 0px 0px 3px rgb(0 0 0);
@@ -301,9 +301,23 @@ body {
     border-radius: 12px;
     overflow: hidden;
     position: relative;
+    .top {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 9;
+      transform: translateX(-50%);
+      width: 100%;
+      img {
+        position: absolute;
+      }
+    }
   }
   img {
     max-width: 145%;
+    transform: translateX(-50%);
+    position: relative;
+    left: 50%;
   }
 }
 

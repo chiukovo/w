@@ -132,8 +132,13 @@
               <span class="text-card-name text-primary" v-if="detail.gradeId == 3">@{{ detail.name }}</span>
               <span class="text-card-name text-danger" v-if="detail.gradeId == 4">@{{ detail.name }}</span>
               <div class="img" :class="detail.gradeId == 4 ? 'surprise' : ''">
-                <img :src="detail.image" :alt="detail.name" v-if="detail.image != ''"/>
-                <img src="/img/in.jpg" :alt="detail.name" v-else/>
+                <div class="top">
+                  <img :src="detail.image" :alt="detail.name" v-if="detail.image != ''"/>
+                  <img src="/img/in.jpg" :alt="detail.name" v-else/>
+                </div>
+                <div class="bottom">
+                  <img src="/img/cb.png">
+                </div>
               </div>
               <span class="text-theme">點擊螢幕關閉</span>
             </div>
