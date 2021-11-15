@@ -20,8 +20,7 @@ class AddRecordDetail extends Migration
             $table->integer('t_id');
             $table->string('account');
             $table->integer('gradeId');
-            $table->date('date');
-            $table->index(['date']);
+            $table->index(['account']);
             $table->timestamps();
         });
     }

@@ -314,12 +314,10 @@ class ApiController extends Controller
             foreach ($result as $data) {
                 RecordDetail::updateOrCreate([
                     'account' => $user->account,
-                    'date' => $date,
                     't_id' => $data['t_id'],
                     'type' => 0,
                 ], [
                     'account' => $user->account,
-                    'date' => $date,
                     'gradeId' => $data['gradeId'],
                     't_id' => $data['t_id'],
                     'count' => DB::raw('count + 1'),
