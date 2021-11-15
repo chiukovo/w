@@ -13,12 +13,11 @@
   <body>
     <div id="app" v-cloak>
       <header id="header">
-        
         <div class="row">
           <div class="col-10">
             <div class="header__title">94i抽 - 天堂W模擬抽卡</div>
           </div>
-          <div class="col-2">
+          <div class="col-2 d-flex justify-content-end">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lr-modal">
               登入
             </button>
@@ -163,7 +162,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">註冊</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
