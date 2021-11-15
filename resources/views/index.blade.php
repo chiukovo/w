@@ -13,7 +13,17 @@
   <body>
     <div id="app" v-cloak>
       <header id="header">
-        <div class="header__title">94i抽 - 天堂W模擬抽卡</div>
+        
+        <div class="row">
+          <div class="col-10">
+            <div class="header__title">94i抽 - 天堂W模擬抽卡</div>
+          </div>
+          <div class="col-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lr-modal">
+              登入
+            </button>
+          </div>
+        </div>
       </header>
 
       <main id="main">
@@ -146,6 +156,25 @@
           <video muted playsinline id="video" @ended="videoFinish" v-show="detail != ''">
             <source :src="detail.gradeId == 4 ? '/mp4/g-teeth.mp4' : '/mp4/n-teeth.mp4'" type="video/mp4" />
           </video>
+        </div>
+      </div>
+      <div class="modal" id="lr-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">註冊</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">送出</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
