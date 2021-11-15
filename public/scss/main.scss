@@ -214,7 +214,7 @@ body {
 }
 
 .surprise {
-  box-shadow: -20px -20px 30px -25px #54a29e, 20px 20px 30px -25px #a79d66, -7px -7px 10px -5px #5465a2, 7px 7px 10px -5px #a79d66, 0 0 13px 4px rgb(255 255 255 / 30%), 0 55px 35px -20px rgb(0 0 0 / 50%);
+  box-shadow: -20px -20px 30px -25px #54a29e, 20px 20px 30px -25px #a79d66, -7px -7px 10px -5px #5465a2, 7px 7px 10px -5px #a79d66, 0 0 13px 4px rgba(255, 255, 255, .3), 0 55px 35px -20px rgba(0, 0, 0, .5);
   .card-img-top {
     &::after {
       opacity: 0;
