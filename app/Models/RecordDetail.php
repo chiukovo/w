@@ -17,4 +17,9 @@ class RecordDetail extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+    
+    public function transform()
+    {
+        return $this->hasOne(Transform::class, 't_id', 't_id');
+    }
 }

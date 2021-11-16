@@ -17,6 +17,117 @@ class ApiController extends Controller
         return view('index');
     }
 
+    public function cards()
+    {
+        return view('cards');
+    }
+    
+    public function getCards()
+    {
+        $user = auth()->user();
+
+        $cards = RecordDetail::with(['transform'])
+            ->where('account', $user->account)
+            ->orderBy('gradeId', 'desc')
+            ->get()
+            ->toArray();
+
+        foreach ($cards as $key => $card) {
+            $color = '';
+
+            if ($card['gradeId'] == 1) {
+                $color = 'text-secondary';
+            }
+
+            if ($card['gradeId'] == 2) {
+                $color = 'text-success';
+            }
+
+            if ($card['gradeId'] == 3) {
+                $color = 'text-primary';
+            }
+
+            if ($card['gradeId'] == 4) {
+                $color = 'text-danger';
+            }
+
+            $cards[$key]['color'] = $color;
+            $buffBonusList = json_decode($cards[$key]['transform']['buffBonusList'], true);
+            $formatBuff = [];
+            foreach ($buffBonusList as $list) {
+                $formatBuff[] = $list['displayValue'];
+            }
+
+            $cards[$key]['transform']['buffBonusList_string'] = implode(", ", $formatBuff);
+
+            $weaponTypeList = json_decode($cards[$key]['transform']['weaponTypeList'], true);
+            $formatWeapon = [];
+            foreach ($weaponTypeList as $list) {
+                $formatWeapon[] = $list['name'];
+            }
+
+            $cards[$key]['transform']['weaponTypeList_string'] = implode(", ", $formatWeapon);
+        }
+
+        return $cards;
+    }
+
+    public function history()
+    {
+        $user = auth()->user();
+        $rate = Probability::where('probability', '!=', 0)->get(['name', 'gradeId', 'probability'])->toArray();
+
+        $result = [];
+
+        $records = Records::where('account', $user->account)
+            ->orderBy('date', 'desc')
+            ->get()
+            ->toArray();
+
+        foreach ($records as $record) {
+            foreach ($rate as $key => $data) {
+                $rate[$key]['count'] = 0;
+                $rate[$key]['myProbability'] = 0;
+
+                $color = '';
+
+                if ($data['gradeId'] == 1) {
+                    $color = 'text-secondary';
+                }
+
+                if ($data['gradeId'] == 2) {
+                    $color = 'text-success';
+                }
+
+                if ($data['gradeId'] == 3) {
+                    $color = 'text-primary';
+                }
+
+                if ($data['gradeId'] == 4) {
+                    $color = 'text-danger';
+                }
+
+                $rate[$key]['color'] = $color;
+
+                if (!empty($record)) {
+                    if (isset($record['g_' . $data['gradeId']])) {
+                        $rate[$key]['count'] = $record['g_' . $data['gradeId']];
+                    }
+
+                    $count = $record['count'];
+
+                    $rate[$key]['myProbability'] = number_format(($rate[$key]['count'] / ($count * 11)) * 100, 4);
+                }
+
+                $result[$record['date']] = $rate;
+            }
+        }
+
+        return view('history', [
+            'history' => $result
+        ]);
+    }
+
     public function login()
     {
         $postData = Request::input();
@@ -85,10 +196,10 @@ class ApiController extends Controller
         ]);
 
         //檢查此ip是否註冊過多
-        $countIp = Users::where('ip', $postData['ip'])->count();
+        $countIp = Users::where('ip', $ip)->count();
 
         if ($countIp > 20) {
-            return response(['message' => '住手! 註冊太多帳號了吧'], 422);
+            return response(['message' => '住手! 給我住手 註冊太多帳號了吧'], 422);
         }
 
         //判斷是否帳號重覆

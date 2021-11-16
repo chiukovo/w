@@ -6,16 +6,15 @@
   <link rel="stylesheet" href="/css/aos.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/css/main.css?v=3" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="/js/jquery.js"></script>
-  <!-- Popper JS -->
   <script src='/js/popper.min.js'></script>
-  <!-- Bootstrap JS -->
   <script src='/js/bootstrap.min.js'></script>
   <script src="/js/vue.min.js"></script>
   <script src="/js/axios.min.js"></script>
   <script src="/js/aos.js"></script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
   <script>
     window.dataLayer = window.dataLayer || [];

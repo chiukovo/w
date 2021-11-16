@@ -4,7 +4,7 @@
       <h5>94i抽 - 天堂W模擬抽卡</h5>
 
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 text-warning">抽變身</a></li>
+        <li><a href="/" class="nav-link px-2 text-warning">抽變身</a></li>
         <li><a href="#" class="nav-link px-2 text-white">抽魔法娃娃</a></li>
         <li><a href="#" class="nav-link px-2 text-white">排行榜</a></li>
       </ul>
@@ -20,8 +20,8 @@
           <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
         <ul class="dropdown-menu text-small" aria-labelledby="user">
-          <li><a class="dropdown-item" href="#">抽卡紀錄</a></li>
-          <li><a class="dropdown-item" href="#">我的卡池</a></li>
+          <li><a class="dropdown-item" href="/history">抽卡紀錄</a></li>
+          <li><a class="dropdown-item" href="/cards">我的卡池</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>
         </ul>
@@ -33,7 +33,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">@{{ !isLogin ? '註冊' : '登入'}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeLRModal()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -68,7 +68,54 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" @click="doLoginOrSignIn">送出</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal()">關閉</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeLRModal()">關閉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row text-center" v-if="historyRate.length > 0">
+            <table class="table table-dark">
+              <tr>
+                <td></td>
+                <td :class="data.color" v-for="data in historyRate">
+                  @{{ data.name }}
+                </td>
+              </tr>
+              <tr>
+                <td>總數
+                  <span v-if="user != ''">(當日)</span>
+                </td>
+                <td v-for="data in rate">@{{ data.count }}</td>
+              </tr>
+              <tr>
+                <td>抽到機率</td>
+                <td v-for="data in rate">@{{ data.myProbability }}%</td>
+              </tr>
+              <tr>
+                <td>官方機率</td>
+                <td v-for="data in rate">@{{ data.probability }}%</td>
+              </tr>
+            </table>
+            <div role="alert" class="alert alert-warning">
+              <div class="rate">
+                *提示：本模擬器僅供娛樂，祝大家在遊戲上真的牙起來！*
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -92,7 +139,8 @@
         password_confirmation: '',
       },
       isLogin: true,
-      user: ''
+      user: '',
+      historyRate: [],
     },
     mounted() {
       this.userData()
@@ -118,7 +166,7 @@
           _this.userDataLoading = false
         })
       },
-      closeModal() {
+      closeLRModal() {
         $('#lr-modal').modal('toggle')
       },
       doLoginOrSignIn() {
