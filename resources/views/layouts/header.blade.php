@@ -1,7 +1,7 @@
-<header id="header" class="p-3 bg-dark text-white">
+<header id="header" class="bg-dark text-white">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <h5>94i抽 - 天堂W模擬抽卡</h5>
+      <h5 class="mb-0">94i抽 - 天堂W模擬抽卡</h5>
 
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="/" class="nav-link px-2 text-warning">抽變身</a></li>
@@ -33,7 +33,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">@{{ !isLogin ? '註冊' : '登入'}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeLRModal()">
+          <button type="button" class="btn close" data-dismiss="modal" aria-label="Close" @click="closeLRModal()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -43,7 +43,7 @@
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="請輸入帳號" v-model="loginData.account">
               </div>
-              <div class="form-group">
+              <div class="form-group mt-1">
                 <input type="password" class="form-control" placeholder="請輸入密碼" v-model="loginData.password">
               </div>
             </div>
@@ -67,8 +67,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="doLoginOrSignIn">送出</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeLRModal()">關閉</button>
+          <button type="button" class="btn btn-primary" @click="doLoginOrSignIn">送出</button>
         </div>
       </div>
     </div>
@@ -78,7 +78,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -114,8 +114,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>

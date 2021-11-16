@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   @include('layouts.head')
-  <body>
+  <body class="first">
     <div id="app" v-cloak>
       @include('layouts.header')
       <div id="content">
@@ -54,31 +54,35 @@
               </div>
             </div>
             <div class="row text-center">
-              <table class="table table-dark">
-                <tr>
-                  <td></td>
-                  <td :class="data.color" v-for="data in rate">
-                    @{{ data.name }}
-                  </td>
-                </tr>
-                <tr>
-                  <td>總數
-                    <span v-if="user != ''">(當日)</span>
-                  </td>
-                  <td v-for="data in rate">@{{ data.count }}</td>
-                </tr>
-                <tr>
-                  <td>抽到機率</td>
-                  <td v-for="data in rate">@{{ data.myProbability }}%</td>
-                </tr>
-                <tr>
-                  <td>官方機率</td>
-                  <td v-for="data in rate">@{{ data.probability }}%</td>
-                </tr>
-              </table>
-              <div role="alert" class="alert alert-warning">
-                <div class="rate">
-                  *提示：本模擬器僅供娛樂，祝大家在遊戲上真的牙起來！*
+              <div class="col">
+                <div class="table-border mb-2">
+                  <table class="table">
+                    <tr>
+                      <td></td>
+                      <td :class="data.color" v-for="data in rate">
+                        @{{ data.name }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>總數
+                        <span v-if="user != ''">(當日)</span>
+                      </td>
+                      <td v-for="data in rate">@{{ data.count }}</td>
+                    </tr>
+                    <tr>
+                      <td>抽到機率</td>
+                      <td v-for="data in rate">@{{ data.myProbability }}%</td>
+                    </tr>
+                    <tr>
+                      <td>官方機率</td>
+                      <td v-for="data in rate">@{{ data.probability }}%</td>
+                    </tr>
+                  </table>
+                </div>
+                <div role="alert" class="alert alert-warning">
+                  <div class="rate">
+                    *提示：本模擬器僅供娛樂，祝大家在遊戲上真的牙起來！*
+                  </div>
                 </div>
               </div>
             </div>

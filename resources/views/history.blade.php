@@ -1,52 +1,60 @@
 <!DOCTYPE html>
 <html>
   @include('layouts.head')
-  <body>
+  <body class="page">
     <div id="app" v-cloak>
       @include('layouts.header')
       <div id="content">
         <main id="main">
-          <h2 class="text-white">抽卡紀錄</h2>
           <div class="container-xl">
-            @foreach($history as $date => $data)
-            <div class="row text-center">
-              <h2 class="text-white">{{ $date }}</h2>
-              <table class="table table-dark">
-                <tr>
-                  <td></td>
-                  @foreach($data as $detail)
-                  <td class="{{ $detail['color'] }}">
-                    {{ $detail['name'] }}
-                  </td>
-                  @endforeach
-                </tr>
-                <tr>
-                  <td>總數</td>
-                  @foreach($data as $detail)
-                  <td>
-                    {{ $detail['count'] }}
-                  </td>
-                  @endforeach
-                </tr>
-                <tr>
-                  <td>抽到機率</td>
-                  @foreach($data as $detail)
-                  <td>
-                    {{ $detail['myProbability'] }}
-                  </td>
-                  @endforeach
-                </tr>
-                <tr>
-                  <td>官方機率</td>
-                  @foreach($data as $detail)
-                  <td>
-                    {{ $detail['probability'] }}
-                  </td>
-                  @endforeach
-                </tr>
-              </table>
+            <h2 class="text-left my-4">抽卡紀錄</h2>
+            <div>
+              @foreach($history as $date => $data)
+              <div class="row">
+                <div class="col">
+                  <div class="table-border">
+                    <table class="table table-striped">
+                      <tr>
+                        <th colspan="5" class="bg-primary text-white">{{ $date }}</th>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        @foreach($data as $detail)
+                        <td class="{{ $detail['color'] }}">
+                          {{ $detail['name'] }}
+                        </td>
+                        @endforeach
+                      </tr>
+                      <tr>
+                        <td>總數</td>
+                        @foreach($data as $detail)
+                        <td>
+                          {{ $detail['count'] }}
+                        </td>
+                        @endforeach
+                      </tr>
+                      <tr>
+                        <td>抽到機率</td>
+                        @foreach($data as $detail)
+                        <td>
+                          {{ $detail['myProbability'] }}
+                        </td>
+                        @endforeach
+                      </tr>
+                      <tr>
+                        <td>官方機率</td>
+                        @foreach($data as $detail)
+                        <td>
+                          {{ $detail['probability'] }}
+                        </td>
+                        @endforeach
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              @endforeach
             </div>
-            @endforeach
           </div>
         </main>
         <footer id="footer" class="bg-light">
