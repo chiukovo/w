@@ -123,32 +123,9 @@ class ApiController extends Controller
             }
         }
 
-        //總抽卡次數
-        $sumData = Records::where('account', $user->account)
-            ->select(DB::raw('sum(count) as count, sum(g_1) as g_1, sum(g_2) as g_2, sum(g_3) as g_3, sum(g_4) as g_4, sum(g_5) as g_5'))
-            ->first();
-
-        if ($sumData) {
-            $sumData = $sumData->toArray();
-            $sumData['count'] = $sumData['count'] ?? 0;
-            $sumData['g_1'] = $sumData['g_1'] ?? 0;
-            $sumData['g_2'] = $sumData['g_2'] ?? 0;
-            $sumData['g_3'] = $sumData['g_3'] ?? 0;
-            $sumData['g_4'] = $sumData['g_4'] ?? 0;
-            $sumData['g_5'] = $sumData['g_5'] ?? 0;
-
-            //計算
-            $sumData['p_1'] = number_format(($sumData['g_1'] / ($sumData['count'] * 11)) * 100, 4);
-            $sumData['p_2'] = number_format(($sumData['g_2'] / ($sumData['count'] * 11)) * 100, 4);
-            $sumData['p_3'] = number_format(($sumData['g_3'] / ($sumData['count'] * 11)) * 100, 4);
-            $sumData['p_4'] = number_format(($sumData['g_4'] / ($sumData['count'] * 11)) * 100, 4);
-            $sumData['p_5'] = 0;
-        }
-
         return view('history', [
             'history' => $result,
-            'sumData' => $sumData,
-            'account' => $user->account,
+            'user' => $user,
         ]);
     }
 
@@ -445,6 +422,26 @@ class ApiController extends Controller
                 'g_3' => DB::raw('g_3 + ' . $rare),
                 'g_4' => DB::raw('g_4 + ' . $hero),
             ]);
+
+            //計算總機率
+            Users::where('id', $user->id)->update([
+                'total_count' => DB::raw('total_count + 1'),
+                'total_c_1' => DB::raw('total_c_1 + ' . $generally),
+                'total_c_2' => DB::raw('total_c_2 + ' . $grade),
+                'total_c_3' => DB::raw('total_c_3 + ' . $rare),
+                'total_c_4' => DB::raw('total_c_4 + ' . $hero),
+            ]);
+
+            $user = Users::where('id', $user->id)->first();
+
+            $updateP = [
+                'total_p_1' => number_format(($user->total_c_1 / ($user->total_count * 11)) * 100, 4),
+                'total_p_2' => number_format(($user->total_c_2 / ($user->total_count * 11)) * 100, 4),
+                'total_p_3' => number_format(($user->total_c_3 / ($user->total_count * 11)) * 100, 4),
+                'total_p_4' => number_format(($user->total_c_4 / ($user->total_count * 11)) * 100, 4),
+            ];
+
+            Users::where('id', $user->id)->update($updateP);
 
             foreach ($result as $data) {
                 RecordDetail::updateOrCreate([

@@ -7,14 +7,14 @@
       <div id="content">
         <main id="main">
           <div class="container-xl">
-            <h2 class="text-left my-4">{{ $account }} 的戰績</h2>
-            @if(!empty($sumData))
+            <h2 class="text-left my-4">{{ $user->account }} 的戰績</h2>
+            @if($user)
             <ul class="list-group m-2">
-              <li class="list-group-item">總抽卡次數: {{ $sumData['count'] ?? 0 }}</li>
-              <li class="list-group-item"><span class="text-danger">英雄</span>總數: {{ $sumData['g_4'] ?? 0 }} 抽到機率: {{ $sumData['p_4'] }}</li>
-              <li class="list-group-item"><span class="text-primary">稀有</span>總數: {{ $sumData['g_3'] ?? 0 }} 抽到機率: {{ $sumData['p_3'] }}</li>
-              <li class="list-group-item"><span class="text-success">高級</span>總數: {{ $sumData['g_2'] ?? 0 }} 抽到機率: {{ $sumData['p_2'] }}</li>
-              <li class="list-group-item"><span class="text-secondary">一般</span>總數: {{ $sumData['g_1'] ?? 0 }} 抽到機率: {{ $sumData['p_1'] }}</li>
+              <li class="list-group-item">總抽卡次數: {{ $user->total_count }}</li>
+              <li class="list-group-item"><span class="text-danger">英雄</span>總數: {{ $user->total_c_4 }} 抽到機率: {{ $user->total_p_4 }}</li>
+              <li class="list-group-item"><span class="text-primary">稀有</span>總數: {{ $user->total_c_3 }} 抽到機率: {{ $user->total_p_3 }}</li>
+              <li class="list-group-item"><span class="text-success">高級</span>總數: {{ $user->total_c_2 }} 抽到機率: {{ $user->total_p_2 }}</li>
+              <li class="list-group-item"><span class="text-secondary">一般</span>總數: {{ $user->total_c_1 }} 抽到機率: {{ $user->total_p_1 }}</li>
             </ul>
             @endif
             <div>
@@ -71,7 +71,7 @@
             <div class="row">
               <div class="col-12 order-sm-2">
                 <p class="memo">
-                  本站無任何營利 如有任何侵權 請來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
+                  本站如有任何侵權 請來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
                   copyright © 94ichouo All rights reserved.
                 </p>
               </div>
