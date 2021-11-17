@@ -25,7 +25,7 @@ class ApiController extends Controller
     
     public function rank()
     {
-        $blackData = Users::where('total_count', '>=', 100)
+        $blackData = Users::where('total_count', '>=', 50)
             ->orderBy('total_p_4', 'asc')
             ->orderBy('total_count', 'desc')
             ->limit(20)
