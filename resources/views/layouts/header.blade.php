@@ -20,7 +20,7 @@
           <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
         <ul class="dropdown-menu text-small" aria-labelledby="user">
-          <li><a class="dropdown-item" href="/history">抽卡紀錄</a></li>
+          <li><a class="dropdown-item" href="/history">我的戰績</a></li>
           <li><a class="dropdown-item" href="/cards">我的卡池</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>

@@ -7,7 +7,16 @@
       <div id="content">
         <main id="main">
           <div class="container-xl">
-            <h2 class="text-left my-4">抽卡紀錄</h2>
+            <h2 class="text-left my-4">{{ $account }} 的戰績</h2>
+            @if(!empty($sumData))
+            <ul class="list-group m-2">
+              <li class="list-group-item">總抽卡次數: {{ $sumData['count'] ?? 0 }}</li>
+              <li class="list-group-item"><span class="text-danger">英雄</span>總數: {{ $sumData['g_4'] ?? 0 }} 抽到機率: {{ $sumData['p_4'] }}</li>
+              <li class="list-group-item"><span class="text-primary">稀有</span>總數: {{ $sumData['g_3'] ?? 0 }} 抽到機率: {{ $sumData['p_3'] }}</li>
+              <li class="list-group-item"><span class="text-success">高級</span>總數: {{ $sumData['g_2'] ?? 0 }} 抽到機率: {{ $sumData['p_2'] }}</li>
+              <li class="list-group-item"><span class="text-secondary">一般</span>總數: {{ $sumData['g_1'] ?? 0 }} 抽到機率: {{ $sumData['p_1'] }}</li>
+            </ul>
+            @endif
             <div>
               @foreach($history as $date => $data)
               <div class="row">

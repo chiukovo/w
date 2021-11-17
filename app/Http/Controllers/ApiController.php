@@ -123,8 +123,32 @@ class ApiController extends Controller
             }
         }
 
+        //總抽卡次數
+        $sumData = Records::where('account', $user->account)
+            ->select(DB::raw('sum(count) as count, sum(g_1) as g_1, sum(g_2) as g_2, sum(g_3) as g_3, sum(g_4) as g_4, sum(g_5) as g_5'))
+            ->first();
+
+        if ($sumData) {
+            $sumData = $sumData->toArray();
+            $sumData['count'] = $sumData['count'] ?? 0;
+            $sumData['g_1'] = $sumData['g_1'] ?? 0;
+            $sumData['g_2'] = $sumData['g_2'] ?? 0;
+            $sumData['g_3'] = $sumData['g_3'] ?? 0;
+            $sumData['g_4'] = $sumData['g_4'] ?? 0;
+            $sumData['g_5'] = $sumData['g_5'] ?? 0;
+
+            //計算
+            $sumData['p_1'] = number_format(($sumData['g_1'] / ($sumData['count'] * 11)) * 100, 4);
+            $sumData['p_2'] = number_format(($sumData['g_2'] / ($sumData['count'] * 11)) * 100, 4);
+            $sumData['p_3'] = number_format(($sumData['g_3'] / ($sumData['count'] * 11)) * 100, 4);
+            $sumData['p_4'] = number_format(($sumData['g_4'] / ($sumData['count'] * 11)) * 100, 4);
+            $sumData['p_5'] = 0;
+        }
+
         return view('history', [
-            'history' => $result
+            'history' => $result,
+            'sumData' => $sumData,
+            'account' => $user->account,
         ]);
     }
 
