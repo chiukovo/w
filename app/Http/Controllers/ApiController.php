@@ -8,6 +8,7 @@ use App\Models\Users;
 use App\Models\Records;
 use App\Models\RecordDetail;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Builder\Use_;
 use Request, Storage, Response, Hash, Auth, DB;
 
 class ApiController extends Controller
@@ -22,6 +23,16 @@ class ApiController extends Controller
         return view('cards');
     }
     
+    public function rank()
+    {
+        $blackData = Users::where('total_count', '>=', 100)
+            ->orderBy('total_p_4', 'asc')
+            ->orderBy('total_count', 'desc')
+            ->limit(20)
+            ->get()
+            ->toArray();
+    }
+
     public function getCards()
     {
         $user = auth()->user();
