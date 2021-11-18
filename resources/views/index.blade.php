@@ -93,7 +93,13 @@
             <div class="row">
               <div class="col-12 col-sm-6 p-2 order-sm-2">
                 <div class="d-grid h-100">
-                  <button type="button" class="btn btn-primary shadow-lg rounded h-100" @click="lottery" v-if="!start" :disabled="loading">上級變身抽卡11次</button>
+                  <button type="button" class="btn btn-primary shadow-lg rounded h-100" @click="lottery" v-if="!start" :disabled="loading">
+                    @if(!$type)
+                    上級變身抽卡11次
+                    @else
+                    上級娃娃抽卡11次
+                    @endif
+                  </button>
                   <button type="button" class="btn btn-danger  shadow-lg rounded h-100" @click="allOpen" v-else :disabled="loading">
                     <span v-if="isAllOpen">全部開啟٩(^ᴗ^)۶</span>
                     <span v-else>牙起來牙起來!!</span>
@@ -206,7 +212,7 @@
           getRate() {
             const _this = this
 
-            axios.get('/api/rate').then(function (response) {
+            axios.get('/api/rate?type={{ $type }}').then(function (response) {
               const result = response.data
               _this.rate = result.data
               _this.numberDraws = result.count
@@ -228,7 +234,7 @@
             this.detail = ''
             this.isCardOpen = false
 
-            axios.post('/api/lottery').then(function (response) {
+            axios.post('/api/lottery?type={{ $type }}').then(function (response) {
               const result = response.data
               _this.items = result.data
               _this.numberDraws++

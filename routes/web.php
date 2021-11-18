@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\ApiController@index');
+Route::get('/', 'App\Http\Controllers\ApiController@index')->name('index');
 Route::get('/rank', 'App\Http\Controllers\ApiController@rank');
 //前台api
 Route::post('/api/lottery', 'App\Http\Controllers\ApiController@lottery');

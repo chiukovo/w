@@ -14,7 +14,11 @@ class ApiController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $type = request()->input('type', 0);
+
+        return view('index', [
+            'type' => $type
+        ]);
     }
 
     public function cards()
@@ -266,7 +270,12 @@ class ApiController extends Controller
 
     public function rate()
     {
-        $rate = Probability::where('probability', '!=', 0)->get(['name', 'gradeId', 'probability'])->toArray();
+        $type = request()->input('type', 0);
+
+        $rate = Probability::where('probability', '!=', 0)
+            ->where('type', $type)
+            ->get(['name', 'gradeId', 'probability'])
+            ->toArray();
 
         //如果有登入
         $user = auth()->user();
@@ -331,13 +340,23 @@ class ApiController extends Controller
 
         $user = auth()->user();
         $date = date('Y-m-d');
+        $type = request()->input('type', 0);
         
-        $allTransform = Transform::with(['probability'])
+        $allTransform = Transform::with(array('probability' => function($query) {
+                $query->where('type', 1);
+            }))
             ->where('gradeId', '!=', 5)
+            ->where('type', $type)
             ->get()
             ->toArray();
 
-        $probability = Probability::get(['name', 'gradeId', 'probability'])->toArray();
+        if (empty($allTransform)) {
+            return [];
+        }
+
+        $probability = Probability::where('type', $type)
+            ->get(['name', 'gradeId', 'probability'])
+            ->toArray();
 
         $result = [];
         $ranges = [];
@@ -434,7 +453,7 @@ class ApiController extends Controller
             Records::updateOrCreate([
                 'account' => $user->account,
                 'date' => $date,
-                'type' => 0,
+                'type' => $type,
             ], [
                 'account' => $user->account,
                 'date' => $date,

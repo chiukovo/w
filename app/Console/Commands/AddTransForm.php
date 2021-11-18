@@ -39,5 +39,6 @@ class AddTransForm extends Command
     public function handle()
     {
         PublicServices::AddTransForm();
+        PublicServices::AddMagicDolls();
     }
 }

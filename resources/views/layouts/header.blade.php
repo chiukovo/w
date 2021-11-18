@@ -1,10 +1,15 @@
+@php
+  $type = Request::input('type', 0);
+  $name = Route::currentRouteName();
+@endphp
 <header id="header" class="bg-dark text-white">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <h5 class="mb-0"><a href="/">94i抽 - 天堂W模擬抽卡</a></h5>
+      <h5 class="mb-0">94i抽 - 天堂W模擬抽卡</h5>
 
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/" class="nav-link px-2 text-warning">抽變身</a></li>
+        <li><a href="/" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif">抽變身</a></li>
+        <li><a href="/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif">抽魔法娃娃</a></li>
         <li><a href="#" class="nav-link px-2 text-white">排行榜</a></li>
       </ul>
       <div class="text-end" v-if="user == '' && !userDataLoading">
