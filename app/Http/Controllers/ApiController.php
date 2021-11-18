@@ -31,6 +31,18 @@ class ApiController extends Controller
             ->limit(20)
             ->get()
             ->toArray();
+
+        $whiteData = Users::where('total_count', '>=', 50)
+            ->orderBy('total_p_4', 'desc')
+            ->orderBy('total_count', 'asc')
+            ->limit(20)
+            ->get()
+            ->toArray();
+ 
+        return view('rank', [
+            'blackData' => $blackData,
+            'whiteData' => $whiteData,
+        ]);
     }
 
     public function getCards()
