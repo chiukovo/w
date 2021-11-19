@@ -35,8 +35,19 @@ class ApiController extends Controller
             ->get()
             ->toArray();
 
-        $whiteData = Users::where('total_count', '>=', 50)
-            ->orderBy('total_p_4', 'desc')
+        $ids = [];
+
+        foreach($blackData as $data) {
+            $ids[] = $data['id'];
+        }
+        
+        $whiteData = Users::where('total_count', '>=', 50);
+
+        if (!empty($ids)) {
+            $whiteData = $whiteData->whereNotIn('id', $ids);
+        }
+        
+        $whiteData = $whiteData->orderBy('total_p_4', 'desc')
             ->orderBy('total_count', 'asc')
             ->limit(20)
             ->get()
