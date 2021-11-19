@@ -7,17 +7,17 @@
       <div id="content">
         <main id="main">
           <div class="container-xl">
-            <h2 class="text-center my-4">排行榜</h2>
+            <h2 class="text-center text-white my-4">排行榜</h2>
             <div class="row">
               <div class="col">
-                <h5 class="text-center">臉黑大將軍</h5>
-                <table class="table table-striped table-border">
-                  <tr class="bg-primary">
-                    <th scope="col" style="width: 2rem;" class="text-white">Rank</th>
-                    <th class="text-white">暱稱</th>
-                    <th class="text-white">總抽次數</th>
-                    <th class="text-white">紅變數量</th>
-                    <th class="text-white">抽到機率</th>
+                <h5 class="text-center text-white">臉黑大將軍</h5>
+                <table class="table table-striped table-dark table-border">
+                  <tr>
+                    <th scope="col" style="width: 2rem;" class="text-white bg-primary">Rank</th>
+                    <th class="text-white bg-primary">暱稱</th>
+                    <th class="text-white bg-primary">總抽次數</th>
+                    <th class="text-white bg-primary">紅變數量</th>
+                    <th class="text-white bg-primary">抽到機率</th>
                   </tr>
                   @foreach($blackData as $key => $data)
                   <tr>
@@ -41,14 +41,14 @@
                 </table>
               </div>
               <div class="col">
-                <h5 class="text-center">歐皇降臨</h5>
-                <table class="table table-striped table-border">
-                  <tr class="bg-primary">
-                    <th scope="col" style="width: 2rem;" class="text-white">Rank</th>
-                    <th class="text-white">暱稱</th>
-                    <th class="text-white">總抽次數</th>
-                    <th class="text-white">紅變數量</th>
-                    <th class="text-white">抽到機率</th>
+                <h5 class="text-center text-white">歐皇降臨</h5>
+                <table class="table table-striped table-dark table-border">
+                  <tr>
+                    <th scope="col" style="width: 2rem;" class="text-white bg-primary">Rank</th>
+                    <th class="text-white bg-primary">暱稱</th>
+                    <th class="text-white bg-primary">總抽次數</th>
+                    <th class="text-white bg-primary">紅變數量</th>
+                    <th class="text-white bg-primary">抽到機率</th>
                   </tr>
                   @foreach($whiteData as $key => $data)
                   <tr>

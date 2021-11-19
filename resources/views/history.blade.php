@@ -7,7 +7,7 @@
       <div id="content">
         <main id="main">
           <div class="container-xl">
-            <h2 class="text-left my-4">{{ $user->account }} 的戰績</h2>
+            <h2 class="text-left text-white my-4">{{ $user->account }} 的戰績</h2>
             @if($user)
             <!-- <ul class="list-group mb-2 text-center">
               <li class="list-group-item">總抽卡次數: {{ $user->total_count }}</li>
@@ -53,7 +53,7 @@
               @foreach($history as $date => $data)
               <div class="col">
                 <div class="table-border">
-                  <table class="table table-striped">
+                  <table class="table table-striped table-dark">
                     <tr>
                       <th colspan="5" class="bg-primary text-white text-center">{{ $date }}</th>
                     </tr>

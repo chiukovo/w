@@ -399,8 +399,9 @@ body {
 
 // page
 .page {
-  background: #f1f1f1;
+  background: #1e2124;
   .bg-primary {
+    --bs-table-accent-bg: var(--bs-primary) !important;
     background-color: var(--bs-primary) !important;
   }
   .table-border {
