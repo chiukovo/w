@@ -101,7 +101,10 @@ class ApiController extends Controller
     public function history()
     {
         $user = auth()->user();
-        $rate = Probability::where('probability', '!=', 0)->get(['name', 'gradeId', 'probability'])->toArray();
+        $rate = Probability::where('probability', '!=', 0)
+            ->where('type', 0)
+            ->get(['name', 'gradeId', 'probability'])
+            ->toArray();
 
         $result = [];
 
