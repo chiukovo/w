@@ -2,34 +2,40 @@
   $type = Request::input('type', 0);
   $name = Route::currentRouteName();
 @endphp
-<header id="header" class="bg-dark text-white">
-  <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <h5 class="mb-0">94i抽 - 天堂W模擬抽卡</h5>
+<header id="header">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/" class="text-white text-decoration-none d-none d-sm-block">
+        <h5 class="mb-0">94i抽 - 天堂W模擬抽卡</h5>
+      </a>
 
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif">抽變身</a></li>
-        <li><a href="/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif">抽魔法娃娃</a></li>
-        <li><a href="/rank" class="nav-link px-2 @if($name == 'rank') text-warning @endif">排行榜</a></li>
+      <ul class="nav">
+        <li><a href="#" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif text-secondary">抽變身</a></li>
+        <li><a href="/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif text-secondary">抽魔法娃娃</a></li>
+        <li><a href="/rank" class="nav-link px-2 @if($name == 'rank') text-warning @endif text-secondary">排行榜</a></li>
       </ul>
+
       <div class="text-end" v-if="user == '' && !userDataLoading">
-        <button type="button" class="btn btn-outline-light me-2" @click="openLogin(1)">登入</button>
-        <button type="button" class="btn btn-warning" @click="openLogin(0)">註冊</button>
+        <button type="button" class="btn btn-sm btn-outline-light me-2" @click="openLogin(1)">登入</button>
+        <button type="button" class="btn btn-sm btn-warning" @click="openLogin(0)">註冊</button>
       </div>
-      <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" v-if="user != ''">
-        <span>Hi ~ @{{ user.nickname }}</span>
+      <div class="text-end d-flex align-items-center justify-content-between">
+        <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" v-if="user != ''">
+          <span>Hi ~ @{{ user.nickname }}</span>
+        </div>
+        <div class="dropdown" v-if="user != '' && !userDataLoading">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="user" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="user">
+            <li><a class="dropdown-item" href="/history">我的戰績</a></li>
+            <li><a class="dropdown-item" href="/cards">我的卡池</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="dropdown text-end" v-if="user != '' && !userDataLoading">
-        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="user" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
-        </a>
-        <ul class="dropdown-menu text-small" aria-labelledby="user">
-          <li><a class="dropdown-item" href="/history">我的戰績</a></li>
-          <li><a class="dropdown-item" href="/cards">我的卡池</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>
-        </ul>
-      </div>
+
     </div>
   </div>
   <div class="modal" id="lr-modal" tabindex="-1" role="dialog">
