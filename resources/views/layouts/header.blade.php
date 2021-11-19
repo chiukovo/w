@@ -10,14 +10,16 @@
       </a>
 
       <ul class="nav">
-        <li><a href="#" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif text-secondary">抽變身</a></li>
+        <li><a href="/" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif text-secondary">抽變身</a></li>
         <li><a href="/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif text-secondary">抽魔法娃娃</a></li>
         <li><a href="/rank" class="nav-link px-2 @if($name == 'rank') text-warning @endif text-secondary">排行榜</a></li>
       </ul>
 
-      <div class="text-end" v-if="user == '' && !userDataLoading">
-        <button type="button" class="btn btn-sm btn-outline-light me-2" @click="openLogin(1)">登入</button>
-        <button type="button" class="btn btn-sm btn-warning" @click="openLogin(0)">註冊</button>
+      <div class="text-end">
+        <div v-if="user == '' && !userDataLoading">
+          <button type="button" class="btn btn-sm btn-outline-light me-2" @click="openLogin(1)">登入</button>
+          <button type="button" class="btn btn-sm btn-warning" @click="openLogin(0)">註冊</button>
+        </div>
       </div>
       <div class="text-end d-flex align-items-center justify-content-between">
         <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" v-if="user != ''">
