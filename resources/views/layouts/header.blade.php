@@ -10,7 +10,7 @@
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="/" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif">抽變身</a></li>
         <li><a href="/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif">抽魔法娃娃</a></li>
-        <li><a href="#" class="nav-link px-2 text-white">排行榜</a></li>
+        <li><a href="/rank" class="nav-link px-2 @if($name == 'rank') text-warning @endif">排行榜</a></li>
       </ul>
       <div class="text-end" v-if="user == '' && !userDataLoading">
         <button type="button" class="btn btn-outline-light me-2" @click="openLogin(1)">登入</button>
