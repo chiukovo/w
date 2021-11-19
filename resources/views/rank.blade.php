@@ -35,7 +35,7 @@
                     </td>
                     <td>{{ $data['nickname'] }}</td>
                     <td>{{ $data['total_count'] }}</td>
-                    <td>{{ $data['total_c_4'] }}</td>
+                    <td>{{ round($data['total_c_4']) }}</td>
                     <td>{{ $data['total_p_4'] }}%</td>
                   </tr>
                   @endforeach
