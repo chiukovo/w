@@ -3,7 +3,7 @@
   $name = Route::currentRouteName();
 @endphp
 <header id="header">
-  <div class="container-fluid">
+  <div class="container-xl">
     <div class="d-flex align-items-center justify-content-between">
       <a href="/" class="text-white text-decoration-none d-none d-sm-block">
         <h5 class="mb-0">94i抽 - 天堂W模擬抽卡</h5>
@@ -20,21 +20,21 @@
           <button type="button" class="btn btn-sm btn-outline-light me-2" @click="openLogin(1)">登入</button>
           <button type="button" class="btn btn-sm btn-warning" @click="openLogin(0)">註冊</button>
         </div>
-      </div>
-      <div class="text-end d-flex align-items-center justify-content-between">
-        <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" v-if="user != ''">
-          <span>Hi ~ @{{ user.nickname }}</span>
-        </div>
-        <div class="dropdown" v-if="user != '' && !userDataLoading">
-          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="user" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu text-small" aria-labelledby="user">
-            <li><a class="dropdown-item" href="/history">我的戰績</a></li>
-            <li><a class="dropdown-item" href="/cards">我的卡池</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>
-          </ul>
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" v-if="user != ''">
+            <span>Hi ~ @{{ user.nickname }}</span>
+          </div>
+          <div class="dropdown" v-if="user != '' && !userDataLoading">
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="user" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small" aria-labelledby="user">
+              <li><a class="dropdown-item" href="/history">我的戰績</a></li>
+              <li><a class="dropdown-item" href="/cards">我的卡池</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>
+            </ul>
+          </div>
         </div>
       </div>
 

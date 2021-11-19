@@ -40,7 +40,7 @@
                   <div class="face front" :class="item.gradeId > 2 ? 'surprise' : ''" :style="checkCardBg(item)"></div>
                   <div class="face back">
                     <div class="card-img-top" :style="'background-image: url(' + item.image + ');'" v-if="item.image != ''"></div>
-                    <div class="card-img-top" style="background-image: url(/img/in{{ $type }}.jpg?v=1);    background-size: 210%;" v-else></div>
+                    <div class="card-img-top" style="background-image: url(/img/in{{ $type }}.jpg?v=1);" v-else></div>
                     <div class="card-body">
                       <p class="card-text">
                         <span class="text-secondary" v-if="item.gradeId == 1">@{{ item.name }}</span>

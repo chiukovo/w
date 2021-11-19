@@ -315,6 +315,9 @@ body {
         width: 100%;
         img {
           position: absolute;
+          display: block;
+          object-fit: fill;
+          width: 100%;
         }
       }
     }
