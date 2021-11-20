@@ -542,6 +542,7 @@ class ApiController extends Controller
                     'account' => $user->account,
                     'gradeId' => $data['gradeId'],
                     't_id' => $data['t_id'],
+                    'date' => date('Y-m-d'),
                     'count' => DB::raw('count + 1'),
                 ]);
             }
