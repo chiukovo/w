@@ -16,8 +16,27 @@ class ApiController extends Controller
     {
         $type = request()->input('type', 0);
 
+        $blackToday = Records::where('count', '>=', 50)
+            ->where('date', date('Y-m-d'))
+            ->orderBy('g_4', 'asc')
+            ->orderBy('count', 'desc')
+            ->first(['account', 'count', 'g_4']);
+
+        $whiteToday = Records::where('count', '>=', 50);
+
+        if (!is_null($blackToday)) {
+            $whiteToday = $whiteToday->where('account', '!=', $blackToday->account);
+        }
+
+        $whiteToday = $whiteToday->where('date', date('Y-m-d'))
+            ->orderBy('g_4', 'desc')
+            ->orderBy('count', 'asc')
+            ->first(['account', 'count', 'g_4']);
+
         return view('index', [
-            'type' => $type
+            'type' => $type,
+            'blackToday' => $blackToday,
+            'whiteToday' => $whiteToday,
         ]);
     }
 
