@@ -24,10 +24,10 @@
                       抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span>
                     </p>
                     <div class="alert alert-dark border" role="alert">
-                      今日黑臉兄: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $blackToday->account ?? '' }}</span>
+                      今日黑臉兄: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $blackName->nickname ?? '' }}</span>
                     </div>
                     <div class="alert alert-light border" role="alert">
-                      今日小白臉: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $whiteToday->account ?? '' }}</span>
+                      今日小白臉: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $whiteName->account ?? '' }}</span>
                     </div>
                   </div>
                 </div>

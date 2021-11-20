@@ -33,10 +33,24 @@ class ApiController extends Controller
             ->orderBy('count', 'asc')
             ->first(['account', 'count', 'g_4']);
 
+        $blackName = null;
+
+        if (!is_null($blackToday)) {
+            $blackName = Users::where('account', $blackToday->account)
+                ->first();
+        }
+
+        $whiteName = null;
+
+        if (!is_null($whiteToday)) {
+            $whiteName = Users::where('account', $whiteToday->account)
+                ->first();
+        }
+
         return view('index', [
             'type' => $type,
-            'blackToday' => $blackToday,
-            'whiteToday' => $whiteToday,
+            'blackName' => $blackName,
+            'whiteName' => $whiteName,
         ]);
     }
 
