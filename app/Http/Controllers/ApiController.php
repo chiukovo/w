@@ -50,7 +50,9 @@ class ApiController extends Controller
         return view('index', [
             'type' => $type,
             'blackName' => $blackName,
+            'blackToday' => $blackToday,
             'whiteName' => $whiteName,
+            'whiteToday' => $whiteToday,
         ]);
     }
 
