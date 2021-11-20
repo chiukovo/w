@@ -27,7 +27,7 @@
                       今日黑臉兄: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $blackName->nickname ?? '' }}</span>
                     </div>
                     <div class="alert alert-light border" role="alert">
-                      今日小白臉: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $whiteName->account ?? '' }}</span>
+                      今日小白臉: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $whiteName->nickname ?? '' }}</span>
                     </div>
                   </div>
                 </div>
