@@ -96,7 +96,7 @@
             </div>
           </div>
         </main>
-        <footer id="footer" class="bg-light">
+        <footer id="footer" class="bg-light" style="height:auto">
           <div class="container-xl">
             <div class="row">
               <div class="col-12 order-sm-2">

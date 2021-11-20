@@ -16,9 +16,10 @@
                   <tr>
                     <th scope="col" style="width: 2rem;" class="text-white bg-primary">Rank</th>
                     <th class="text-white bg-primary">暱稱</th>
-                    <th class="text-white bg-primary">總抽次數</th>
-                    <th class="text-white bg-primary">紅變數量</th>
-                    <th class="text-white bg-primary">抽到機率</th>
+                    <th class="text-white bg-primary">總抽</th>
+                    <th class="text-white bg-primary">台幣</th>
+                    <th class="text-white bg-primary">紅變</th>
+                    <th class="text-white bg-primary">機率</th>
                   </tr>
                   @foreach($blackData as $key => $data)
                   <tr>
@@ -35,6 +36,7 @@
                     </td>
                     <td>{{ $data['nickname'] }}</td>
                     <td>{{ $data['total_count'] }}</td>
+                    <td>{{ 750 * $data['total_count'] }}</td>
                     <td>{{ round($data['total_c_4']) }}</td>
                     <td>{{ $data['total_p_4'] }}%</td>
                   </tr>
@@ -47,9 +49,10 @@
                   <tr>
                     <th scope="col" style="width: 2rem;" class="text-white bg-primary">Rank</th>
                     <th class="text-white bg-primary">暱稱</th>
-                    <th class="text-white bg-primary">總抽次數</th>
-                    <th class="text-white bg-primary">紅變數量</th>
-                    <th class="text-white bg-primary">抽到機率</th>
+                    <th class="text-white bg-primary">次數</th>
+                    <th class="text-white bg-primary">台幣</th>
+                    <th class="text-white bg-primary">紅變</th>
+                    <th class="text-white bg-primary">機率</th>
                   </tr>
                   @foreach($whiteData as $key => $data)
                   <tr>
@@ -66,7 +69,8 @@
                     </td>
                     <td>{{ $data['nickname'] }}</td>
                     <td>{{ $data['total_count'] }}</td>
-                    <td>{{ $data['total_c_4'] }}</td>
+                    <td>{{ 750 * $data['total_count'] }}</td>
+                    <td>{{ round($data['total_c_4']) }}</td>
                     <td>{{ $data['total_p_4'] }}%</td>
                   </tr>
                   @endforeach
@@ -75,7 +79,7 @@
             </div>
           </div>
         </main>
-        <footer id="footer" class="bg-light">
+        <footer id="footer" class="bg-light" style="height:auto">
           <div class="container-xl">
             <div class="row">
               <div class="col-12 order-sm-2">
