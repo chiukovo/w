@@ -52,27 +52,27 @@
           <div class="text-center">
             <div class="login" v-if="isLogin">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="請輸入帳號" v-model="loginData.account">
+                <input type="text" name="account" class="form-control" placeholder="請輸入帳號" v-model="loginData.account">
               </div>
               <div class="form-group mt-1">
-                <input type="password" class="form-control" placeholder="請輸入密碼" v-model="loginData.password">
+                <input type="password" name="password" class="form-control" placeholder="請輸入密碼" v-model="loginData.password">
               </div>
             </div>
             <div class="sign-in" v-else>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="請輸入帳號" v-model="signInData.account">
+                <input type="text" class="form-control" name="account" placeholder="請輸入帳號" v-model="signInData.account">
                 <small class="form-text text-muted text-left">限定字數為 2~11</small>
               </div>
               <div class="form-group">
-                <input type="account" class="form-control" placeholder="請輸入暱稱" v-model="signInData.nickname">
+                <input type="text" class="form-control" name="nickname" placeholder="請輸入暱稱" v-model="signInData.nickname">
                 <small class="form-text text-muted text-left">限定字數為 2~11</small>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" placeholder="請輸入密碼" v-model="signInData.password">
+                <input type="password" class="form-control" name="password" placeholder="請輸入密碼" v-model="signInData.password">
                 <small class="form-text text-muted text-left">限定字數為 2~11</small>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" placeholder="請重覆輸入密碼" v-model="signInData.password_confirmation">
+                <input type="password" class="form-control"  name="password_confirmation" placeholder="請重覆輸入密碼" v-model="signInData.password_confirmation">
               </div>
             </div>
           </div>
