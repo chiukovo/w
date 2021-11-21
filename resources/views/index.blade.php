@@ -5,7 +5,7 @@
     <div id="app" v-cloak>
       @include('layouts.header')
       <div id="content">
-        <main id="main">
+        <main id="main" v-cloak>
           <div class="container-xl">
             <div class="bg-light border rounded-3 p-2 p-sm-4 author__info" v-if="items.length == 0">
               <div class="row">

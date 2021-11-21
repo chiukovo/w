@@ -2,7 +2,7 @@
   $type = Request::input('type', 0);
   $name = Route::currentRouteName();
 @endphp
-<header id="header">
+<header id="header" v-cloak>
   <div class="container-xl">
     <div class="d-flex align-items-center justify-content-between">
       <a href="/" class="text-white text-decoration-none d-none d-sm-block">
@@ -51,7 +51,7 @@
         <form>
           <div class="modal-body">
             <div class="text-center">
-              <div class="login" v-if="isLogin">
+              <div class="login" v-show="isLogin">
                 <div class="form-group">
                   <input type="text" name="account" class="form-control" placeholder="請輸入帳號" v-model="loginData.account">
                 </div>

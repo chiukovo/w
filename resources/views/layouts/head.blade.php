@@ -23,4 +23,11 @@
 
     gtag('config', 'G-D4DRBBS5S0');
   </script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
+    }
+  </style>
 </head>
