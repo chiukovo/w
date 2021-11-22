@@ -37,6 +37,7 @@ class ApiController extends Controller
 
         if (!is_null($blackToday)) {
             $blackName = Users::where('account', $blackToday->account)
+                ->where('status', 1)
                 ->first();
         }
 
@@ -44,6 +45,7 @@ class ApiController extends Controller
 
         if (!is_null($whiteToday)) {
             $whiteName = Users::where('account', $whiteToday->account)
+                ->where('status', 1)
                 ->first();
         }
 
@@ -64,6 +66,7 @@ class ApiController extends Controller
     public function rank()
     {
         $blackData = Users::where('total_count', '>=', 50)
+            ->where('status', 1)
             ->orderBy('total_p_4', 'asc')
             ->orderBy('total_count', 'desc')
             ->limit(20)
@@ -76,7 +79,7 @@ class ApiController extends Controller
             $ids[] = $data['id'];
         }
         
-        $whiteData = Users::where('total_count', '>=', 50);
+        $whiteData = Users::where('total_count', '>=', 50)->where('status', 1);
 
         if (!empty($ids)) {
             $whiteData = $whiteData->whereNotIn('id', $ids);
@@ -292,9 +295,17 @@ class ApiController extends Controller
             return response(['message' => '此暱稱已存在'], 422);
         }
 
+        $status = 1;
+
+        //檢查關鍵字
+        if(strpos($postData['nickname'], '贏家') !== false) {
+            $status = 0;
+        }
+
         Users::create([
             'account' => $postData['account'],
             'nickname' => $postData['nickname'],
+            'status' => $status,
             'ip' => getClientIp(),
             'password' => Hash::make($postData['password']),
         ]);

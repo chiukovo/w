@@ -23,14 +23,14 @@
                       先來這抽抽看, 試試臉黑不黑( ^.＜ )<br />
                       抽完之後告訴我, <span class="text-danger" style="font-size: 20px;">你還想抽卡嗎???</span>
                     </p>
-                    @if (!is_null($blackToday))
+                    @if (!is_null($blackToday) && !is_null($blackName))
                     <div class="alert alert-dark border" role="alert">
                       今日黑臉兄: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $blackName->nickname ?? '' }}</span>
                       <br>
                       次數: {{ $blackToday->count }}, 紅變: {{ $blackToday->g_4 }}, 機率: {{ number_format(($blackToday->g_4 / ($blackToday->count * 11)) * 100, 4); }}
                     </div>
                     @endif
-                    @if (!is_null($whiteToday))
+                    @if (!is_null($whiteToday) && !is_null($whiteName))
                     <div class="alert alert-light border" role="alert">
                       今日小白臉: <span class="font-weight-bold text-nowrap" style="font-size: 24px;">{{ $whiteName->nickname ?? '' }}</span>
                       <br>
