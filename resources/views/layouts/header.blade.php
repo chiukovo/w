@@ -51,7 +51,7 @@
         <form>
           <div class="modal-body">
             <div class="text-center">
-              <div class="login" v-show="isLogin">
+              <div class="login" v-if="isLogin">
                 <div class="form-group">
                   <input type="text" name="account" class="form-control" placeholder="請輸入帳號" v-model="loginData.account">
                 </div>
