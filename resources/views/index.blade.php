@@ -12,6 +12,20 @@
                 <div class="col-12 col-sm-3 mb-3">
                   <div class="flex-shrink-0">
                     <img src="/img/gyman.jpg" alt="94i抽 - 天堂W模擬抽卡" />
+                    <div>
+                      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
+                          crossorigin="anonymous"></script>
+                      <!-- 94i3 -->
+                      <ins class="adsbygoogle"
+                          style="display:block"
+                          data-ad-client="ca-pub-2560043137442562"
+                          data-ad-slot="4384181187"
+                          data-ad-format="auto"
+                          data-full-width-responsive="true"></ins>
+                      <script>
+                          (adsbygoogle = window.adsbygoogle || []).push({});
+                      </script>
+                    </div>
                   </div>
                 </div>
                 <div class="col-12 col-sm-9">
