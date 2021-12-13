@@ -9,6 +9,18 @@
           <div class="container-xl">
             <h2 class="text-center text-white my-4">排行榜</h2>
             <p class="text-center text-white my-4">(需註冊及抽50次以上)</p>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
+              crossorigin="anonymous"></script>
+            <!-- 94i -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-2560043137442562"
+                data-ad-slot="7062508933"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
             <div class="row">
               <div class="col">
                 <h5 class="text-center text-white">臉黑大將軍</h5>
@@ -75,6 +87,18 @@
                   </tr>
                   @endforeach
                 </table>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
+                  crossorigin="anonymous"></script>
+                <!-- 94i -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-2560043137442562"
+                    data-ad-slot="7062508933"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
               </div>
             </div>
           </div>
