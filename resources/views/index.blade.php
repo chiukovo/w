@@ -37,22 +37,24 @@
                       次數: {{ $whiteToday->count }}, 紅變: {{ $whiteToday->g_4 }}, 機率: {{ number_format(($whiteToday->g_4 / ($whiteToday->count * 11)) * 100, 4); }}
                     </div>
                     @endif
+                    <p>
+                      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
+                          crossorigin="anonymous"></script>
+                      <!-- 94i3 -->
+                      <ins class="adsbygoogle"
+                          style="display:block"
+                          data-ad-client="ca-pub-2560043137442562"
+                          data-ad-slot="4384181187"
+                          data-ad-format="auto"
+                          data-full-width-responsive="true"></ins>
+                      <script>
+                          (adsbygoogle = window.adsbygoogle || []).push({});
+                      </script>
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
-                crossorigin="anonymous"></script>
-            <!-- 94i3 -->
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-2560043137442562"
-                data-ad-slot="4384181187"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
             <div class="row mb-4">
               <div
                 class="col-3 col-sm-2"
