@@ -98,6 +98,18 @@
                     *提示：本模擬器僅供娛樂，祝大家在遊戲上真的牙起來！*
                   </div>
                 </div>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
+                crossorigin="anonymous"></script>
+                <!-- 94i2 -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-2560043137442562"
+                    data-ad-slot="3510083212"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
               </div>
             </div>
           </div>
