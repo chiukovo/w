@@ -548,7 +548,7 @@ class ApiController extends Controller
                 RecordDetail::updateOrCreate([
                     'account' => $user->account,
                     't_id' => $data['t_id'],
-                    'type' => 0,
+                    'type' => $type,
                 ], [
                     'account' => $user->account,
                     'gradeId' => $data['gradeId'],
