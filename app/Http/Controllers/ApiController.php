@@ -346,11 +346,44 @@ class ApiController extends Controller
         if (!is_null($user)) {
             $countData = Records::where('account', $user->account)
                 ->where('date', $date)
-                ->first();
+                ->get()
+                ->toArray();
 
-            if (!is_null($countData)) {
-                $record = $countData->toArray();
-            }
+        }
+
+        $count = 0;
+        $g_1 = 0;
+        $g_2 = 0;
+        $g_3 = 0;
+        $g_4 = 0;
+        $g_5 = 0;
+
+        foreach ($countData as $data) {
+            $record = [
+                'id' => $data['id'],
+                'type' => $data['type'],
+                'count' => $data['count'],
+                'account' => $data['account'],
+                'date' => $data['date'],
+                'created_at' => $data['created_at'],
+                'updated_at' => $data['updated_at'],
+            ];
+
+            $count += $data['count'];
+            $g_1 += $data['g_1'];
+            $g_2 += $data['g_2'];
+            $g_3 += $data['g_3'];
+            $g_4 += $data['g_4'];
+            $g_5 += $data['g_5'];
+        }
+
+        if (!empty($record)) {
+            $record['count'] = $count;
+            $record['g_1'] = $g_1;
+            $record['g_2'] = $g_2;
+            $record['g_3'] = $g_3;
+            $record['g_4'] = $g_4;
+            $record['g_5'] = $g_5;
         }
 
         foreach($rate as $key => $data) {
