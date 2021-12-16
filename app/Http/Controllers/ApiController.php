@@ -342,13 +342,13 @@ class ApiController extends Controller
         $date = date('Y-m-d');
         $count = 0;
         $record = [];
+        $countData = [];
 
         if (!is_null($user)) {
             $countData = Records::where('account', $user->account)
                 ->where('date', $date)
                 ->get()
                 ->toArray();
-
         }
 
         $count = 0;
