@@ -228,6 +228,7 @@
                 const secondaryNumber = ref(6); // 設定靜態的第二區號碼
                 const isCalculating = ref(false);
                 const simulationFinished = ref(false);
+                const speed = ref(20);
                 const totalBets = ref(0);
                 const totalWinnings = ref(0);
                 const history = ref([]);
@@ -327,7 +328,7 @@
                                 history.value.unshift({ id: currentBet, text: `第 ${currentBet} 注: ${ticket.numbers.join(', ')} + ${ticket.secondary}` });
                             }
 
-                            setTimeout(runLottery, 30);
+                            setTimeout(runLottery, speed.value);
                         } else {
                             simulationFinished.value = true;
                             isCalculating.value = false;
