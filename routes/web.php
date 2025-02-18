@@ -29,3 +29,6 @@ Route::middleware(['web'])->group(function () {
   Route::get('/api/cards', 'App\Http\Controllers\ApiController@getCards');
   Route::get('/cards', 'App\Http\Controllers\ApiController@cards');
 });
+
+//台灣彩券
+Route::get('/taiwanlottery', 'App\Http\Controllers\TaiwanlotteryController@index');
