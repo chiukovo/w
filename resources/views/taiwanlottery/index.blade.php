@@ -228,7 +228,7 @@
                 const secondaryNumber = ref(6); // 設定靜態的第二區號碼
                 const isCalculating = ref(false);
                 const simulationFinished = ref(false);
-                const speed = ref(20);
+                const speed = ref(30);
                 const totalBets = ref(0);
                 const totalWinnings = ref(0);
                 const history = ref([]);
@@ -299,7 +299,7 @@
                     } else if (betCount.value >= 3000) {
                         speed.value = 1;
                     } else {
-                        speed.value = 20;
+                        speed.value = 30;
                     }
 
                     isCalculating.value = true;
