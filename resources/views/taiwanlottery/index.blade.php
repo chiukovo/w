@@ -52,10 +52,13 @@
         .matched {
             color: red;
         }
+        [v-cloak] {
+        display: none;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen p-4 sm:p-6 md:p-8">
-    <div id="app" class="max-w-7xl mx-auto">
+    <div id="app" class="max-w-7xl mx-auto" v-cloak>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
             威力彩下注分析
         </h1>
