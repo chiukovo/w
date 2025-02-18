@@ -113,6 +113,7 @@
                     <p class="text-base sm:text-lg text-gray-600 mt-3">
                         總金額：<span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 100) }}</span> 元
                     </p>
+                    <p class="text-base sm:text-lg text-gray-600 mt-3">PS: 頭獎中獎機率大約為1億分之4.4<br>大約等同連續2年抽中汽車</p>
                     <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
                 </div>
 
@@ -224,6 +225,10 @@
                 </button>
             </div>
         </div>
+        <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-10" style="text-align: center">
+        無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
+        copyright © 94ichouo All rights reserved.
+        </p>
     </div>
 
     <script>
