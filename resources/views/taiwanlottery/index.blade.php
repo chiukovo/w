@@ -172,7 +172,7 @@
             <div class="space-y-4 sm:space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
-                        <p class="text-lg sm:text-xl">共投注：<strong class="text-xl sm:text-2xl">@{{ totalBets }}</strong> 注</p>
+                        <p class="text-lg sm:text-xl">共買了：<strong class="text-xl sm:text-2xl">@{{ totalBets }}</strong> 張</p>
                         <p class="text-base sm:text-lg text-slate-600">
                             總支出：<span class="text-red-600 font-bold">@{{ formatCurrency(totalBets * 100) }}</span> 元
                         </p>
