@@ -91,7 +91,7 @@
             <div class="space-y-4">
                 <div class="flex flex-col items-center">
                     <label for="betCount" class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 text-center">
-                        老闆~我要買 (最大10000張):
+                        老闆~我要買 (最大5000張):
                     </label>
                     <input type="tel" 
                            id="betCount" 
