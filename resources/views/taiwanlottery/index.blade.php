@@ -8,6 +8,14 @@
     <meta name="keywords" content="威力彩, 中獎機率, 威力彩分析, 樂透統計, 頭獎機率, 彩券數據">
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-D4DRBBS5S0');
+      </script>
     <style>
         @keyframes float {
             0%, 100% { transform: translateY(0); }
