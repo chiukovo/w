@@ -17,31 +17,31 @@
         /* 為每個球創建不同的動畫延遲類 */
         .float-delay-0 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite, fadeIn 0.5s ease-out forwards;
+            animation: float 2s ease-in-out infinite, fadeIn 0.5s ease-out forwards;
         }
         .float-delay-1 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite 0.2s, fadeIn 0.5s ease-out 0.2s forwards;
+            animation: float 2s ease-in-out infinite 0.2s, fadeIn 0.5s ease-out 0.2s forwards;
         }
         .float-delay-2 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite 0.4s, fadeIn 0.5s ease-out 0.4s forwards;
+            animation: float 2s ease-in-out infinite 0.4s, fadeIn 0.5s ease-out 0.4s forwards;
         }
         .float-delay-3 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite 0.6s, fadeIn 0.5s ease-out 0.6s forwards;
+            animation: float 2s ease-in-out infinite 0.6s, fadeIn 0.5s ease-out 0.6s forwards;
         }
         .float-delay-4 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite 0.8s, fadeIn 0.5s ease-out 0.8s forwards;
+            animation: float 2s ease-in-out infinite 0.8s, fadeIn 0.5s ease-out 0.8s forwards;
         }
         .float-delay-5 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite 1s, fadeIn 0.5s ease-out 1s forwards;
+            animation: float 2s ease-in-out infinite 1s, fadeIn 0.5s ease-out 1s forwards;
         }
         .float-delay-6 {
             opacity: 0;
-            animation: float 3s ease-in-out infinite 1.2s, fadeIn 0.5s ease-out 1.2s forwards;
+            animation: float 2s ease-in-out infinite 1.2s, fadeIn 0.5s ease-out 1.2s forwards;
         }
 
         @keyframes fadeIn {
