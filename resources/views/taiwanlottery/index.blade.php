@@ -202,7 +202,7 @@
                 </div>
 
                 <div class="mt-4 sm:mt-6">
-                    <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ formatCurrency(lossWin) }}</span> <small>這些錢~你可以拿去吃👇👇👇</small></p>
+                    <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ formatCurrency(lossWin) }}</span> <small>這些錢~還不如拿去吃👇👇👇</small></p>
                     <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                         <li v-for="data in toStores" 
                             class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base">
