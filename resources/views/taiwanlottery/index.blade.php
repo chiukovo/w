@@ -111,7 +111,7 @@
                                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                                   shadow-sm" />
                     <p class="text-base sm:text-lg text-gray-600 mt-3">
-                        總金額：<span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 100) }}</span> 元
+                        老闆: @{{ betCount }}張, 收您：<span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 100) }}</span> 元
                     </p>
                     <p class="text-base sm:text-lg text-gray-600 mt-3">PS: 頭獎中獎機率大約為1億分之4.4<br>大約等同連續2年抽中汽車</p>
                     <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
@@ -202,6 +202,16 @@
                 </div>
 
                 <div class="mt-4 sm:mt-6">
+                    <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ lossWin }}</span> <small>這些錢~你可以拿去吃👇👇👇</small></p>
+                    <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                        <li v-for="data in toStores" 
+                            class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base">
+                            @{{ data.name }}: <span class="font-semibold">@{{ data.count }}</span> 次
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-4 sm:mt-6">
                     <p class="text-lg sm:text-xl font-semibold mb-4">各獎項中獎次數：</p>
                     <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                         <li v-for="(count, prize) in prizeCount" 
@@ -225,7 +235,7 @@
                 </button>
             </div>
         </div>
-        <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 mb-10" style="text-align: center">
+        <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8" style="text-align: center">
         無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
         copyright © 94ichouo All rights reserved.
         </p>
@@ -244,9 +254,43 @@
                 const speed = ref(30);
                 const totalBets = ref(0);
                 const totalWinnings = ref(0);
+                const lossWin = ref(0);
                 const history = ref([]);
+                const toStores = ref([]);
                 const winningHistory = ref([]);
                 const prizeCount = ref({ "頭獎": 0, "貳獎": 0, "參獎": 0, "肆獎": 0, "伍獎": 0, "陸獎": 0, "柒獎": 0, "捌獎": 0, "玖獎": 0, "普獎": 0 });
+                const stores = ref([
+                { "name": "茶六燒肉堂", "prize": 2980 }, 
+                { "name": "屋馬燒肉", "prize": 2530 }, 
+                { "name": "石頭日式炭火燒肉", "prize": 629 }, 
+                { "name": "oh yaki燒肉吃到飽崇德店", "prize": 699 }, 
+                { "name": "樂軒和牛", "prize": 3000 }, 
+                { "name": "燒肉風間 Kazama", "prize": 2500 }, 
+                { "name": "瓦庫燒肉", "prize": 2000 }, 
+                { "name": "油花迴轉吧燒肉", "prize": 500 }, 
+                { "name": "匠屋燒肉 朝馬館", "prize": 2500 }, 
+                { "name": "羊角炭火燒肉文心店", "prize": 1169 }, 
+                { "name": "八曜和茶", "prize": 60 }, 
+                { "name": "吃茶三千", "prize": 70 }, 
+                { "name": "Blike", "prize": 65 }, 
+                { "name": "春宅", "prize": 75 }, 
+                { "name": "紅茶巴士", "prize": 30 }, 
+                { "name": "老賴茶棧", "prize": 50 }, 
+                { "name": "甲文青 台中健行旗艦店", "prize": 70 }, 
+                { "name": "G Colour 金色魔法紅茶", "prize": 80 }, 
+                { "name": "理茶 Richa 中美總店", "prize": 65 }, 
+                { "name": "阿義紅茶冰", "prize": 40 }, 
+                { "name": "萬客什鍋", "prize": 500 }, 
+                { "name": "肉多多火鍋", "prize": 600 }, 
+                { "name": "無老鍋", "prize": 700 }, 
+                { "name": "蜀九品麻辣火鍋", "prize": 650 }, 
+                { "name": "老常在麻辣鍋", "prize": 550 }, 
+                { "name": "羊鮮森-溫體涮羊肉精緻火鍋", "prize": 750 }, 
+                { "name": "蛤?! Huh Pot", "prize": 800 }, 
+                { "name": "狂一鍋台式火鍋", "prize": 500 }, 
+                { "name": "鼎王麻辣鍋", "prize": 850 }, 
+                { "name": "築間", "prize": 600 } 
+                ]);
 
                 // 獎金對應的映射
                 const prizeMapping = {
@@ -319,7 +363,9 @@
                     simulationFinished.value = false;
                     totalBets.value = 0;
                     totalWinnings.value = 0;
+                    lossWin.value = 0;
                     history.value = [];
+                    toStores.value = [];
                     winningHistory.value = [];
                     prizeCount.value = { "頭獎": 0, "貳獎": 0, "參獎": 0, "肆獎": 0, "伍獎": 0, "陸獎": 0, "柒獎": 0, "捌獎": 0, "玖獎": 0, "普獎": 0 };
 
@@ -354,6 +400,11 @@
                         } else {
                             simulationFinished.value = true;
                             isCalculating.value = false;
+                            lossWin.value = totalWinnings.value - (betCount.value * 100)
+
+                            if (lossWin.value < 0) {
+                                computedToStores()
+                            }
                             
                             // 計算完成後，滾動到結果區域
                             setTimeout(() => {
@@ -363,6 +414,34 @@
                     }
 
                     runLottery();
+                }
+
+                function computedToStores() {
+                    let total = Math.abs(lossWin.value); // 確保金額為正
+                    let availableStores = stores.value.filter(store => store.prize <= total); // 過濾出符合金額的店家
+                    let selectedStores = {}; // 用來記錄次數
+
+                    while (total > 0 && availableStores.length > 0) {
+                        let randomIndex = Math.floor(Math.random() * availableStores.length);
+                        let chosenStore = availableStores[randomIndex];
+
+                        if (chosenStore.prize <= total) {
+                            if (selectedStores[chosenStore.name]) {
+                                selectedStores[chosenStore.name]++;
+                            } else {
+                                selectedStores[chosenStore.name] = 1;
+                            }
+                            total -= chosenStore.prize; // 扣除該次消費的金額
+                        } else {
+                            availableStores.splice(randomIndex, 1); // 若店家價格超出剩餘金額，則移除
+                        }
+                    }
+
+                    // 轉換成 array 格式
+                    toStores.value = Object.entries(selectedStores).map(([name, count]) => ({
+                        name,
+                        count
+                    }));
                 }
 
                 // 排序中獎記錄（按獎金由大到小排序）
@@ -424,6 +503,9 @@
                     totalBets,
                     totalWinnings,
                     history,
+                    lossWin,
+                    stores,
+                    toStores,
                     winningHistory,
                     prizeCount,
                     startSimulation,
