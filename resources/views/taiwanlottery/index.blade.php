@@ -97,7 +97,7 @@
                            id="betCount" 
                            v-model="betCount" 
                            min="1" 
-                           max="10000" 
+                           max="5000" 
                            :disabled="isCalculating"
                            class="w-full max-w-[16rem] sm:max-w-xs px-4 py-3 text-lg border border-gray-300 rounded-lg 
                                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500
@@ -105,7 +105,7 @@
                     <p class="text-base sm:text-lg text-gray-600 mt-3">
                         總金額：<span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 100) }}</span> 元
                     </p>
-                    <p v-if="betCount > 10000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 10000 張, 太貴了不要亂花!</p>
+                    <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
                 </div>
 
                 <div class="flex justify-center mt-6">
@@ -291,7 +291,16 @@
 
                 // 修改開始模擬函數
                 function startSimulation() {
-                    if (betCount.value <= 0 || betCount.value > 10000) return;
+                    if (betCount.value <= 0 || betCount.value > 5000) return;
+
+                    //判斷超過2000張 速度加快
+                    if (betCount.value >= 1000 && betCount.value < 3000) {
+                        speed.value = 5;
+                    } else if (betCount.value >= 3000) {
+                        speed.value = 1;
+                    } else {
+                        speed.value = 20;
+                    }
 
                     isCalculating.value = true;
                     simulationFinished.value = false;
