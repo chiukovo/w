@@ -225,7 +225,7 @@
                 </button>
             </div>
         </div>
-        <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-10" style="text-align: center">
+        <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 mb-10" style="text-align: center">
         無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
         copyright © 94ichouo All rights reserved.
         </p>
