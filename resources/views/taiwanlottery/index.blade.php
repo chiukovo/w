@@ -327,17 +327,15 @@
                                 history.value.unshift({ id: currentBet, text: `第 ${currentBet} 注: ${ticket.numbers.join(', ')} + ${ticket.secondary}` });
                             }
 
-                            setTimeout(runLottery, 20);
+                            setTimeout(runLottery, 30);
                         } else {
                             simulationFinished.value = true;
                             isCalculating.value = false;
                             
                             // 計算完成後，滾動到結果區域
-                            if (window.innerWidth < 1024) {
-                                setTimeout(() => {
-                                    scrollToElement('resultsSection');
-                                }, 100);
-                            }
+                            setTimeout(() => {
+                                scrollToElement('resultsSection');
+                            }, 300);
                         }
                     }
 
