@@ -413,39 +413,68 @@
 
                     runLottery();
                 }
-
                 function computedToStores() {
                     let total = Math.abs(lossWin.value); // 確保金額為正
                     let availableStores = stores.value.filter(store => store.prize <= total); // 過濾出符合金額的店家
-                    let selectedStores = {}; // 用來記錄次數
-                    let storeCount = 0; // 記錄已選擇的店家數量
+                    let selectedStores = {}; // 用來記錄選擇的店家及其數量
+                    let storeCount = Math.floor(Math.random() * Math.min(6, availableStores.length)) + 1; // 隨機選擇 1 到 6 間店
+                    let remainingAmount = total; // 剩餘金額
 
-                    while (total > 0 && availableStores.length > 0 && storeCount < 6) { // 加入 storeCount 限制最多 6 筆
+                    // 隨機選擇店家數量
+                    let chosenStores = [];
+                    while (chosenStores.length < storeCount) {
                         let randomIndex = Math.floor(Math.random() * availableStores.length);
                         let chosenStore = availableStores[randomIndex];
-
-                        // 確保選擇的店不會超過剩餘金額
-                        if (chosenStore.prize <= total) {
-                            if (selectedStores[chosenStore.name]) {
-                                selectedStores[chosenStore.name]++;
-                            } else {
-                                selectedStores[chosenStore.name] = 1;
-                            }
-                            total -= chosenStore.prize; // 扣除該次消費的金額
-                            storeCount++; // 每次選擇店家後增加計數
-                        } else {
-                            // 如果該店價格超過剩餘金額，則移除它
-                            availableStores.splice(randomIndex, 1);
+                        if (!chosenStores.includes(chosenStore)) {
+                            chosenStores.push(chosenStore); // 選擇這間店
                         }
                     }
 
-                    // 確保每間店最多選擇一次
+                    // 根據每間店的價格，隨機分配數量
+                    let totalStorePrize = chosenStores.reduce((sum, store) => sum + store.prize, 0); // 計算選中的店家總價格
+
+                    // 根據每間店的價格比例分配數量
+                    chosenStores.forEach(store => {
+                        let proportion = store.prize / totalStorePrize; // 該店價格占總價格的比例
+                        let assignedCount = Math.floor(remainingAmount * proportion / store.prize); // 根據比例分配數量
+
+                        // 確保分配的數量不會超過該店的最大價格
+                        assignedCount = Math.min(assignedCount, Math.floor(remainingAmount / store.prize)); // 保證數量不超過剩餘金額能夠選擇的次數
+                        selectedStores[store.name] = assignedCount; // 記錄每間店的選擇次數
+                        remainingAmount -= assignedCount * store.prize; // 扣除分配的金額
+                    });
+
+                    // 如果還有剩餘金額，將其均勻分配到所有已選擇的店家
+                    if (remainingAmount > 0 && storeCount > 0) {
+                        let remainingAmountPerStore = Math.floor(remainingAmount / storeCount);
+                        chosenStores.forEach(store => {
+                            let additionalCount = Math.floor(remainingAmountPerStore / store.prize); // 每間店增加的數量
+                            selectedStores[store.name] += additionalCount; // 增加選擇的次數
+                        });
+                    }
+
+                    // 確保每間店顯示的數量符合總金額
+                    let totalAssignedAmount = Object.entries(selectedStores).reduce((sum, [name, count]) => sum + stores.value.find(store => store.name === name).prize * count, 0);
+
+                    if (totalAssignedAmount > total) {
+                        console.log("分配數量超過了收益，將進行調整！");
+                        let excessAmount = totalAssignedAmount - total;
+                        // 將分配數量超過的部分減去
+                        for (let store in selectedStores) {
+                            if (excessAmount <= 0) break;
+                            let storeAmount = selectedStores[store] * stores.value.find(storeData => storeData.name === store).prize;
+                            let adjustment = Math.min(storeAmount, excessAmount);
+                            selectedStores[store] -= Math.floor(adjustment / stores.value.find(storeData => storeData.name === store).prize); // 減少每間店的數量
+                            excessAmount -= adjustment; // 減少剩餘的超額金額
+                        }
+                    }
+
+                    // 將選擇的店家數據轉換為格式 {name, count}
                     toStores.value = Object.entries(selectedStores).map(([name, count]) => ({
                         name,
                         count
                     }));
                 }
-
 
 
                 // 排序中獎記錄（按獎金由大到小排序）
