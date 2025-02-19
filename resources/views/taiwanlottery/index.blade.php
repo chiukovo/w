@@ -15,7 +15,9 @@
         gtag('js', new Date());
     
         gtag('config', 'G-D4DRBBS5S0');
-      </script>
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
+    crossorigin="anonymous"></script>
     <style>
         @keyframes float {
             0%, 100% { transform: translateY(0); }
