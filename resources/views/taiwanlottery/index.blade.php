@@ -101,12 +101,13 @@
                     <label for="betCount" class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 text-center">
                         老闆~我要買威力彩
                     </label>
-                    <input type="tel" 
+                    <input type="number" 
                            id="betCount" 
                            v-model="betCount" 
                            min="1" 
                            max="5000" 
                            :disabled="isCalculating"
+                           @input="validateInput"
                            class="w-full max-w-[16rem] sm:max-w-xs px-4 py-3 text-lg border border-gray-300 rounded-lg 
                                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                                   shadow-sm" />
@@ -200,7 +201,10 @@
                 </div>
 
                 <div class="mt-4 sm:mt-6">
-                    <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ formatCurrency(lossWin) }}</span> <small>這些錢~還不如拿去吃👇👇👇</small></p>
+                    <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ formatCurrency(lossWin) }}</span> 
+                        <small v-if="lossWin < 0"> 這些錢~還不如拿去吃👇👇👇</small>
+                        <small v-else> 太賽了吧...竟然有賺錢OAO</small>
+                    </p>
                     <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                         <li v-for="data in toStores" 
                             class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base">
@@ -475,7 +479,14 @@
                         count
                     }));
                 }
+                const validateInput = (event) => {
+                    let value = event.target.value;
 
+                    // 只允許數字且移除非數字字元
+                    value = value.replace(/\D/g, "");
+
+                    betCount.value = value;
+                };
 
                 // 排序中獎記錄（按獎金由大到小排序）
                 const sortedWinningHistory = computed(() => {
@@ -537,6 +548,7 @@
                     totalWinnings,
                     history,
                     lossWin,
+                    validateInput,
                     stores,
                     toStores,
                     winningHistory,
