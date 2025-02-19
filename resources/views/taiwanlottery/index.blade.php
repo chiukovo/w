@@ -354,11 +354,11 @@
 
                     //判斷超過2000張 速度加快
                     if (betCount.value >= 1000 && betCount.value < 3000) {
-                        speed.value = 5;
+                        speed.value = 3;
                     } else if (betCount.value >= 3000) {
                         speed.value = 1;
                     } else {
-                        speed.value = 30;
+                        speed.value = 20;
                     }
 
                     isCalculating.value = true;
