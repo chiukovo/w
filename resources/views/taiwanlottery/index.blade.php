@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>彩券下注玩玩看</title>
+    <title>彩券下注模擬玩玩看</title>
     <meta name="description" content="彩券頭獎到底有多難中？我們透過數據分析，揭露中獎機率，讓你了解你的中獎機率有多低，科學化下注更理性！">
-    <meta name="keywords" content="威力彩, 中獎機率, 威力彩分析, 樂透統計, 頭獎機率, 彩券數據">
+    <meta name="keywords" content="威力彩, 中獎機率, 威力彩模擬分析, 樂透統計, 頭獎機率, 彩券數據">
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
@@ -68,7 +68,7 @@
 <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen p-4 sm:p-6 md:p-8">
     <div id="app" class="max-w-7xl mx-auto" v-cloak>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
-            威力彩下注分析
+            威力彩下注模擬
         </h1>
         <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼</h2>
 
@@ -99,7 +99,7 @@
             <div class="space-y-4">
                 <div class="flex flex-col items-center">
                     <label for="betCount" class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 text-center">
-                        老闆~我要買 (最大5000張):
+                        老闆~我要買威力彩
                     </label>
                     <input type="tel" 
                            id="betCount" 
@@ -189,15 +189,13 @@
                     <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
                         <p class="text-lg sm:text-xl">獎金總計</p>
                         <p class="text-2xl sm:text-3xl font-bold text-emerald-600">@{{ formatCurrency(totalWinnings) }} 元</p>
-                    </div>
-                    <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
                         <p v-if="prizeCount['頭獎'] > 0" 
-                           class="text-xl sm:text-2xl text-emerald-600 font-black animate-bounce">
-                            挖靠!! 🎉 恭喜中頭獎！
-                        </p>
-                        <p v-else class="text-lg sm:text-xl text-rose-600">
-                            😢 這次沒有中頭獎
-                        </p>
+                            class="text-xl sm:text-2xl text-emerald-600 font-black animate-bounce">
+                             挖靠!! 🎉 恭喜中頭獎！你是天選之人
+                         </p>
+                         <p v-else class="text-lg sm:text-xl text-rose-600">
+                             😢 這次沒有中頭獎
+                         </p>
                     </div>
                 </div>
 
@@ -262,23 +260,23 @@
                 const stores = ref([
                 { "name": "茶六燒肉堂", "prize": 2980 }, 
                 { "name": "屋馬燒肉", "prize": 2530 }, 
-                { "name": "石頭日式炭火燒肉", "prize": 629 }, 
-                { "name": "oh yaki燒肉吃到飽崇德店", "prize": 699 }, 
+                { "name": "石頭燒肉", "prize": 629 }, 
+                { "name": "oh yaki燒肉", "prize": 699 }, 
                 { "name": "樂軒和牛", "prize": 3000 }, 
-                { "name": "燒肉風間 Kazama", "prize": 2500 }, 
+                { "name": "燒肉風間", "prize": 2500 }, 
                 { "name": "瓦庫燒肉", "prize": 2000 }, 
                 { "name": "油花迴轉吧燒肉", "prize": 500 }, 
-                { "name": "匠屋燒肉 朝馬館", "prize": 2500 }, 
-                { "name": "羊角炭火燒肉文心店", "prize": 1169 }, 
+                { "name": "匠屋燒肉", "prize": 2500 }, 
+                { "name": "羊角炭火燒肉", "prize": 1169 }, 
                 { "name": "八曜和茶", "prize": 60 }, 
                 { "name": "吃茶三千", "prize": 70 }, 
                 { "name": "Blike", "prize": 65 }, 
                 { "name": "春宅", "prize": 75 }, 
                 { "name": "紅茶巴士", "prize": 30 }, 
                 { "name": "老賴茶棧", "prize": 50 }, 
-                { "name": "甲文青 台中健行旗艦店", "prize": 70 }, 
-                { "name": "G Colour 金色魔法紅茶", "prize": 80 }, 
-                { "name": "理茶 Richa 中美總店", "prize": 65 }, 
+                { "name": "甲文青", "prize": 70 }, 
+                { "name": "金色魔法紅茶", "prize": 80 }, 
+                { "name": "理茶 Richa", "prize": 65 }, 
                 { "name": "阿義紅茶冰", "prize": 40 }, 
                 { "name": "萬客什鍋", "prize": 500 }, 
                 { "name": "肉多多火鍋", "prize": 600 }, 
@@ -420,11 +418,13 @@
                     let total = Math.abs(lossWin.value); // 確保金額為正
                     let availableStores = stores.value.filter(store => store.prize <= total); // 過濾出符合金額的店家
                     let selectedStores = {}; // 用來記錄次數
+                    let storeCount = 0; // 記錄已選擇的店家數量
 
-                    while (total > 0 && availableStores.length > 0) {
+                    while (total > 0 && availableStores.length > 0 && storeCount < 6) { // 加入 storeCount 限制最多 6 筆
                         let randomIndex = Math.floor(Math.random() * availableStores.length);
                         let chosenStore = availableStores[randomIndex];
 
+                        // 確保選擇的店不會超過剩餘金額
                         if (chosenStore.prize <= total) {
                             if (selectedStores[chosenStore.name]) {
                                 selectedStores[chosenStore.name]++;
@@ -432,17 +432,21 @@
                                 selectedStores[chosenStore.name] = 1;
                             }
                             total -= chosenStore.prize; // 扣除該次消費的金額
+                            storeCount++; // 每次選擇店家後增加計數
                         } else {
-                            availableStores.splice(randomIndex, 1); // 若店家價格超出剩餘金額，則移除
+                            // 如果該店價格超過剩餘金額，則移除它
+                            availableStores.splice(randomIndex, 1);
                         }
                     }
 
-                    // 轉換成 array 格式
+                    // 確保每間店最多選擇一次
                     toStores.value = Object.entries(selectedStores).map(([name, count]) => ({
                         name,
                         count
                     }));
                 }
+
+
 
                 // 排序中獎記錄（按獎金由大到小排序）
                 const sortedWinningHistory = computed(() => {
