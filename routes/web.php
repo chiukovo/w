@@ -31,4 +31,8 @@ Route::middleware(['web'])->group(function () {
 });
 
 //台灣彩券
+//威力彩
 Route::get('/taiwanlottery', 'App\Http\Controllers\TaiwanlotteryController@index');
+//大樂透
+Route::get('/taiwanlottery/lotto', 'App\Http\Controllers\TaiwanlotteryController@lotto');
+Route::get('/taiwanlottery/539', 'App\Http\Controllers\TaiwanlotteryController@fivethreenine');

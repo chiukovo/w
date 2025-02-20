@@ -11,4 +11,14 @@ class TaiwanlotteryController extends Controller
     {
         return view('taiwanlottery/index');
     }
+
+    public function lotto()
+    {
+        return view('taiwanlottery/lotto');
+    }
+
+    public function fivethreenine()
+    {
+        return view('taiwanlottery/539');
+    }
 }

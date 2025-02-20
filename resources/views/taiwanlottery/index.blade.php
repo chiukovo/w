@@ -1,72 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>彩券下注模擬玩玩看</title>
-    <meta name="description" content="彩券頭獎到底有多難中？我們透過數據分析，揭露中獎機率，讓你了解你的中獎機率有多低，科學化下注更理性！">
-    <meta name="keywords" content="威力彩, 中獎機率, 威力彩模擬分析, 樂透統計, 頭獎機率, 彩券數據">
-    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-    
-        gtag('config', 'G-D4DRBBS5S0');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
-    crossorigin="anonymous"></script>
-    <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        /* 為每個球創建不同的動畫延遲類 */
-        .float-delay-0 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite, fadeIn 0.5s ease-out forwards;
-        }
-        .float-delay-1 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite 0.2s, fadeIn 0.5s ease-out 0.2s forwards;
-        }
-        .float-delay-2 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite 0.4s, fadeIn 0.5s ease-out 0.4s forwards;
-        }
-        .float-delay-3 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite 0.6s, fadeIn 0.5s ease-out 0.6s forwards;
-        }
-        .float-delay-4 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite 0.8s, fadeIn 0.5s ease-out 0.8s forwards;
-        }
-        .float-delay-5 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite 1s, fadeIn 0.5s ease-out 1s forwards;
-        }
-        .float-delay-6 {
-            opacity: 0;
-            animation: float 2s ease-in-out infinite 1.2s, fadeIn 0.5s ease-out 1.2s forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .matched {
-            color: red;
-        }
-        [v-cloak] {
-        display: none;
-        }
-    </style>
-</head>
+@include('layouts.taiwanlottery')
 <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen p-4 sm:p-6 md:p-8">
     <div id="app" class="max-w-7xl mx-auto" v-cloak>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
@@ -184,7 +118,7 @@
             <div class="space-y-4 sm:space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
-                        <p class="text-lg sm:text-xl">共買了：<strong class="text-xl sm:text-2xl">@{{ totalBets }}</strong> 張</p>
+                        <p class="text-lg sm:text-xl"><b>威力彩</b>共買了：<strong class="text-xl sm:text-2xl">@{{ totalBets }}</strong> 張</p>
                         <p class="text-base sm:text-lg text-slate-600">
                             總支出：<span class="text-red-600 font-bold">@{{ formatCurrency(totalBets * 100) }}</span> 元
                         </p>
@@ -394,8 +328,12 @@
 
                             if (prizeGroup.prize > 0) {
                                 winningHistory.value.unshift(entry);
-                                const prizeKey = Object.keys(prizeMapping).find(key => prizeMapping[key] === prizeGroup.prize);
-                                if (prizeKey) prizeCount.value[prizeKey]++;
+
+                                // 使用 prizeGroup.prizeName 作為 key，直接更新 prizeCount
+                                const prizeKey = prizeGroup.prizeName;
+                                if (prizeKey && prizeCount.value[prizeKey] !== undefined) {
+                                    prizeCount.value[prizeKey]++;
+                                }
                             } else {
                                 history.value.unshift({ id: currentBet, text: `第 ${currentBet} 注: ${ticket.numbers.join(', ')} + ${ticket.secondary}` });
                             }
