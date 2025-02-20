@@ -17,6 +17,9 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
   crossorigin="anonymous"></script>
   <style>
+    [v-cloak] {
+    display: none;
+    }
     .matched {
         color: red;
     }
