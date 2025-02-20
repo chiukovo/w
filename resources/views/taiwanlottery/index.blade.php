@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 @include('layouts.taiwanlottery')
-<body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen p-4 sm:p-6 md:p-8">
-    <div id="app" class="max-w-7xl mx-auto" v-cloak>
+<body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
+    <div id="app" v-cloak>
         <header class="bg-blue-500 shadow flex gap-2">
             <div class="dropdown">
                 <label for="gameSelect" class="sr-only">選擇其他遊戲</label>
