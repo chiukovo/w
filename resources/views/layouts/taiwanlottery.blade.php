@@ -17,51 +17,39 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562"
   crossorigin="anonymous"></script>
   <style>
-      @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-      }
-      
-      /* 為每個球創建不同的動畫延遲類 */
-      .float-delay-0 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite, fadeIn 0.3s ease-out forwards;
-        }
-        .float-delay-1 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite 0.2s, fadeIn 0.3s ease-out 0.2s forwards;
-        }
-        .float-delay-2 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite 0.4s, fadeIn 0.3s ease-out 0.4s forwards;
-        }
-        .float-delay-3 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite 0.6s, fadeIn 0.3s ease-out 0.6s forwards;
-        }
-        .float-delay-4 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite 0.8s, fadeIn 0.3s ease-out 0.8s forwards;
-        }
-        .float-delay-5 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite 1s, fadeIn 0.3s ease-out 1s forwards;
-        }
-        .float-delay-6 {
-            opacity: 0;
-            animation: float 1s ease-in-out infinite 1.2s, fadeIn 0.3s ease-out 1.2s forwards;
-        }
+    .matched {
+        color: red;
+    }
+    /* 添加一些樣式以美化下拉選單 */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .marquee {
+        overflow: hidden;
+        white-space: nowrap;
+        box-sizing: border-box;
+    }
 
-      @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-      }
+    .marquee p {
+        display: inline-block;
+        animation: marquee 20s linear infinite;
+    }
 
-      .matched {
-          color: red;
-      }
-      [v-cloak] {
-      display: none;
-      }
-  </style>
+    @keyframes marquee {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+</style>
 </head>

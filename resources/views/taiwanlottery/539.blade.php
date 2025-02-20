@@ -3,101 +3,123 @@
   @include('layouts.taiwanlottery')
   <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen p-4 sm:p-6 md:p-8">
     <div id="app" class="max-w-7xl mx-auto" v-cloak>
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight"> 今彩539下注模擬 </h1>
-      <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼</h2>
-      <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
-        <span v-for="(num, index) in winningNumbers" :key="num" :class="[ 'flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full',
-                    'bg-gradient-to-br from-amber-400 to-amber-600',
-                    'text-white text-lg sm:text-2xl font-bold shadow-xl',
-                    'hover:scale-110 transition-all duration-300',
-                    `float-delay-${index}` ]"> @{{ num }}
-        </span>
-      </div>
-      <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
-        <div class="space-y-4">
-          <div class="flex flex-col items-center">
-            <label for="betCount" class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 text-center"> 老闆~我要買今彩539 </label>
-            <input type="number" id="betCount" v-model="betCount" min="1" max="5000" :disabled="isCalculating" @input="validateInput" class="w-full max-w-[16rem] sm:max-w-xs px-4 py-3 text-lg border border-gray-300 rounded-lg 
-                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                            shadow-sm" />
-            <p class="text-base sm:text-lg text-gray-600 mt-3"> 老闆: @{{ betCount }}張, 收您： <span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 50) }}</span> 元 </p>
-            <p class="text-base sm:text-lg text-gray-600 mt-3">中頭獎的機率約為 0.0000072%, 有夢最美</p>
-            <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
-          </div>
-          <div class="flex justify-center mt-6">
-            <button @click="startSimulation" :disabled="isCalculating || betCount <= 0 || betCount > 10000" class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 
-                            text-white text-lg sm:text-xl font-bold rounded-full
-                            shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
-                            transition-all duration-300 disabled:opacity-50 
-                            disabled:cursor-not-allowed disabled:transform-none"> 開始計算 </button>
-          </div>
+      <header class="bg-blue-500 shadow flex gap-2">
+        <div class="dropdown">
+            <label for="gameSelect" class="sr-only">選擇其他遊戲</label>
+            <select id="gameSelect" @change="switchGame($event.target.value)" class="bg-blue-500 text-white px-2 py-2 rounded-0">
+                <option value="" disabled selected>選擇其他遊戲</option>
+                <option value="威力彩">威力彩</option>
+                <option value="大樂透">大樂透</option>
+            </select>
         </div>
-      </div>
-      <div v-if="isCalculating" class="text-2xl sm:text-3xl text-blue-600 text-center mt-6 sm:mt-8 animate-pulse font-bold"> 計算中... </div>
-      <div id="recordsSection" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
-        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
-          <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4"> 中獎記錄 </h3>
-          <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
-            <p v-for="result in sortedWinningHistory" :key="result.id" class="p-2 sm:p-3 bg-green-50 rounded-lg">
-              <span class="font-medium">第 @{{ result.id }} 注: </span>
-              <span v-for="(num, index) in result.numbers" :key="index" class="font-semibold">
-                <span :class="getMatchedClass(num)"> @{{ num }}</span>
-                <span v-if="index < result.numbers.length - 1">, </span>
-              </span>
-              <span class="block sm:inline sm:ml-2 text-emerald-600 font-semibold"> @{{ result.prizeName }}: @{{ formatCurrency(result.prize) }} 元 </span>
-            </p>
-          </div>
+        <div class="marquee flex items-center w-full">
+            <p class="text-blue-300">網站內所有產生出來的號碼均為虛擬及假設，並非真實性內容，請勿沉迷及非法行動，本網站只提供工具交流，並無提供金錢買賣及任何交易。</p>
         </div>
-        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
-          <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4"> 投注紀錄 </h3>
-          <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
-            <p v-for="result in history" :key="result.id" class="p-2 sm:p-3 bg-gray-50 rounded-lg" :class="{'text-red-500 font-bold': result.prize === 0}"> @{{ result.text }}
-            </p>
-          </div>
+      </header>
+      <div class="max-w-7xl mx-auto px-4">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight"> 今彩539下注模擬 </h1>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼</h2>
+        <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
+          <span v-for="(num, index) in winningNumbers" :key="num" :class="[ 'flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full',
+                      'bg-gradient-to-br from-amber-400 to-amber-600',
+                      'text-white text-lg sm:text-2xl font-bold shadow-xl',
+                      'hover:scale-110 transition-all duration-300',
+                      `float-delay-${index}` ]"> @{{ num }}
+          </span>
         </div>
-      </div>
-      <div v-if="simulationFinished" id="resultsSection" class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-10">
-        <div class="space-y-4 sm:space-y-6">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
-              <p class="text-lg sm:text-xl"><b>今彩539</b>共買了： <strong class="text-xl sm:text-2xl">@{{ totalBets }}</strong> 張 </p>
-              <p class="text-base sm:text-lg text-slate-600"> 總支出： <span class="text-red-600 font-bold">@{{ formatCurrency(totalBets * 50) }}</span> 元 </p>
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <div class="space-y-4">
+            <div class="flex flex-col items-center">
+              <label for="betCount" class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 text-center"> 老闆~我要買今彩539 </label>
+              <input type="number" id="betCount" v-model="betCount" min="1" max="5000" :disabled="isCalculating" @input="validateInput" class="w-full max-w-[16rem] sm:max-w-xs px-4 py-3 text-lg border border-gray-300 rounded-lg 
+                              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                              shadow-sm" />
+              <p class="text-base sm:text-lg text-gray-600 mt-3"> 老闆: @{{ betCount }}張, 收您： <span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 50) }}</span> 元 </p>
+              <p class="text-base sm:text-lg text-gray-600 mt-3">頭獎中獎率約1/58萬, 有夢最美</p>
+              <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
             </div>
-            <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
-              <p class="text-lg sm:text-xl">獎金總計</p>
-              <p class="text-2xl sm:text-3xl font-bold text-emerald-600">@{{ formatCurrency(totalWinnings) }} 元</p>
-              <p v-if="prizeCount['頭獎'] > 0" class="text-xl sm:text-2xl text-emerald-600 font-black animate-bounce"> 挖靠!! 🎉 恭喜中頭獎！你是天選之人 </p>
-              <p v-else class="text-lg sm:text-xl text-rose-600"> 😢 這次沒有中頭獎 </p>
+            <div class="flex justify-center mt-6">
+              <button @click="startSimulation" :disabled="isCalculating || betCount <= 0 || betCount > 10000" class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 
+                              text-white text-lg sm:text-xl font-bold rounded-full
+                              shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
+                              transition-all duration-300 disabled:opacity-50 
+                              disabled:cursor-not-allowed disabled:transform-none"> 開始計算 </button>
             </div>
           </div>
-          <div class="mt-4 sm:mt-6">
-            <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ formatCurrency(lossWin) }}</span>
-              <small v-if="lossWin < 0"> 這些錢~還不如拿去吃👇👇👇 </small>
-              <small v-else> 太賽了吧...竟然有賺錢OAO</small>
-            </p>
-            <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              <li v-for="data in toStores" class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base"> @{{ data.name }}: <span class="font-semibold">@{{ data.count }}</span> 次 </li>
-            </ul>
+        </div>
+        <div v-if="isCalculating" class="text-2xl sm:text-3xl text-blue-600 text-center mt-6 sm:mt-8 animate-pulse font-bold"> 計算中... </div>
+        <div id="recordsSection" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
+          <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4"> 中獎記錄 </h3>
+            <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
+              <p v-for="result in sortedWinningHistory" :key="result.id" class="p-2 sm:p-3 bg-green-50 rounded-lg">
+                <span class="font-medium">第 @{{ result.id }} 注: </span>
+                <span v-for="(num, index) in result.numbers" :key="index" class="font-semibold">
+                  <span :class="getMatchedClass(num)"> @{{ num }}</span>
+                  <span v-if="index < result.numbers.length - 1">, </span>
+                </span>
+                <span class="block sm:inline sm:ml-2 text-emerald-600 font-semibold"> @{{ result.prizeName }}: @{{ formatCurrency(result.prize) }} 元 </span>
+              </p>
+            </div>
           </div>
-          <div class="mt-4 sm:mt-6">
-            <p class="text-lg sm:text-xl font-semibold mb-4">各獎項中獎次數：</p>
-            <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              <li v-for="(count, prize) in prizeCount" :key="prize" class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base"> @{{ prize }}: <span class="font-semibold">@{{ count }}</span> 次 </li>
-            </ul>
+          <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4"> 投注紀錄 </h3>
+            <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
+              <p v-for="result in history" :key="result.id" class="p-2 sm:p-3 bg-gray-50 rounded-lg" :class="{'text-red-500 font-bold': result.prize === 0}"> @{{ result.text }}
+              </p>
+            </div>
           </div>
         </div>
-        <!-- 修改再來一次按鈕 -->
-        <div class="flex justify-center mt-8 lg:hidden">
-          <button @click="resetAndScrollTop" class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 
-                        bg-gradient-to-r from-blue-500 to-blue-700 
-                        text-white text-lg sm:text-xl font-bold rounded-full
-                        shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
-                        transition-all duration-300"> 再來一次 </button>
+        <div v-if="simulationFinished" id="resultsSection" class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-10">
+          <div class="space-y-4 sm:space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
+                <p class="text-lg sm:text-xl">今彩539共買了： <strong class="text-xl sm:text-2xl">@{{ totalBets }}</strong> 張 </p>
+                <p class="text-base sm:text-lg text-slate-600"> 總支出： <span class="text-red-600 font-bold">@{{ formatCurrency(totalBets * 50) }}</span> 元 </p>
+              </div>
+              <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
+                <p class="text-lg sm:text-xl">獎金總計</p>
+                <p class="text-2xl sm:text-3xl font-bold text-emerald-600">@{{ formatCurrency(totalWinnings) }} 元</p>
+              </div>
+              <div class="p-4 sm:p-6 bg-slate-50 rounded-xl">
+                <p v-if="prizeCount['頭獎'] > 0" 
+                    class="text-xl sm:text-2xl text-emerald-600 font-black animate-bounce">
+                    挖靠!! 🎉 恭喜中頭獎！你是天選之人
+                </p>
+                <p v-else class="text-lg sm:text-xl text-rose-600">
+                  好可惜 差一點就中頭獎了(ง •̀_•́)ง
+                </p>
+            </div>
+            </div>
+            <div class="mt-4 sm:mt-6">
+              <p class="text-lg sm:text-xl font-semibold mb-4">收益: <span class="text-red-600">@{{ formatCurrency(lossWin) }}</span>
+                <small v-if="lossWin < 0"> 這些錢~還不如拿去吃👇👇👇 </small>
+                <small v-else> 太賽了吧...竟然有賺錢OAO</small>
+              </p>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                <li v-for="data in toStores" class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base"> @{{ data.name }}: <span class="font-semibold">@{{ data.count }}</span> 次 </li>
+              </ul>
+            </div>
+            <div class="mt-4 sm:mt-6">
+              <p class="text-lg sm:text-xl font-semibold mb-4">各獎項中獎次數：</p>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                <li v-for="(count, prize) in prizeCount" :key="prize" class="p-2 sm:p-3 bg-gray-50 rounded-lg text-sm sm:text-base"> @{{ prize }}: <span class="font-semibold">@{{ count }}</span> 次 </li>
+              </ul>
+            </div>
+          </div>
+          <!-- 修改再來一次按鈕 -->
+          <div class="flex justify-center mt-8 lg:hidden">
+            <button @click="resetAndScrollTop" class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 
+                          bg-gradient-to-r from-blue-500 to-blue-700 
+                          text-white text-lg sm:text-xl font-bold rounded-full
+                          shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
+                          transition-all duration-300"> 再來一次 </button>
+          </div>
         </div>
+        <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8" style="text-align: center"> 無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a>
+          <br /> copyright © chiuko All rights reserved.
+        </p>
       </div>
-      <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8" style="text-align: center"> 無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a>
-        <br /> copyright © 94ichouo All rights reserved.
-      </p>
     </div>
     <script>
       const {
@@ -287,6 +309,11 @@
               "參獎": 0,
               "肆獎": 0
             };
+            if (window.innerWidth < 1024) {
+              setTimeout(() => {
+                scrollToElement('recordsSection');
+              }, 100);
+            }
             let currentBet = 0;
 
             function runLottery() {
@@ -327,7 +354,14 @@
             }
             runLottery();
           }
-
+          // 切换游戏方法
+          function switchGame(game) {
+              if (game == '威力彩') {
+                  location.href = '/taiwanlottery';
+              } else if (game == '大樂透') {
+                  location.href = '/taiwanlottery/lotto';
+              }
+          }
           function computedToStores() {
             let total = Math.abs(lossWin.value);
             let availableStores = stores.value.filter(store => store.prize <= total);
@@ -400,13 +434,29 @@
           const sortedWinningHistory = computed(() => {
             return [...winningHistory.value].sort((a, b) => b.prize - a.prize);
           });
+
+          function resetAndScrollTop() {
+            setTimeout(() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+              setTimeout(() => {
+                if (window.pageYOffset > 0) {
+                  window.scrollTo(0, 0);
+                }
+              }, 500);
+            }, 0);
+          }
           return {
             betCount,
             winningNumbers,
             isCalculating,
+            resetAndScrollTop,
             simulationFinished,
             totalBets,
             totalWinnings,
+            switchGame,
             history,
             lossWin,
             validateInput,
