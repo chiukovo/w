@@ -17,64 +17,63 @@
 
         gtag('config', 'G-D4DRBBS5S0');
     </script>
+    <style>
+        /* 添加一些樣式以美化下拉選單 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .marquee p {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
-    <div id="app" class="max-w-7xl mx-auto" v-cloak>
-        <!-- 游戏切换区域 -->
-        <div class="h-lvh flex flex-col justify-center">
-            <h2
-                class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
-                請選擇遊戲</h2>
-            <div class="bg-white rounded-xl shadow-lg p-4 mb-10 sm:p-6">
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    <!-- 威力彩 -->
-                    <div class="relative aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden cursor-pointer group"
-                        :class="{ 'border-2 border-amber-400 bg-white': currentGame === '威力彩' }"
-                        @click="switchGame('威力彩')">
-                        <div class="absolute inset-0 flex items-center justify-center p-3">
-                            <img src="https://www.taiwanlottery.com/images/logo/super_lotto638.svg" alt="威力彩"
-                                class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
-                        </div>
-                    </div>
-
-                    <!-- 大樂透 -->
-                    <div class="relative aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden cursor-pointer group"
-                        :class="{ 'border-2 border-amber-400 bg-white': currentGame === '大樂透' }"
-                        @click="switchGame('大樂透')">
-                        <div class="absolute inset-0 flex items-center justify-center p-3">
-                            <img src="https://www.taiwanlottery.com/images/logo/lotto649.svg" alt="大樂透"
-                                class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
-                        </div>
-                    </div>
-
-                    <!-- 今彩539 -->
-                    <div class="relative aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden cursor-pointer group"
-                        :class="{ 'border-2 border-amber-400 bg-white': currentGame === '今彩539' }"
-                        @click="switchGame('今彩539')">
-                        <div class="absolute inset-0 flex items-center justify-center p-3">
-                            <img src="https://www.taiwanlottery.com/images/logo/daily_cash.svg" alt="今彩539"
-                                class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
-                        </div>
-                    </div>
-
-                    <!-- 3星彩 -->
-                    <div class="relative aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden cursor-pointer group"
-                        :class="{ 'border-2 border-amber-400 bg-white': currentGame === '3星彩' }"
-                        @click="switchGame('3星彩')">
-                        <div class="absolute inset-0 flex items-center justify-center p-3">
-                            <img src="https://www.taiwanlottery.com/images/logo/3_d.svg" alt="3星彩"
-                                class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
-                        </div>
-                    </div>
-                </div>
+    <div id="app" v-cloak>
+        <header class="bg-blue-500 shadow flex gap-2">
+            <div class="dropdown">
+                <label for="gameSelect" class="sr-only">選擇其他遊戲</label>
+                <select id="gameSelect" @change="switchGame($event.target.value)" class="bg-blue-500 text-white px-2 py-2 rounded-0">
+                    <option value="" disabled selected>選擇其他遊戲</option>
+                    <option value="威力彩">威力彩</option>
+                    <option value="大樂透">大樂透</option>
+                    <option value="今彩539">今彩539</option>
+                    <option value="3星彩">3星彩</option>
+                    <option value="4星彩">4星彩</option>
+                </select>
             </div>
-        </div>
-
+            <div class="marquee flex items-center w-full">
+                <p class="text-blue-300">網站內所有產生出來的號碼均為虛擬及假設，並非真實性內容，請勿沉迷及非法行動，本網站只提供工具交流，並無提供金錢買賣及任何交易。</p>
+            </div>
+        </header>
         <!-- 威力彩下注模擬區域 -->
-        <div class="min-h-full">
+        <div class="max-w-7xl mx-auto px-4">
             <h1
-                class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
+                class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-8 sm:mt- text-center tracking-tight">
                 威力彩下注模擬
             </h1>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼</h2>
