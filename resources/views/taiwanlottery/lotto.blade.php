@@ -62,8 +62,6 @@
                   <span :class="getMatchedClass(num)"> @{{ num }}</span>
                   <span v-if="index < result.numbers.length - 1">, </span>
                 </span>
-                <span class="font-semibold" :class="getSecondaryMatchedClass(result.secondary)"> + @{{ result.secondary }}
-                </span>
                 <span class="block sm:inline sm:ml-2 text-emerald-600 font-semibold"> @{{ result.prizeName }}: @{{ formatCurrency(result.prize) }} 元 </span>
               </p>
             </div>
@@ -267,47 +265,24 @@
           function formatCurrency(amount) {
             return new Intl.NumberFormat().format(amount);
           }
-          // 計算獎金
+
           function calculatePrize(ticket) {
-            let matchCount = ticket.numbers.filter(n => winningNumbers.value.includes(n)).length;
-            let secondaryMatch = ticket.secondary === secondaryNumber.value;
-            if (matchCount === 6 && secondaryMatch) return {
-              prize: prizeMapping["頭獎"],
-              prizeName: "頭獎"
-            };
-            if (matchCount === 5 && secondaryMatch) return {
-              prize: prizeMapping["貳獎"],
-              prizeName: "貳獎"
-            };
-            if (matchCount === 5) return {
-              prize: prizeMapping["參獎"],
-              prizeName: "參獎"
-            };
-            if (matchCount === 4 && secondaryMatch) return {
-              prize: prizeMapping["肆獎"],
-              prizeName: "肆獎"
-            };
-            if (matchCount === 4) return {
-              prize: prizeMapping["伍獎"],
-              prizeName: "伍獎"
-            };
-            if (matchCount === 3 && secondaryMatch) return {
-              prize: prizeMapping["陸獎"],
-              prizeName: "陸獎"
-            };
-            if (matchCount === 2 && secondaryMatch) return {
-              prize: prizeMapping["柒獎"],
-              prizeName: "柒獎"
-            };
-            if (matchCount === 3) return {
-              prize: prizeMapping["普獎"],
-              prizeName: "普獎"
-            };
-            return {
-              prize: 0,
-              prizeName: "未中獎"
-            };
+              let matchCount = ticket.filter(n => winningNumbers.value.includes(n)).length;
+              let specialMatch = ticket.includes(secondaryNumber.value);
+
+              if (matchCount === 6) return { prize: prizeMapping["頭獎"], prizeName: "頭獎" };
+              if (matchCount === 5 && specialMatch) return { prize: prizeMapping["貳獎"], prizeName: "貳獎" };
+              if (matchCount === 5) return { prize: prizeMapping["參獎"], prizeName: "參獎" };
+              if (matchCount === 4 && specialMatch) return { prize: prizeMapping["肆獎"], prizeName: "肆獎" };
+              if (matchCount === 4) return { prize: prizeMapping["伍獎"], prizeName: "伍獎" };
+              if (matchCount === 3 && specialMatch) return { prize: prizeMapping["陸獎"], prizeName: "陸獎" };
+              if (matchCount === 2 && specialMatch) return { prize: prizeMapping["柒獎"], prizeName: "柒獎" };
+              if (matchCount === 3) return { prize: prizeMapping["普獎"], prizeName: "普獎" };
+
+              return { prize: 0, prizeName: "未中獎" };
           }
+
+
           // 修改滾動到指定元素的函數
           function scrollToElement(elementId) {
             const element = document.getElementById(elementId);
@@ -328,6 +303,14 @@
               } else if (game == '今彩539') {
                   location.href = '/taiwanlottery/539';
               }
+          }
+
+          function generateTicket() {
+            const ticketNums = new Set();
+            while (ticketNums.size < 6) {
+              ticketNums.add(Math.floor(Math.random() * 49) + 1);
+            }
+            return Array.from(ticketNums).sort((a, b) => a - b);
           }
 
           // 修改開始模擬函數
@@ -371,13 +354,12 @@
               if (currentBet < betCount.value) {
                 currentBet++;
                 totalBets.value = currentBet;
-                let ticket = generateWinningNumbers();
+                let ticket = generateTicket();
                 let prizeGroup = calculatePrize(ticket);
                 totalWinnings.value += prizeGroup.prize;
                 let entry = {
                   id: currentBet,
-                  numbers: ticket.numbers,
-                  secondary: ticket.secondary,
+                  numbers: ticket,
                   prize: prizeGroup.prize,
                   prizeName: prizeGroup.prizeName
                 };
@@ -392,7 +374,7 @@
                 } else {
                   history.value.unshift({
                     id: currentBet,
-                    text: `第 ${currentBet} 注: ${ticket.numbers.join(', ')} + ${ticket.secondary}`
+                    text: `第 ${currentBet} 注: ${ticket.join(', ')}`
                   });
                 }
                 setTimeout(runLottery, speed.value);
@@ -467,13 +449,19 @@
           });
 
           function generateWinningNumbers() {
-            let numbers = new Set();
-            while (numbers.size < 6) {
-              numbers.add(Math.floor(Math.random() * 49) + 1);
+            const official = new Set();
+            // 先抽出 6 個不重複的號碼
+            while (official.size < 6) {
+              official.add(Math.floor(Math.random() * 49) + 1);
+            }
+            // 再抽出 1 個「特別號」，不可與前面 6 個重複
+            let special = Math.floor(Math.random() * 49) + 1;
+            while (official.has(special)) {
+              special = Math.floor(Math.random() * 49) + 1;
             }
             return {
-              numbers: Array.from(numbers).sort((a, b) => a - b),
-              secondary: Math.floor(Math.random() * 49) + 1
+              numbers: Array.from(official).sort((a, b) => a - b),
+              secondary: special
             };
           }
           onMounted(() => {
@@ -486,12 +474,9 @@
           });
 
           function getMatchedClass(num) {
-            return winningNumbers.value.includes(num) ? 'matched' : 'not-matched';
+              return (winningNumbers.value.includes(num) || num === secondaryNumber.value) ? 'matched' : 'not-matched';
           }
 
-          function getSecondaryMatchedClass(num) {
-            return num === secondaryNumber.value ? 'matched' : 'not-matched';
-          }
 
           function resetAndScrollTop() {
             setTimeout(() => {
@@ -510,6 +495,7 @@
             betCount,
             winningNumbers,
             secondaryNumber,
+            generateTicket,
             isCalculating,
             simulationFinished,
             totalBets,
@@ -527,7 +513,6 @@
             sortedWinningHistory,
             scrollToElement,
             getMatchedClass,
-            getSecondaryMatchedClass,
             resetAndScrollTop
           };
         }
