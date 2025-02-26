@@ -68,6 +68,24 @@
                         <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
                     </div>
 
+                    <div class="flex justify-center">
+                        <div class="inline-flex items-center">
+                          <label class="relative flex items-center cursor-pointer" for="s1">
+                            <input name="framework" type="radio" class="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-slate-400 transition-all" id="s1" value="0" v-model="speedStyle">
+                            <span class="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            </span>
+                          </label>
+                          <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s1">一般模式</label>
+                        </div>
+                        <div class="inline-flex items-center ml-5">
+                          <label class="relative flex items-center cursor-pointer" for="s2">
+                            <input name="framework" type="radio" class="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-slate-400 transition-all" id="s2" value="1" v-model="speedStyle">
+                            <span class="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            </span>
+                          </label>
+                          <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s2">加速禮包</label>
+                        </div>
+                      </div>
                     <div class="flex justify-center mt-6">
                         <button @click="startSimulation" 
                                 :disabled="isCalculating || betCount <= 0 || betCount > 10000"
@@ -207,6 +225,7 @@
                 const isCalculating = ref(false);
                 const simulationFinished = ref(false);
                 const speed = ref(30);
+                const speedStyle = ref(0);
                 const totalBets = ref(0);
                 const totalWinnings = ref(0);
                 const lossWin = ref(0);
@@ -314,13 +333,17 @@
                 function startSimulation() {
                     if (betCount.value <= 0 || betCount.value > 5000) return;
 
-                    //判斷超過2000張 速度加快
-                    if (betCount.value >= 1000 && betCount.value < 3000) {
-                        speed.value = 3;
-                    } else if (betCount.value >= 3000) {
-                        speed.value = 1;
+                    if (speedStyle.value == 1) {
+                        speed.value = 0;
                     } else {
-                        speed.value = 20;
+                        //判斷超過2000張 速度加快
+                        if (betCount.value >= 1000 && betCount.value < 3000) {
+                            speed.value = 3;
+                        } else if (betCount.value >= 3000) {
+                            speed.value = 1;
+                        } else {
+                            speed.value = 20;
+                        }
                     }
 
                     isCalculating.value = true;
@@ -383,6 +406,7 @@
 
                     runLottery();
                 }
+
                 function computedToStores() {
                     let total = Math.abs(lossWin.value); // 確保金額為正
                     let availableStores = stores.value.filter(store => store.prize <= total); // 過濾出符合金額的店家
@@ -516,6 +540,7 @@
                     switchGame,
                     lossWin,
                     validateInput,
+                    speedStyle,
                     stores,
                     toStores,
                     winningHistory,
