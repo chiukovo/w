@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-  @include('layouts.taiwanlottery.main')
+  @include('layouts.taiwanlottery.main', [
+    'title' => '大樂透模擬器 | 台灣樂透中獎機率工具',
+    'description' => '立即使用大樂透模擬下注工具，輕鬆了解頭獎 1/1,400萬 的中獎機率，模擬下注更理性，數據化投注不迷信！',
+  ])
   <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
     <div id="app" v-cloak>
       @include('layouts.taiwanlottery.header')

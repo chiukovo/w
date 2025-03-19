@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-  @include('layouts.head')
   <body class="first">
     <div id="app" v-cloak>
       @include('layouts.header')

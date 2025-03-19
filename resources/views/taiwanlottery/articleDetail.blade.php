@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-  @include('layouts.taiwanlottery.main')
+  @include('layouts.taiwanlottery.main', [
+      'title' => $article['title'] . ' | 彩券模擬分析',
+      'description' => Str::limit(strip_tags($article['content']), 120),
+      'keywords' => $article['category'] . ', 威力彩, 大樂透, 今彩539, 彩券攻略, 模擬下注',
+      'og_title' => $article['title'] . ' | 彩券模擬分析',
+      'og_description' => Str::limit(strip_tags($article['content']), 120),
+  ])
   <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
     <div id="app" v-cloak>
       @include('layouts.taiwanlottery.header')

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-  @include('layouts.taiwanlottery.main')
+  @include('layouts.taiwanlottery.main', [
+    'title' => '彩券攻略文章 | 威力彩、大樂透、今彩539 模擬分析',
+    'description' => '精選彩券相關文章，包含威力彩、大樂透、今彩539、雙贏彩的模擬下注、統計分析、玩法攻略，助你彩券投注更有依據！',
+  ])
+
   <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
     <div id="app" v-cloak>
       @include('layouts.taiwanlottery.header')

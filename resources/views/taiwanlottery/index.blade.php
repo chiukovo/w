@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-@include('layouts.taiwanlottery.main')
+@include('layouts.taiwanlottery.main', [
+    'title' => '威力彩模擬器 | 台灣彩券分析 + 頭獎機率工具',
+    'description' => '試試威力彩模擬下注工具，了解頭獎 1/2,209萬的真實中獎率，助你理性投注、不迷信，享受遊戲樂趣！',
+])
 <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
     <div id="app" v-cloak>
         @include('layouts.taiwanlottery.header')
