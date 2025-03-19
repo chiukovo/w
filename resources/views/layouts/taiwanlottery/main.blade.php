@@ -10,6 +10,7 @@
   <meta property="og:image" content="'/img/default.webp'">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ url()->current() }}">
+  <link rel="canonical" href="{{ url()->current() }}" />
   <script src="/js/vue.global.prod.js"></script>
   <script src="/js/tailwindcss_4.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
