@@ -38,3 +38,4 @@ Route::get('/taiwanlottery/lotto', 'App\Http\Controllers\TaiwanlotteryController
 Route::get('/taiwanlottery/539', 'App\Http\Controllers\TaiwanlotteryController@fivethreenine');
 Route::get('/taiwanlottery/articles', 'App\Http\Controllers\TaiwanlotteryController@articlesList');
 Route::get('/taiwanlottery/articles/{slug}', 'App\Http\Controllers\TaiwanlotteryController@articlesDetail');
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
