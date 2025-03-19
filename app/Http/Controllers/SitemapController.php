@@ -10,21 +10,22 @@ class SitemapController extends Controller
 {
     public function index()
     {
-        $urls = [
-            url('/taiwanlottery'),
-            url('/taiwanlottery/539'),
-            url('/taiwanlottery/lotto'),
-            url('/taiwanlottery/articles'),
-        ];
-
-        // 動態加上文章頁面
+        $urls = collect([
+            ['loc' => url('/taiwanlottery'), 'lastmod' => now()->toAtomString()],
+            ['loc' => url('/taiwanlottery/539'), 'lastmod' => now()->toAtomString()],
+            ['loc' => url('/taiwanlottery/lotto'), 'lastmod' => now()->toAtomString()],
+            ['loc' => url('/taiwanlottery/articles'), 'lastmod' => now()->toAtomString()],
+        ]);
+    
         $articles = Article::all();
         foreach ($articles as $article) {
-            $urls[] = url('/taiwanlottery/article/' . $article->slug);
+            $urls->push([
+                'loc' => url('/taiwanlottery/article/' . $article->slug),
+                'lastmod' => optional($article->updated_at)->toAtomString() ?? now()->toAtomString()
+            ]);
         }
-
-        $xml = view('sitemap.xml', compact('urls'))->render();
-
+    
+        $xml = view('sitemap.xml', ['urls' => $urls])->render();
         return response($xml, 200)->header('Content-Type', 'application/xml');
     }
 }
