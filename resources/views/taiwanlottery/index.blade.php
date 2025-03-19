@@ -1,21 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-@include('layouts.taiwanlottery')
+@include('layouts.taiwanlottery.main')
 <body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
     <div id="app" v-cloak>
-        <header class="bg-blue-500 shadow flex gap-2">
-            <div class="dropdown">
-                <label for="gameSelect" class="sr-only">選擇其他遊戲</label>
-                <select id="gameSelect" @change="switchGame($event.target.value)" class="bg-blue-500 text-white px-2 py-2 rounded-0">
-                    <option value="" disabled selected>選擇其他遊戲</option>
-                    <option value="大樂透">大樂透</option>
-                    <option value="今彩539">今彩539</option>
-                </select>
-            </div>
-            <div class="marquee flex items-center w-full">
-                <p class="text-blue-300">網站內所有產生出來的號碼均為虛擬及假設，並非真實性內容，請勿沉迷及非法行動，本網站只提供工具交流，並無提供金錢買賣及任何交易。</p>
-            </div>
-        </header>
+        @include('layouts.taiwanlottery.header')
         <div class="max-w-7xl mx-auto px-4">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
                 威力彩下注模擬
@@ -207,6 +195,8 @@
                     </button>
                 </div>
             </div>
+            @include('layouts.taiwanlottery.article')
+            
             <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8" style="text-align: center">
             無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
             copyright © chiuko All rights reserved.
