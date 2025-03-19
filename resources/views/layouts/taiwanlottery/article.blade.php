@@ -11,7 +11,7 @@ $articles = Article::limit(5)->orderBy('published_at')->get()->toArray();
             <a href="/taiwanlottery/articles/{{ $article['slug'] }}">
                 <h3 class="text-lg font-semibold mb-1 hover:underline">{{ $article['title'] }}</h3>
                 <p class="text-sm text-gray-600">{{ $article['category'] }}分析/模擬/建議</p>
-                <span class="text-xs text-gray-400 block mt-2">{{ $article['published_at'] }}</span>
+                <span class="text-xs text-gray-400 block mt-2">{{ \Carbon\Carbon::parse($article['published_at'])->format('Y-m-d') }}</span>
             </a>
         </div>
         @endforeach
