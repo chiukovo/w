@@ -5,8 +5,8 @@
     <div id="app" v-cloak>
       @include('layouts.taiwanlottery.header')
       <div class="max-w-7xl mx-auto px-4">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight"> 大樂透下注模擬 </h1>
-        <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼</h2>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">🎯 大樂透下注模擬 </h1>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼 🎰</h2>
         <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
           <span v-for="(num, index) in winningNumbers" :key="num" :class="[ 'flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full',
                       'bg-gradient-to-br from-amber-400 to-amber-600',
@@ -37,14 +37,14 @@
                               text-white text-lg sm:text-xl font-bold rounded-full
                               shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
                               transition-all duration-300 disabled:opacity-50 
-                              disabled:cursor-not-allowed disabled:transform-none"> 開始計算 </button>
+                              disabled:cursor-not-allowed disabled:transform-none">🎰 開始計算 </button>
             </div>
           </div>
         </div>
         <div v-if="isCalculating" class="text-2xl sm:text-3xl text-blue-600 text-center mt-6 sm:mt-8 animate-pulse font-bold"> 計算中... </div>
         <div id="recordsSection" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
           <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4"> 中獎記錄 </h3>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4"> 🏆 中獎記錄</h3>
             <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
               <p v-for="result in sortedWinningHistory" :key="result.id" class="p-2 sm:p-3 bg-green-50 rounded-lg">
                 <span class="font-medium">第 @{{ result.id }} 注: </span>
@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4"> 投注紀錄 </h3>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4"> 🎫 投注紀錄 </h3>
             <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
               <p v-for="result in history" :key="result.id" class="p-2 sm:p-3 bg-gray-50 rounded-lg" :class="{'text-red-500 font-bold': result.prize === 0}"> @{{ result.text }}
               </p>
@@ -111,9 +111,7 @@
           </div>
         </div>
         @include('layouts.taiwanlottery.article')
-        <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8" style="text-align: center"> 無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a>
-          <br /> copyright © chiuko All rights reserved.
-        </p>
+        @include('layouts.taiwanlottery.footer')
       </div>
     </div>
     <script>

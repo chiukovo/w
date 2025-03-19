@@ -9,23 +9,44 @@ use App\Models\Article;
 
 class GenerateArticleCommand extends Command
 {
-    protected $signature = 'generate:article';
+    protected $signature = 'generate:article {--count=}';
     protected $description = '使用 GPT-4o-mini 自動產生帶有樣式的 HTML 文章';
 
     public function handle()
     {
+        $count = $this->option('count') ?? 5;
         $this->info('🚀 呼叫 GPT-4o-mini 生成分類 & 文章...');
 
-        // 1. 自動生成分類 + 標題
+        for ($i = 0; $i < $count; $i++) {
+            $this->generateArticle();
+        }
+    }
+
+    private function generateArticle()
+    {
+        // 取得 Google News
+        $searchResults = Http::get('https://news.google.com/rss/search?q=彩券+台灣&hl=zh-TW&gl=TW&ceid=TW:zh-Hant');
+        $xml = simplexml_load_string($searchResults->body());
+
+        // 隨機取 3~5 則新聞
+        $hotNews = [];
+        foreach ($xml->channel->item as $item) {
+            $hotNews[] = (string) $item->title;
+        }
+        shuffle($hotNews); // 打亂陣列
+        $sampleNews = array_slice($hotNews, 0, rand(1, 3));
+
+        // 組合成 prompt
+        $newsStr = implode("\n- ", $sampleNews);
+
         $topicPrompt = [
             ['role' => 'system', 'content' => '你是一位懂得吸引用戶眼球的台灣彩券部落客。'],
             ['role' => 'user', 'content' => "
-        針對「威力彩、大樂透、今彩539、雙贏彩」這些台灣彩券，請：
-        1. 隨機選一個彩券作為類別。
-        2. 幫該類別想一個<strong>吸引點擊的、富有情緒、具行動感</strong>的部落格標題，語氣大膽，不要制式，適合社群分享。
-        
-        請以「分類: [分類] | 標題: [吸睛標題+emoji]」格式回應。
-        "]
+        根據以下台灣最新時事，結合「威力彩、大樂透、今彩539、雙贏彩」其中一個彩券，幫我想一個主題風格多變、吸睛又有社群話題感的部落格標題，請避免制式，最好帶有幽默感或大膽語氣，適合 FB 或 LINE 分享：
+
+        - {$newsStr}
+
+        格式請為：「分類: [分類] | 標題: [吸睛標題+emoji]」"]
         ];
 
         $topicResponse = Http::withHeaders([
@@ -47,10 +68,9 @@ class GenerateArticleCommand extends Command
             ['role' => 'user', 'content' => "
         針對「{$title}」這個主題，請撰寫一篇完整、有趣、故事感強的部落格文章，請依下列要求生成：
         
-        1. 字數約 2000 字，內容要豐富、可讀性高，能吸引讀者一路看完。
+        1. 字數約 2000 字，內容要豐富，排版不用太緊湊、可讀性高，能吸引讀者一路看完。
         2. 使用純 HTML 結構，無需 <html> <body>。
         3. 整體排版結構：
-           - <h2 class='text-3xl font-bold text-blue-700 mb-6 flex items-center gap-2'> 主標題，語氣要大膽、吸睛、有趣，帶 emoji，避免制式（如「威力彩冷號分析」）。
            - <p class='mb-5 text-gray-700 leading-relaxed'> 段落語氣輕鬆、故事性強，有舉例、笑點或彩迷經驗分享，多穿插 emoji。
            - <h3 class='text-xl font-semibold mb-3 mt-6 flex items-center gap-2'> 小標題也要吸引人，帶 emoji，避免單調。
            - <ul> 重點列表，搭配 emoji 與輕鬆口吻描述。
@@ -60,7 +80,7 @@ class GenerateArticleCommand extends Command
         4. 文章語氣活潑，能像朋友對話，適合台灣人閱讀，請多用「你知道嗎？」「朋友們～」「彩迷常犯的錯誤是？」等句式。
         5. 結尾請用「祝大家好運 🍀 並記得理性投注喔😉！」作為收尾，留有親切感。
         6. 去除 ```html 或 ``` 這類區塊符號，直接回傳 HTML。
-        
+        7. 請仔細思考文章內容，確保有趣、有料，產生使用者會回訪的優質文章。
         "]
         ];
 
@@ -78,7 +98,7 @@ class GenerateArticleCommand extends Command
         if ($content) {
             Article::create([
                 'title' => $title,
-                'slug' => Str::slug($title) . '-' . time(),
+                'slug' => time() + rand(10, 1000),
                 'content' => $content,
                 'category' => $category,
                 'is_published' => true,

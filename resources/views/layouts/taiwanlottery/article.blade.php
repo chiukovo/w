@@ -8,10 +8,17 @@ $articles = Article::limit(5)->orderBy('published_at')->get()->toArray();
     <div class="space-y-6">
         @foreach($articles as $article)
         <div class="hover:bg-gray-50 p-4 rounded-xl transition cursor-pointer">
-            <a href="/taiwanlottery/article/{{ $article['id'] }}"><h3 class="text-lg font-semibold mb-1 hover:underline">{{ $article['title'] }}</h3>
-            <p class="text-sm text-gray-600">{{ $article['category'] }}分析/模擬/建議</p>
-            <span class="text-xs text-gray-400 block mt-2">{{ $article['published_at'] }}</span></a>
+            <a href="/taiwanlottery/articles/{{ $article['slug'] }}">
+                <h3 class="text-lg font-semibold mb-1 hover:underline">{{ $article['title'] }}</h3>
+                <p class="text-sm text-gray-600">{{ $article['category'] }}分析/模擬/建議</p>
+                <span class="text-xs text-gray-400 block mt-2">{{ $article['published_at'] }}</span>
+            </a>
         </div>
         @endforeach
+    </div>
+
+    <!-- 更多文章按鈕 -->
+    <div class="mt-8 text-center">
+        <a href="/taiwanlottery/articles" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-6 rounded-full transition">查看更多文章</a>
     </div>
 </div>

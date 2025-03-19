@@ -6,10 +6,10 @@
         @include('layouts.taiwanlottery.header')
         <div class="max-w-7xl mx-auto px-4">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">
-                威力彩下注模擬
+                🎯 威力彩下注模擬
             </h1>
-            <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼</h2>
-
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼 🎰</h2>
+    
             <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
                 <span v-for="(num, index) in winningNumbers" 
                     :key="num" 
@@ -32,12 +32,12 @@
                     @{{ secondaryNumber }}
                 </span>
             </div>
-
+    
             <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
                 <div class="space-y-4">
                     <div class="flex flex-col items-center">
                         <label for="betCount" class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 text-center">
-                            老闆~我要買威力彩
+                            🛒 老闆~我要買威力彩
                         </label>
                         <input type="number" 
                             id="betCount" 
@@ -52,10 +52,10 @@
                         <p class="text-base sm:text-lg text-gray-600 mt-3">
                             老闆: @{{ betCount }}張, 收您：<span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 100) }}</span> 元
                         </p>
-                        <p class="text-base sm:text-lg text-gray-600 mt-3">PS: 頭獎中獎率約1/2,209萬<br>大約等同連續2年抽中汽車</p>
-                        <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花!</p>
+                        <p class="text-base sm:text-lg text-gray-600 mt-3">💡 PS: 頭獎中獎率約1/2,209萬，等同連續2年抽中汽車 🚗</p>
+                        <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花! 💸</p>
                     </div>
-
+    
                     <div class="flex justify-center">
                         <div class="inline-flex items-center">
                           <label class="relative flex items-center cursor-pointer" for="s1">
@@ -63,7 +63,7 @@
                             <span class="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             </span>
                           </label>
-                          <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s1">一般模式</label>
+                          <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s1">一般模式 🐢</label>
                         </div>
                         <div class="inline-flex items-center ml-5">
                           <label class="relative flex items-center cursor-pointer" for="s2">
@@ -71,7 +71,7 @@
                             <span class="absolute bg-slate-800 w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             </span>
                           </label>
-                          <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s2">加速禮包</label>
+                          <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s2">加速禮包 🚀</label>
                         </div>
                       </div>
                     <div class="flex justify-center mt-6">
@@ -82,20 +82,18 @@
                                     shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
                                     transition-all duration-300 disabled:opacity-50 
                                     disabled:cursor-not-allowed disabled:transform-none">
-                            開始計算
+                            🎰 開始計算
                         </button>
                     </div>
                 </div>
             </div>
-
-            <div v-if="isCalculating" class="text-2xl sm:text-3xl text-blue-600 text-center mt-6 sm:mt-8 animate-pulse font-bold">
-                計算中...
-            </div>
-
+    
+            <div v-if="isCalculating" class="text-2xl text-blue-600 text-center animate-pulse font-bold">計算中...🎲</div>
+    
             <div id="recordsSection" class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
                 <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
                     <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-                        中獎記錄
+                        🏆 中獎記錄
                     </h3>
                     <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
                         <p v-for="result in sortedWinningHistory" 
@@ -106,7 +104,6 @@
                                 :key="index"
                                 class="font-semibold"
                             >
-                                
                                 <span :class="getMatchedClass(num)"> @{{ num }}</span>
                                 <span v-if="index < result.numbers.length - 1">, </span>
                             </span>
@@ -121,7 +118,7 @@
                 </div>
                 <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
                     <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4">
-                        投注紀錄
+                        🎫 投注紀錄
                     </h3>
                     <div class="h-[240px] lg:h-[160px] sm:h-[300px] overflow-y-auto space-y-2 text-sm sm:text-base">
                         <p v-for="result in history" 
@@ -133,7 +130,7 @@
                     </div>
                 </div>
             </div>
-
+    
             <div v-if="simulationFinished" id="resultsSection" class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-10">
                 <div class="space-y-4 sm:space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -195,15 +192,11 @@
                     </button>
                 </div>
             </div>
+    
             @include('layouts.taiwanlottery.article')
-            
-            <p  class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8" style="text-align: center">
-            無聊玩玩 有問題來信告知 <a href="mailto:qcworkman@gmail.com">qcworkman@gmail.com</a><br />
-            copyright © chiuko All rights reserved.
-            </p>
+            @include('layouts.taiwanlottery.footer')
         </div>
     </div>
-
     <script>
         const { createApp, ref, onMounted, computed, watch } = Vue;
         

@@ -36,3 +36,5 @@ Route::get('/taiwanlottery', 'App\Http\Controllers\TaiwanlotteryController@index
 //大樂透
 Route::get('/taiwanlottery/lotto', 'App\Http\Controllers\TaiwanlotteryController@lotto');
 Route::get('/taiwanlottery/539', 'App\Http\Controllers\TaiwanlotteryController@fivethreenine');
+Route::get('/taiwanlottery/articles', 'App\Http\Controllers\TaiwanlotteryController@articlesList');
+Route::get('/taiwanlottery/articles/{slug}', 'App\Http\Controllers\TaiwanlotteryController@articlesDetail');
