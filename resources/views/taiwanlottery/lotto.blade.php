@@ -8,7 +8,7 @@
     <div id="app" v-cloak>
       @include('layouts.taiwanlottery.header')
       <div class="max-w-7xl mx-auto px-4">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">🎯 大樂透下注模擬 </h1>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-800 mb-4 sm:mb-6 md:mb-8 mt-2 sm:mt-4 text-center tracking-tight">🎲 大樂透下注模擬 </h1>
         <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼 🎰</h2>
         <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
           <span v-for="(num, index) in winningNumbers" :key="num" :class="[ 'flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full',
