@@ -5,14 +5,14 @@
 <header id="header" v-cloak>
   <div class="container-xl">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/" class="text-white text-decoration-none d-none d-sm-block">
+      <a href="/lineage" class="text-white text-decoration-none d-none d-sm-block">
         <h5 class="mb-0">94i抽 - 天堂W模擬抽卡</h5>
       </a>
 
       <ul class="nav">
-        <li><a href="/" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif text-secondary">抽變身</a></li>
-        <li><a href="/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif text-secondary">抽魔法娃娃</a></li>
-        <li><a href="/rank" class="nav-link px-2 @if($name == 'rank') text-warning @endif text-secondary">排行榜</a></li>
+        <li><a href="/lineage" class="nav-link px-2 @if($name == 'index' && $type == 0) text-warning @endif text-secondary">抽變身</a></li>
+        <li><a href="/lineage/?type=1" class="nav-link px-2 @if($name == 'index' && $type == 1) text-warning @endif text-secondary">抽魔法娃娃</a></li>
+        <li><a href="/lineage/rank" class="nav-link px-2 @if($name == 'rank') text-warning @endif text-secondary">排行榜</a></li>
       </ul>
 
       <div class="text-end">
@@ -29,7 +29,7 @@
               <img src="/img/gyman.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="user">
-              <li><a class="dropdown-item" href="/history">我的戰績</a></li>
+              <li><a class="dropdown-item" href="/lineage/history">我的戰績</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#" @click="logout">登出</a></li>
             </ul>

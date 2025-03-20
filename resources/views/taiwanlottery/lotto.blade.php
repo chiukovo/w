@@ -296,7 +296,7 @@
           // 切换游戏方法
           function switchGame(game) {
               if (game == '威力彩') {
-                  location.href = '/taiwanlottery';
+                  location.href = '/';
               } else if (game == '今彩539') {
                   location.href = '/taiwanlottery/539';
               }

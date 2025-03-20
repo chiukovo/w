@@ -352,7 +352,7 @@
           // 切换游戏方法
           function switchGame(game) {
               if (game == '威力彩') {
-                  location.href = '/taiwanlottery';
+                  location.href = '/';
               } else if (game == '大樂透') {
                   location.href = '/taiwanlottery/lotto';
               }

@@ -50,7 +50,7 @@
                 class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-6 rounded-full transition">
                 ⬅ 返回文章列表
               </a>
-              <a href="/taiwanlottery" 
+              <a href="/" 
                 class="inline-block bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold py-2 px-6 rounded-full transition">
                 🎲 模擬下注玩看看
               </a>
@@ -68,7 +68,7 @@
         setup() {
           function switchGame(game) {
               if (game == '威力彩') {
-                  location.href = '/taiwanlottery';
+                  location.href = '/';
               } else if (game == '今彩539') {
                   location.href = '/taiwanlottery/539';
               }

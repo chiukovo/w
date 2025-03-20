@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\ApiController@index')->name('index');
-Route::get('/rank', 'App\Http\Controllers\ApiController@rank')->name('rank');
+Route::get('/lineage', 'App\Http\Controllers\ApiController@index')->name('index');
+Route::get('/lineage/rank', 'App\Http\Controllers\ApiController@rank')->name('rank');
 //前台api
 Route::post('/api/lottery', 'App\Http\Controllers\ApiController@lottery');
 Route::get('/api/rate', 'App\Http\Controllers\ApiController@rate');
@@ -32,6 +32,7 @@ Route::middleware(['web'])->group(function () {
 
 //台灣彩券
 //威力彩
+Route::get('/', 'App\Http\Controllers\TaiwanlotteryController@index');
 Route::get('/taiwanlottery', 'App\Http\Controllers\TaiwanlotteryController@index');
 //大樂透
 Route::get('/taiwanlottery/lotto', 'App\Http\Controllers\TaiwanlotteryController@lotto');

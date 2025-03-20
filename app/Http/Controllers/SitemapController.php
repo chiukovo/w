@@ -11,7 +11,7 @@ class SitemapController extends Controller
     public function index()
     {
         $urls = collect([
-            ['loc' => url('/taiwanlottery'), 'lastmod' => now()->toAtomString()],
+            ['loc' => url('/'), 'lastmod' => now()->toAtomString()],
             ['loc' => url('/taiwanlottery/539'), 'lastmod' => now()->toAtomString()],
             ['loc' => url('/taiwanlottery/lotto'), 'lastmod' => now()->toAtomString()],
             ['loc' => url('/taiwanlottery/articles'), 'lastmod' => now()->toAtomString()],
