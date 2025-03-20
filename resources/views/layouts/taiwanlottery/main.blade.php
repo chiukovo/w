@@ -22,6 +22,7 @@
   <link rel="canonical" href="{{ url()->current() }}" />
   <script src="/js/vue.global.prod.js"></script>
   <script src="/js/tailwindcss_4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
   <script>
       window.dataLayer = window.dataLayer || [];

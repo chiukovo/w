@@ -55,7 +55,8 @@
                         <p class="text-base sm:text-lg text-gray-600 mt-3">
                             老闆: @{{ betCount }}張, 收您：<span class="font-semibold text-blue-600">@{{ formatCurrency(betCount * 100) }}</span> 元
                         </p>
-                        <p class="text-base sm:text-lg text-gray-600 mt-3">💡 PS: 頭獎中獎率約1/2,209萬，等同連續2年抽中汽車 🚗</p>
+                        <p class="text-base sm:text-lg text-gray-600 mt-3">💡 PS: 頭獎中獎率約1/2209萬</p>
+                        <p class="text-base sm:text-lg text-gray-600 mt-3">等同連續2年抽中汽車 🚗</p>
                         <p v-if="betCount > 5000" class="text-rose-500 font-medium text-sm sm:text-base">不可超過 5000 張, 太貴了不要亂花! 💸</p>
                     </div>
     
@@ -77,16 +78,19 @@
                           <label class="ml-2 text-slate-600 cursor-pointer text-sm" for="s2">加速禮包 🚀</label>
                         </div>
                       </div>
-                    <div class="flex justify-center mt-6">
-                        <button @click="startSimulation" 
-                                :disabled="isCalculating || betCount <= 0 || betCount > 10000"
-                                class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 
-                                    text-white text-lg sm:text-xl font-bold rounded-full
-                                    shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
-                                    transition-all duration-300 disabled:opacity-50 
-                                    disabled:cursor-not-allowed disabled:transform-none">
-                            🎰 開始計算
-                        </button>
+                      <div class="flex justify-center mt-6">
+                        <div class="flex flex-col items-center gap-3 w-full sm:w-auto">
+                            <button @click="startSimulation" 
+                                    :disabled="isCalculating || betCount <= 0 || betCount > 10000"
+                                    class="w-full sm:w-auto px-5 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 
+                                        text-white text-base sm:text-lg font-bold rounded-full
+                                        shadow-lg hover:shadow-2xl transform hover:-translate-y-1 
+                                        transition-all duration-300 disabled:opacity-50 
+                                        disabled:cursor-not-allowed disabled:transform-none">
+                                🎰 開始計算
+                            </button>
+                            @include('layouts.taiwanlottery.share')
+                        </div>
                     </div>
                 </div>
             </div>

@@ -26,23 +26,46 @@ class TaiwanlotteryController extends Controller
     public function articlesList()
     {
         $page = Request::get('page', 1);
-        $articles = Article::orderBy('published_at', 'desc')
-            ->paginate(10)
-            ->toArray();
-
-        return view('taiwanlottery/articles', ['articles' => $articles]);
+        $category = Request::get('category'); // 抓取篩選參數
+    
+        // 取出不重複的分類
+        $categories = Article::select('category')->distinct()->pluck('category')->toArray();
+    
+        // 如果有分類篩選，就加 where
+        $query = Article::orderBy('published_at', 'desc');
+        if ($category) {
+            $query->where('category', $category);
+        }
+    
+        $articles = $query->paginate(10)->toArray();
+    
+        return view('taiwanlottery/articles', [
+            'articles' => $articles,
+            'categories' => $categories,
+            'currentCategory' => $category
+        ]);
     }
+    
 
     public function articlesDetail($slug)
     {
         $article = Article::where('slug', $slug)->first();
-        //如果是空值 隨機找一個
         if (!$article) {
             $article = Article::inRandomOrder()->first()->toArray();
         } else {
             $article = $article->toArray();
         }
-
-        return view('taiwanlottery/articleDetail', ['article' => $article]);
+    
+        $relatedArticles = Article::where('category', $article['category'])
+            ->where('id', '!=', $article['id'])
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
+    
+        return view('taiwanlottery/articleDetail', [
+            'article' => $article,
+            'relatedArticles' => $relatedArticles
+        ]);
     }
+    
 }

@@ -61,6 +61,8 @@ class GenerateArticleCommand extends Command
         $output = trim($topicResponse['choices'][0]['message']['content'] ?? '');
         preg_match('/分類: (.*?) \| 標題: (.*)/', $output, $matches);
         $category = $matches[1] ?? '彩券綜合';
+        //去除[與]符號
+        $category = str_replace(['[', ']'], '', $category);
         $title = $matches[2] ?? '未命名文章';
 
         $articlePrompt = [

@@ -14,13 +14,6 @@
     <a href="/taiwanlottery/articles" class="bg-white text-blue-600 text-sm px-4 py-2 rounded-lg font-semibold shadow-sm hover:bg-blue-50 transition">
         📚 文章列表
     </a>
-
-    <!-- 滾動公告 -->
-    <div class="marquee flex-1 overflow-hidden">
-        <p class="text-white whitespace-nowrap animate-marquee text-sm font-light">
-            🚨 本站僅提供號碼模擬工具，所有號碼皆為虛擬模擬，請勿沉迷！ | 工具免費使用，嚴禁非法用途 🚫
-        </p>
-    </div>
 </header>
 
 <!-- 加入 marquee 動畫 -->
