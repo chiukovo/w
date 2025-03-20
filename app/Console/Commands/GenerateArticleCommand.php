@@ -78,7 +78,7 @@ class GenerateArticleCommand extends Command
            - <h3 class='text-xl font-semibold mb-3 mt-6 flex items-center gap-2'> 小標題也要吸引人，帶 emoji，避免單調。
            - <ul> 重點列表，搭配 emoji 與輕鬆口吻描述。
            - 中間加入 1~2 段「小故事」或「真實案例」，例如彩迷朋友買彩券的經驗、幸運號碼的都市傳說。
-           - 統計數據要用「輕鬆解說」的方式寫出，例如「去年8號熱到爆，中了150次！💥」。
+           - 統計數據要用「輕鬆解說」的方式寫出，需是真實數據。
            - 必須加上 1~2 個「溫馨提示區塊」或「冷知識小卡片」，格式為 <div class='bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-5 text-sm text-yellow-800 flex items-center gap-2'> 💡 ...</div>。
         4. 同時請融合彩券 SEO 熱門詞，例如：『威力彩模擬』、『頭獎機率』、『今彩539開獎結果』，自然穿插在段落中。
         5. 文章語氣活潑，能像朋友對話，適合台灣人閱讀，請多用「你知道嗎？」「朋友們～」「彩迷常犯的錯誤是？」等句式。
