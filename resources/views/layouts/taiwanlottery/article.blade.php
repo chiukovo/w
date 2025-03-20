@@ -1,6 +1,6 @@
 @php
 use App\Models\Article;
-$articles = Article::limit(5)->orderBy('published_at')->get()->toArray();
+$articles = Article::limit(5)->orderBy('published_at', 'desc')->get()->toArray();
 @endphp
 
 <div class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-10">
