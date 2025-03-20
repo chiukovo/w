@@ -98,7 +98,7 @@ class GenerateArticleCommand extends Command
         if ($content) {
             Article::create([
                 'title' => $title,
-                'slug' => time() + rand(10, 1000),
+                'slug' => time() + rand(100, 10000),
                 'content' => $content,
                 'category' => $category,
                 'is_published' => true,
