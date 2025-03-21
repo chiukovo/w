@@ -323,11 +323,9 @@
                                     computedToStores();
                                 }
 
-                                if (window.innerWidth < 1024) {
                                     setTimeout(() => {
                                         scrollToElement('resultsSection');
                                     }, 100);
-                                }
                             }
                         }
 

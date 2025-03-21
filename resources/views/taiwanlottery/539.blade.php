@@ -224,9 +224,7 @@
                               isCalculating.value = false;
                               lossWin.value = totalWinnings.value - (betCount.value * 50);
                               if (lossWin.value < 0) computedToStores();
-                              if (window.innerWidth < 1024) {
                                   setTimeout(() => scrollToElement('resultsSection'), 100);
-                              }
                           }
                       }
                       runLotteryEffect();

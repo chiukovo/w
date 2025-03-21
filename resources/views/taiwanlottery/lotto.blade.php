@@ -235,11 +235,9 @@
                   simulationFinished.value = true;
                   isCalculating.value = false;
                   if (lossWin.value < 0) computedToStores();
-                  if (window.innerWidth < 1024) {
                     setTimeout(() => {
                       scrollToElement('resultsSection');
                     }, 100);
-                  }
                 }
               }
               runLotteryEffect();
