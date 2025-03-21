@@ -205,137 +205,59 @@
         </div>
     </div>
     <script>
-        const { createApp, ref, onMounted, computed, watch } = Vue;
-        
+        const { createApp, ref, onMounted, computed } = Vue;
         createApp({
             setup() {
-                const betCount = ref(100); // 用戶輸入的注數
-                const winningNumbers = ref([2, 5, 11, 17, 21, 30]); // 設定靜態的開獎號碼，避免計算後更改
-                const secondaryNumber = ref(6); // 設定靜態的第二區號碼
+                const betCount = ref(100);
+                const type = ref('power'); // 根據頁面決定，例如 power, lotto, 539
                 const isCalculating = ref(false);
                 const simulationFinished = ref(false);
-                const speed = ref(30);
-                const speedStyle = ref(0);
                 const totalBets = ref(0);
                 const totalWinnings = ref(0);
                 const lossWin = ref(0);
+                const prizeCount = ref({});
+                const winningHistory = ref([]);
                 const history = ref([]);
                 const toStores = ref([]);
-                const winningHistory = ref([]);
-                const prizeCount = ref({ "頭獎": 0, "貳獎": 0, "參獎": 0, "肆獎": 0, "伍獎": 0, "陸獎": 0, "柒獎": 0, "捌獎": 0, "玖獎": 0, "普獎": 0 });
+                const speed = ref(30);
+                const speedStyle = ref(0);
+        
                 const stores = ref([
-                { "name": "茶六燒肉堂", "prize": 2980 }, 
-                { "name": "屋馬燒肉", "prize": 2530 }, 
-                { "name": "石頭燒肉", "prize": 629 }, 
-                { "name": "oh yaki燒肉", "prize": 699 }, 
-                { "name": "樂軒和牛", "prize": 3000 }, 
-                { "name": "燒肉風間", "prize": 2500 }, 
-                { "name": "瓦庫燒肉", "prize": 2000 }, 
-                { "name": "油花迴轉吧燒肉", "prize": 500 }, 
-                { "name": "匠屋燒肉", "prize": 2500 }, 
-                { "name": "羊角炭火燒肉", "prize": 1169 }, 
-                { "name": "八曜和茶", "prize": 60 }, 
-                { "name": "吃茶三千", "prize": 70 }, 
-                { "name": "Blike", "prize": 65 }, 
-                { "name": "春宅", "prize": 75 }, 
-                { "name": "紅茶巴士", "prize": 30 }, 
-                { "name": "老賴茶棧", "prize": 50 }, 
-                { "name": "甲文青", "prize": 70 }, 
-                { "name": "金色魔法紅茶", "prize": 80 }, 
-                { "name": "理茶 Richa", "prize": 65 }, 
-                { "name": "阿義紅茶冰", "prize": 40 }, 
-                { "name": "萬客什鍋", "prize": 500 }, 
-                { "name": "肉多多火鍋", "prize": 600 }, 
-                { "name": "無老鍋", "prize": 700 }, 
-                { "name": "蜀九品麻辣火鍋", "prize": 650 }, 
-                { "name": "老常在麻辣鍋", "prize": 550 }, 
-                { "name": "羊鮮森-溫體涮羊肉精緻火鍋", "prize": 750 }, 
-                { "name": "蛤?! Huh Pot", "prize": 800 }, 
-                { "name": "狂一鍋台式火鍋", "prize": 500 }, 
-                { "name": "鼎王麻辣鍋", "prize": 850 }, 
-                { "name": "築間", "prize": 600 } 
+                    { "name": "茶六燒肉堂", "prize": 2980 }, 
+                    { "name": "屋馬燒肉", "prize": 2530 }, 
+                    { "name": "石頭燒肉", "prize": 629 }, 
+                    { "name": "oh yaki燒肉", "prize": 699 }, 
+                    { "name": "樂軒和牛", "prize": 3000 }, 
+                    { "name": "燒肉風間", "prize": 2500 }, 
+                    { "name": "瓦庫燒肉", "prize": 2000 }, 
+                    { "name": "油花迴轉吧燒肉", "prize": 500 }, 
+                    { "name": "匠屋燒肉", "prize": 2500 }, 
+                    { "name": "羊角炭火燒肉", "prize": 1169 }, 
+                    { "name": "八曜和茶", "prize": 60 }, 
+                    { "name": "吃茶三千", "prize": 70 }, 
+                    { "name": "Blike", "prize": 65 }, 
+                    { "name": "春宅", "prize": 75 }, 
+                    { "name": "紅茶巴士", "prize": 30 }, 
+                    { "name": "老賴茶棧", "prize": 50 }, 
+                    { "name": "甲文青", "prize": 70 }, 
+                    { "name": "金色魔法紅茶", "prize": 80 }, 
+                    { "name": "理茶 Richa", "prize": 65 }, 
+                    { "name": "阿義紅茶冰", "prize": 40 }, 
+                    { "name": "萬客什鍋", "prize": 500 }, 
+                    { "name": "肉多多火鍋", "prize": 600 }, 
+                    { "name": "無老鍋", "prize": 700 }, 
+                    { "name": "蜀九品麻辣火鍋", "prize": 650 }, 
+                    { "name": "老常在麻辣鍋", "prize": 550 }, 
+                    { "name": "羊鮮森-溫體涮羊肉精緻火鍋", "prize": 750 }, 
+                    { "name": "蛤?! Huh Pot", "prize": 800 }, 
+                    { "name": "狂一鍋台式火鍋", "prize": 500 }, 
+                    { "name": "鼎王麻辣鍋", "prize": 850 }, 
+                    { "name": "築間", "prize": 600 } 
                 ]);
-
-                // 獎金對應的映射
-                const prizeMapping = {
-                    "頭獎": 1000000000,
-                    "貳獎": 2000000,
-                    "參獎": 150000,
-                    "肆獎": 20000,
-                    "伍獎": 4000,
-                    "陸獎": 800,
-                    "柒獎": 400,
-                    "捌獎": 200,
-                    "玖獎": 100,
-                    "普獎": 100
-                };
-
-                // 格式化金額為千分位
-                function formatCurrency(amount) {
-                    return new Intl.NumberFormat().format(amount);
-                }
-
-                // 計算獎金
-                function calculatePrize(ticket) {
-                    let matchCount = ticket.numbers.filter(n => winningNumbers.value.includes(n)).length;
-                    let secondaryMatch = ticket.secondary === secondaryNumber.value;
-
-                    if (matchCount === 6 && secondaryMatch) return { prize: prizeMapping["頭獎"], prizeName: "頭獎" };
-                    if (matchCount === 6) return { prize: prizeMapping["貳獎"], prizeName: "貳獎" };
-                    if (matchCount === 5 && secondaryMatch) return { prize: prizeMapping["參獎"], prizeName: "參獎" };
-                    if (matchCount === 5) return { prize: prizeMapping["肆獎"], prizeName: "肆獎" };
-                    if (matchCount === 4 && secondaryMatch) return { prize: prizeMapping["伍獎"], prizeName: "伍獎" };
-                    if (matchCount === 4) return { prize: prizeMapping["陸獎"], prizeName: "陸獎" };
-                    if (matchCount === 3 && secondaryMatch) return { prize: prizeMapping["柒獎"], prizeName: "柒獎" };
-                    if (matchCount === 2 && secondaryMatch) return { prize: prizeMapping["捌獎"], prizeName: "捌獎" };
-                    if (matchCount === 3) return { prize: prizeMapping["玖獎"], prizeName: "玖獎" };
-                    if (matchCount === 1 && secondaryMatch) return { prize: prizeMapping["普獎"], prizeName: "普獎" };
-
-                    return { prize: 0, prizeName: "未中獎" };
-                }
-
-                // 修改滾動到指定元素的函數
-                function scrollToElement(elementId) {
-                    const element = document.getElementById(elementId);
-                    if (element) {
-                        // 計算元素到頂部的距離
-                        const headerOffset = 0; // 設置為 0 確保完全置頂
-                        const elementPosition = element.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-
-                // 切换游戏方法
-                function switchGame(game) {
-                    if (game == '大樂透') {
-                        location.href = '/taiwanlottery/lotto';
-                    } else if (game == '今彩539') {
-                        location.href = '/taiwanlottery/539';
-                    }
-                }
-
-                // 修改開始模擬函數
-                function startSimulation() {
-                    if (betCount.value <= 0 || betCount.value > 5000) return;
-
-                    if (speedStyle.value == 1) {
-                        speed.value = 0;
-                    } else {
-                        //判斷超過2000張 速度加快
-                        if (betCount.value >= 1000 && betCount.value < 3000) {
-                            speed.value = 3;
-                        } else if (betCount.value >= 3000) {
-                            speed.value = 1;
-                        } else {
-                            speed.value = 20;
-                        }
-                    }
-
+        
+                // API 呼叫下注邏輯
+                const startSimulation = () => {
+                    if (betCount.value <= 0 || betCount.value > 10000) return;
                     isCalculating.value = true;
                     simulationFinished.value = false;
                     totalBets.value = 0;
@@ -344,207 +266,208 @@
                     history.value = [];
                     toStores.value = [];
                     winningHistory.value = [];
-                    prizeCount.value = { "頭獎": 0, "貳獎": 0, "參獎": 0, "肆獎": 0, "伍獎": 0, "陸獎": 0, "柒獎": 0, "捌獎": 0, "玖獎": 0, "普獎": 0 };
-
-                    // 在手機版時，滾動到記錄區域
-                    if (window.innerWidth < 1024) {
-                        setTimeout(() => {
-                            scrollToElement('recordsSection');
-                        }, 100);
+                    // 動態速度控制
+                    if (speedStyle.value == 1) {
+                        speed.value = 0;
+                    } else if (betCount.value >= 3000) {
+                        speed.value = 1;
+                    } else if (betCount.value >= 1000) {
+                        speed.value = 3;
+                    } else {
+                        speed.value = 20;
                     }
-
-                    let currentBet = 0;
-
-                    function runLottery() {
-                        if (currentBet < betCount.value) {
-                            currentBet++;
-                            totalBets.value = currentBet;
-                            let ticket = generateWinningNumbers();
-                            let prizeGroup = calculatePrize(ticket);
-
-                            totalWinnings.value += prizeGroup.prize;
-                            let entry = { id: currentBet, numbers: ticket.numbers, secondary: ticket.secondary, prize: prizeGroup.prize, prizeName: prizeGroup.prizeName };
-
-                            if (prizeGroup.prize > 0) {
-                                winningHistory.value.unshift(entry);
-
-                                // 使用 prizeGroup.prizeName 作為 key，直接更新 prizeCount
-                                const prizeKey = prizeGroup.prizeName;
-                                if (prizeKey && prizeCount.value[prizeKey] !== undefined) {
-                                    prizeCount.value[prizeKey]++;
-                                }
-                            } else {
-                                history.value.unshift({ id: currentBet, text: `第 ${currentBet} 注: ${ticket.numbers.join(', ')} + ${ticket.secondary}` });
-                            }
-
-                            setTimeout(runLottery, speed.value);
-                        } else {
-                            simulationFinished.value = true;
-                            isCalculating.value = false;
-                            lossWin.value = totalWinnings.value - (betCount.value * 100)
-
-                            if (lossWin.value < 0) {
-                                computedToStores()
-                            }
-                            
-                            // 計算完成後，滾動到結果區域
+        
+                    isCalculating.value = true;
+                    simulationFinished.value = false;
+        
+                    axios.post(`/api/bets/${type.value}`, { 
+                        betCount: betCount.value,
+                        mainNumbers: winningNumbers.value,
+                        secondaryNumber: secondaryNumber.value
+                    })
+                    .then(response => {
+                        if (window.innerWidth < 1024) {
                             setTimeout(() => {
-                                scrollToElement('resultsSection');
-                            }, 300);
+                                scrollToElement('recordsSection');
+                            }, 100);
                         }
-                    }
+                        const data = response.data;
+                        // 基本資料
+                        totalBets.value = data.totalBets;
+                        totalWinnings.value = data.totalWinnings;
+                        lossWin.value = data.netProfit;
+                        prizeCount.value = data.prizeCount;
 
-                    runLottery();
-                }
+                        let allWins = [...data.winningHistory]; // 有中獎的資料
+                        let allLosses = [...data.history]; // 全部下注歷史（包含沒中獎）
 
-                function computedToStores() {
-                    let total = Math.abs(lossWin.value); // 確保金額為正
-                    let availableStores = stores.value.filter(store => store.prize <= total); // 過濾出符合金額的店家
-                    let selectedStores = {}; // 用來記錄選擇的店家及其數量
-                    let storeCount = Math.floor(Math.random() * Math.min(6, availableStores.length)) + 1; // 隨機選擇 1 到 6 間店
-                    let remainingAmount = total; // 剩餘金額
+                        function runLotteryEffect() {
+                            if (allLosses.length > 0) {
+                                const currentLoss = allLosses.shift();
+                                history.value.unshift(currentLoss);
 
-                    // 隨機選擇店家數量
-                    let chosenStores = [];
-                    while (chosenStores.length < storeCount) {
-                        let randomIndex = Math.floor(Math.random() * availableStores.length);
-                        let chosenStore = availableStores[randomIndex];
-                        if (!chosenStores.includes(chosenStore)) {
-                            chosenStores.push(chosenStore); // 選擇這間店
+                                // 如果 allWins 有對應的 id，才一併顯示
+                                const winIndex = allWins.findIndex(win => win.id === currentLoss.id);
+                                if (winIndex !== -1) {
+                                    winningHistory.value.unshift(allWins[winIndex]);
+                                    allWins.splice(winIndex, 1);
+                                }
+
+                                setTimeout(runLotteryEffect, speed.value);
+                            } else {
+                                simulationFinished.value = true;
+                                isCalculating.value = false;
+                                lossWin.value = totalWinnings.value - (betCount.value * 50);
+
+                                if (lossWin.value < 0) {
+                                    computedToStores();
+                                }
+
+                                if (window.innerWidth < 1024) {
+                                    setTimeout(() => {
+                                        scrollToElement('resultsSection');
+                                    }, 100);
+                                }
+                            }
                         }
-                    }
 
-                    // 根據每間店的價格，隨機分配數量
-                    let totalStorePrize = chosenStores.reduce((sum, store) => sum + store.prize, 0); // 計算選中的店家總價格
-
-                    // 根據每間店的價格比例分配數量
-                    chosenStores.forEach(store => {
-                        let proportion = store.prize / totalStorePrize; // 該店價格占總價格的比例
-                        let assignedCount = Math.floor(remainingAmount * proportion / store.prize); // 根據比例分配數量
-
-                        // 確保分配的數量不會超過該店的最大價格
-                        assignedCount = Math.min(assignedCount, Math.floor(remainingAmount / store.prize)); // 保證數量不超過剩餘金額能夠選擇的次數
-                        selectedStores[store.name] = assignedCount; // 記錄每間店的選擇次數
-                        remainingAmount -= assignedCount * store.prize; // 扣除分配的金額
+                        runLotteryEffect();
+                    })
+                    .catch(error => {
+                        isCalculating.value = false;
+                        alert(error.response.data.error)
                     });
-
-                    // 如果還有剩餘金額，將其均勻分配到所有已選擇的店家
-                    if (remainingAmount > 0 && storeCount > 0) {
-                        let remainingAmountPerStore = Math.floor(remainingAmount / storeCount);
-                        chosenStores.forEach(store => {
-                            let additionalCount = Math.floor(remainingAmountPerStore / store.prize); // 每間店增加的數量
-                            selectedStores[store.name] += additionalCount; // 增加選擇的次數
-                        });
-                    }
-
-                    // 確保每間店顯示的數量符合總金額
-                    let totalAssignedAmount = Object.entries(selectedStores).reduce((sum, [name, count]) => sum + stores.value.find(store => store.name === name).prize * count, 0);
-
-                    if (totalAssignedAmount > total) {
-                        console.log("分配數量超過了收益，將進行調整！");
-                        let excessAmount = totalAssignedAmount - total;
-                        // 將分配數量超過的部分減去
-                        for (let store in selectedStores) {
-                            if (excessAmount <= 0) break;
-                            let storeAmount = selectedStores[store] * stores.value.find(storeData => storeData.name === store).prize;
-                            let adjustment = Math.min(storeAmount, excessAmount);
-                            selectedStores[store] -= Math.floor(adjustment / stores.value.find(storeData => storeData.name === store).prize); // 減少每間店的數量
-                            excessAmount -= adjustment; // 減少剩餘的超額金額
-                        }
-                    }
-
-                    // 將選擇的店家數據轉換為格式 {name, count}
-                    toStores.value = Object.entries(selectedStores).map(([name, count]) => ({
-                        name,
-                        count
-                    }));
-                }
-                const validateInput = (event) => {
-                    let value = event.target.value;
-
-                    // 只允許數字且移除非數字字元
-                    value = value.replace(/\D/g, "");
-
-                    betCount.value = value;
                 };
 
-                // 排序中獎記錄（按獎金由大到小排序）
+                function computedToStores() {
+                    let total = Math.abs(lossWin.value);
+                    let availableStores = stores.value.filter(store => store.prize <= total);
+                    let selectedStores = {};
+                    let storeCount = Math.floor(Math.random() * Math.min(6, availableStores.length)) + 1;
+                    let remainingAmount = total;
+                    let chosenStores = [];
+                    while (chosenStores.length < storeCount) {
+                    let randomIndex = Math.floor(Math.random() * availableStores.length);
+                    let chosenStore = availableStores[randomIndex];
+                    if (!chosenStores.includes(chosenStore)) {
+                        chosenStores.push(chosenStore);
+                    }
+                    }
+                    let totalStorePrize = chosenStores.reduce((sum, store) => sum + store.prize, 0);
+                    chosenStores.forEach(store => {
+                    let proportion = store.prize / totalStorePrize;
+                    let assignedCount = Math.floor(remainingAmount * proportion / store.prize);
+                    assignedCount = Math.min(assignedCount, Math.floor(remainingAmount / store.prize));
+                    selectedStores[store.name] = assignedCount;
+                    remainingAmount -= assignedCount * store.prize;
+                    });
+                    if (remainingAmount > 0 && storeCount > 0) {
+                    let remainingAmountPerStore = Math.floor(remainingAmount / storeCount);
+                    chosenStores.forEach(store => {
+                        let additionalCount = Math.floor(remainingAmountPerStore / store.prize);
+                        selectedStores[store.name] += additionalCount;
+                    });
+                    }
+                    let totalAssignedAmount = Object.entries(selectedStores).reduce((sum, [name, count]) => sum + stores.value.find(store => store.name === name).prize * count, 0);
+                    if (totalAssignedAmount > total) {
+                    console.log("分配數量超過了收益，將進行調整！");
+                    let excessAmount = totalAssignedAmount - total;
+                    for (let store in selectedStores) {
+                        if (excessAmount <= 0) break;
+                        let storeAmount = selectedStores[store] * stores.value.find(storeData => storeData.name === store).prize;
+                        let adjustment = Math.min(storeAmount, excessAmount);
+                        selectedStores[store] -= Math.floor(adjustment / stores.value.find(storeData => storeData.name === store).prize);
+                        excessAmount -= adjustment;
+                    }
+                    }
+                    toStores.value = Object.entries(selectedStores).map(([name, count]) => ({
+                    name,
+                    count
+                    }));
+                }
+
+                function switchGame(game) {
+                    if (game == '威力彩') {
+                        location.href = '/';
+                    } else if (game == '今彩539') {
+                        location.href = '/taiwanlottery/539';
+                    } else if (game == '大樂透') {
+                        location.href = '/taiwanlottery/lotto';
+                    }
+                }
+        
+                // 滾動到指定位置
+                const scrollToElement = (elementId) => {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        const offsetPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                };
+        
+                const formatCurrency = (amount) => new Intl.NumberFormat().format(amount);
+        
+                const validateInput = (event) => {
+                    let value = event.target.value;
+                    value = value.replace(/\D/g, "");
+                    betCount.value = value;
+                };
+        
+                const resetAndScrollTop = () => {
+                    setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        setTimeout(() => { if (window.pageYOffset > 0) window.scrollTo(0, 0); }, 500);
+                    }, 0);
+                };
+        
                 const sortedWinningHistory = computed(() => {
                     return [...winningHistory.value].sort((a, b) => b.prize - a.prize);
                 });
-
-                // 生成隨機開獎號碼
-                function generateWinningNumbers() {
-                    let numbers = new Set();
-                    while (numbers.size < 6) {
-                        numbers.add(Math.floor(Math.random() * 38) + 1);
-                    }
-                    return { numbers: Array.from(numbers).sort((a, b) => a - b), secondary: Math.floor(Math.random() * 8) + 1 };
-                }
-
-                // 頁面一開始就顯示今日開獎
+        
+                // 自動生成開獎號碼 (供前端顯示用)
+                const winningNumbers = ref([]);
+                const secondaryNumber = ref(null);
                 onMounted(() => {
-                    // 這裡會隨機生成今日開獎號碼，只生成一次
-                    let { numbers, secondary } = generateWinningNumbers();
-                    winningNumbers.value = numbers;
-                    secondaryNumber.value = secondary;
+                    const numbers = new Set();
+                    while (numbers.size < 6) numbers.add(Math.floor(Math.random() * 38) + 1);
+                    winningNumbers.value = Array.from(numbers).sort((a, b) => a - b);
+                    secondaryNumber.value = Math.floor(Math.random() * 8) + 1;
                 });
-
-                // 顯示中獎號碼顏色
-                function getMatchedClass(num) {
-                    return winningNumbers.value.includes(num) ? 'matched' : 'not-matched';
-                }
-
-                // 顯示第二區的顏色
-                function getSecondaryMatchedClass(num) {
-                    return num === secondaryNumber.value ? 'matched' : 'not-matched';
-                }
-
-                // 修改重置並滾動到頂部的方法
-                function resetAndScrollTop() {
-                    // 確保滾動到絕對頂部
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                        
-                        // 再次確保到達頂部
-                        setTimeout(() => {
-                            if (window.pageYOffset > 0) {
-                                window.scrollTo(0, 0);
-                            }
-                        }, 500);
-                    }, 0);
-                }
-
+        
+                const getMatchedClass = (num) => winningNumbers.value.includes(num) ? 'matched' : 'not-matched';
+                const getSecondaryMatchedClass = (num) => num === secondaryNumber.value ? 'matched' : 'not-matched';
+        
                 return {
                     betCount,
-                    winningNumbers,
-                    secondaryNumber,
+                    type,
                     isCalculating,
                     simulationFinished,
                     totalBets,
                     totalWinnings,
-                    history,
-                    switchGame,
                     lossWin,
-                    validateInput,
-                    speedStyle,
+                    prizeCount,
+                    winningHistory,
+                    history,
                     stores,
                     toStores,
-                    winningHistory,
-                    prizeCount,
+                    switchGame,
+                    speed,
+                    speedStyle,
                     startSimulation,
                     formatCurrency,
+                    validateInput,
                     sortedWinningHistory,
                     scrollToElement,
+                    computedToStores,
+                    resetAndScrollTop,
+                    winningNumbers,
+                    secondaryNumber,
                     getMatchedClass,
-                    getSecondaryMatchedClass,
-                    resetAndScrollTop
+                    getSecondaryMatchedClass
                 };
             }
         }).mount('#app');
     </script>
+    
 </body>
 </html>

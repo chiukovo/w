@@ -40,3 +40,6 @@ Route::get('/taiwanlottery/539', 'App\Http\Controllers\TaiwanlotteryController@f
 Route::get('/taiwanlottery/articles', 'App\Http\Controllers\TaiwanlotteryController@articlesList');
 Route::get('/taiwanlottery/articles/{slug}', 'App\Http\Controllers\TaiwanlotteryController@articlesDetail');
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index']);
+
+//下注
+Route::post('/api/bets/{type}', 'App\Http\Controllers\TaiwanlotteryController@bets');

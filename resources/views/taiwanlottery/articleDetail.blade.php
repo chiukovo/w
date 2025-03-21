@@ -71,6 +71,8 @@
                   location.href = '/';
               } else if (game == '今彩539') {
                   location.href = '/taiwanlottery/539';
+              } else if (game == '大樂透') {
+                  location.href = '/taiwanlottery/lotto';
               }
           }
           return { switchGame };
