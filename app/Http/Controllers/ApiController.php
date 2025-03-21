@@ -157,6 +157,10 @@ class ApiController extends Controller
 
         $result = [];
 
+        if (!$user) {
+            return redirect('/lineage');
+        }
+
         $records = Records::where('account', $user->account)
             ->orderBy('date', 'desc')
             ->get()
