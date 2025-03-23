@@ -20,7 +20,7 @@ class SitemapController extends Controller
         $articles = Article::all();
         foreach ($articles as $article) {
             $urls->push([
-                'loc' => url('/taiwanlottery/article/' . $article->slug),
+                'loc' => url('/taiwanlottery/articles/' . $article->slug),
                 'lastmod' => optional($article->updated_at)->toAtomString() ?? now()->toAtomString()
             ]);
         }
