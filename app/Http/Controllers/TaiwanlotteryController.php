@@ -78,6 +78,11 @@ class TaiwanlotteryController extends Controller
         $ip = getClientIp();
         $key = 'bets:' . $ip;
 
+        //不可超過 5000 注
+        if ($betCount > 5000) {
+            return response()->json(['error' => '下注數量超過5000'], 429);
+        }
+
         if (!RateLimiter::remaining($key, 1)) {
             return response()->json(['error' => '每 3 秒僅能下注一次，請稍後再試'], 429);
         }
