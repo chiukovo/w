@@ -274,7 +274,7 @@ class ApiController extends Controller
 
         $validator = Validator::make(request()->all(), [
             'account' => ['required', 'string', 'min:2', 'max:8'],
-            'nickname' => ['required', 'string', 'min:1', 'max:20'],
+            'nickname' => ['required', 'string', 'min:1', 'max:10'],
             'password' => ['required', 'string', 'min:4', 'max:20', 'confirmed'],
           ]);
           

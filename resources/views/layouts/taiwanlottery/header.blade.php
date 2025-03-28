@@ -57,7 +57,9 @@ $user = auth()->user();
 <!-- 排行榜 Modal -->
 <div id="rankModal" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50 opacity-0 transition-opacity duration-300">
   <div class="bg-white rounded-lg w-full max-w-xl p-4 shadow-lg scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
-    <h2 class="text-lg font-bold text-center text-blue-600 mb-4">🏅 今日排行榜</h2>
+    <h2 class="text-lg font-bold text-center text-blue-600 mb-4">
+      🏅 今日 <span id="rankingGameName">威力彩</span> 排行榜
+    </h2>
     <table class="w-full text-sm text-center">
       <thead class="bg-gray-100 text-gray-700">
         <tr>
@@ -65,7 +67,6 @@ $user = auth()->user();
           <th class="py-2">玩家</th>
           <th class="py-2">投注</th>
           <th class="py-2">中獎</th>
-          <th class="py-2">盈虧</th>
         </tr>
       </thead>
       <tbody id="rankTableBody">
@@ -86,7 +87,7 @@ $user = auth()->user();
       <input type="password" id="password" class="w-full border rounded px-3 py-2" placeholder="密碼(長度 4~20)">
       <div id="registerFields" class="hidden">
         <input type="password" id="password_confirmation" class="w-full border rounded px-3 py-2" placeholder="再次輸入密碼(長度 4~20)">
-        <input type="text" id="nickname" class="w-full border rounded px-3 py-2" placeholder="暱稱(長度 1~20)">
+        <input type="text" id="nickname" class="w-full border rounded px-3 py-2" placeholder="暱稱(長度 1~10)">
       </div>
     </div>
     <div class="flex justify-end mt-4 gap-2">
@@ -161,8 +162,17 @@ $user = auth()->user();
     }
 
     function openRankModal() {
-      const gameSelect = document.getElementById('gameSelect')
-      const selectedGame = gameSelect?.value || '威力彩' // 預設值
+      const pathname = location.pathname
+
+      let selectedGame = '威力彩' // 預設
+      if (pathname.includes('/lotto')) {
+        selectedGame = '大樂透'
+      } else if (pathname.includes('/539')) {
+        selectedGame = '今彩539'
+      }
+
+      const gameNameSpan = document.getElementById('rankingGameName')
+      if (gameNameSpan) gameNameSpan.textContent = selectedGame
 
       fetch(`/api/rankings/win-rate?game=${encodeURIComponent(selectedGame)}`)
         .then(res => res.json())
@@ -176,7 +186,6 @@ $user = auth()->user();
               <td class="py-2">${row.nickname}</td>
               <td class="py-2">${row.bet_count}</td>
               <td class="py-2 text-green-600">${row.total_win}</td>
-              <td class="py-2 font-bold text-blue-600">${row.win_rate}%</td>
             `
             tbody.appendChild(tr)
           })
@@ -189,7 +198,6 @@ $user = auth()->user();
         })
         .catch(err => alert('排行載入失敗：' + err.message))
     }
-
 
     function closeRankModal() {
       rankModal.classList.add('opacity-0')
