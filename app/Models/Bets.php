@@ -38,7 +38,7 @@ class Bets extends Model
         $pricePerBet = ($game === '威力彩') ? 100 : 50;
     
         return $query
-            ->orderByRaw("CAST(total_win AS SIGNED) - CAST(bet_count * {$pricePerBet} AS SIGNED) DESC")
+            ->orderBy('total_win', 'desc')
             ->take($limit)
             ->get()
             ->map(function ($item) use ($userId, $pricePerBet) {
