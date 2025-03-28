@@ -29,3 +29,10 @@ if (!function_exists('getClientIp')) {
         return '127.0.0.1';
     }
 }
+
+
+if (!function_exists('maskName')) {
+    function maskName($name) {
+        return mb_substr($name, 0, 2) . str_repeat('*', max(0, mb_strlen($name) - 2));
+    }
+}

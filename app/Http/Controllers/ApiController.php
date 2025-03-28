@@ -272,12 +272,20 @@ class ApiController extends Controller
             return response(['message' => '您已登入 請先登出'], 422);
         }
 
-        $validated = Request::validate([
-            'account' => ['required', 'string', 'min:2', 'max:11'],
-            'nickname' => ['required', 'string', 'min:2', 'max:11'],
-            'password' => ['required', 'string', 'min:2', 'max:11', 'confirmed'],
-        ]);
-
+        $validator = Validator::make(request()->all(), [
+            'account' => ['required', 'string', 'min:2', 'max:8'],
+            'nickname' => ['required', 'string', 'min:1', 'max:20'],
+            'password' => ['required', 'string', 'min:4', 'max:20', 'confirmed'],
+          ]);
+          
+          if ($validator->fails()) {
+            return response()->json([
+              'message' => '請確認資料是否都有填寫, 字串長度是否正確',
+              'errors' => $validator->errors(),
+            ], 422);
+          }
+          
+        $validated = $validator->validated();
         //檢查此ip是否註冊過多
         $countIp = Users::where('ip', $ip)->count();
 
@@ -300,11 +308,6 @@ class ApiController extends Controller
         }
 
         $status = 1;
-
-        //檢查關鍵字
-        if(strpos($postData['nickname'], '贏家') !== false) {
-            $status = 0;
-        }
 
         Users::create([
             'account' => $postData['account'],

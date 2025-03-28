@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Article;
 use App\Models\Bets;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\RateLimiter;
 use Request, Storage, Response, Hash, Auth, DB;
 
@@ -83,22 +84,26 @@ class TaiwanlotteryController extends Controller
     
         // 記錄這次請求，3秒過期
         RateLimiter::hit($key, 3);
+        $typeName = '';
         
         // 依據 type 決定開獎規則
         switch ($type) {
             case 'power': // 威力彩
+                $typeName = '威力彩';
                 $mainRange = range(1, 38);
                 $mainCount = 6;
                 $secondaryRange = range(1, 8);
                 $hasSecondary = true;
                 break;
             case 'lotto': // 大樂透
+                $typeName = '大樂透';
                 $mainRange = range(1, 49);
                 $secondaryRange = range(1, 49);
                 $mainCount = 6;
                 $hasSecondary = true;
                 break;
             case '539': // 今彩539
+                $typeName = '今彩539';
                 $mainRange = range(1, 39);
                 $mainCount = 5;
                 $hasSecondary = false;
@@ -150,16 +155,22 @@ class TaiwanlotteryController extends Controller
             $history[] = ['id' => $i + 1, 'text' => $text];
         }
     
-        // 存入資料庫
         if ($userId) {
-            Bets::create([
+            $today = Carbon::now()->toDateString();
+        
+            $bet = Bets::firstOrNew([
                 'user_id' => $userId,
-                'game' => $type,
-                'bet_count' => $betCount,
-                'total_cost' => $betCount * 100,
-                'total_win' => $totalWinnings,
-                'net_profit' => $totalWinnings - ($betCount * 100),
+                'game' => $typeName,
+                'stat_date' => $today,
             ]);
+        
+            // 累加統計數值
+            $bet->bet_count   = ($bet->bet_count ?? 0) + $betCount;
+            $bet->total_cost  = ($bet->total_cost ?? 0) + ($betCount * 100);
+            $bet->total_win   = ($bet->total_win ?? 0) + $totalWinnings;
+            $bet->net_profit  = $bet->total_win - $bet->total_cost;
+        
+            $bet->save();
         }
     
         return response()->json([
@@ -176,6 +187,42 @@ class TaiwanlotteryController extends Controller
     }
     
     
+    public function rankings()
+    {
+        $userId = auth()->id(); // 可能為 null
+        $game = request()->input('game') ?? '威力彩'; // 可選參數
+    
+        $query = Bets::query()
+            ->whereDate('stat_date', now())
+            ->with('user');
+    
+        if ($game) {
+            $query->where('game', $game);
+        }
+    
+        $rankings = $query
+            ->orderByRaw('CAST(total_win AS SIGNED) - (bet_count) DESC')
+            ->take(20)
+            ->get()
+            ->map(function ($item) use ($userId) {
+                $betCount = max(1, $item->bet_count); // 避免除以 0
+                $totalCost = $betCount * 100;
+                $netProfit = $item->total_win - $totalCost;
+    
+                return [
+                    'user_id'     => $item->user_id,
+                    'nickname'    => $item->user->nickname,
+                    'bet_count'   => $item->bet_count,
+                    'total_win'   => $item->total_win,
+                    'net_profit'  => $netProfit,
+                    'is_me'       => $userId && $item->user_id === $userId,
+                ];
+            });
+    
+        return response()->json($rankings);
+    }
+    
+
     private function calculatePrize($type, $ticket, $secondary, $mainNumbers, $secondaryNumber)
     {
         $match = count(array_intersect($ticket, $mainNumbers));

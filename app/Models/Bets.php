@@ -17,4 +17,9 @@ class Bets extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function user()
+    {
+        return $this->hasOne(Users::class, 'id', 'user_id');
+    }
 }

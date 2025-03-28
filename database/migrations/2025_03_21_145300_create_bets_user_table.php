@@ -15,12 +15,13 @@ class CreateBetsUserTable extends Migration
     {
         Schema::create('bets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->index();
-            $table->enum('game', ['威力彩', '大樂透', '今彩539'])->index(); // 快速查詢用
-            $table->integer('bet_count'); //下注張數
-            $table->bigInteger('total_cost'); //總花費
-            $table->bigInteger('total_win'); //總中獎金額
-            $table->bigInteger('net_profit'); //盈虧 (正負)
+            $table->foreignId('user_id')->constrained()->index();
+            $table->string('game', 20)->index(); // 可用代碼代表遊戲，避免 enum 受限
+            $table->unsignedBigInteger('bet_count')->default(0);
+            $table->unsignedBigInteger('total_cost')->default(0);
+            $table->unsignedBigInteger('total_win')->default(0);
+            $table->bigInteger('net_profit')->default(0); // 可正負
+            $table->date('stat_date')->nullable()->index(); // 可支援日統計
             $table->timestamps();
         });
     }

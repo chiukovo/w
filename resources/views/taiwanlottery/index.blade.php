@@ -13,7 +13,7 @@
             </h1>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-700 mb-6 sm:mb-10 text-center">假設開獎號碼 🎰</h2>
     
-            <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-12">
+            <div class="flex justify-center flex-wrap gap-1 sm:gap-3 mb-8 sm:mb-12">
                 <span v-for="(num, index) in winningNumbers" 
                     :key="num" 
                     :class="[
