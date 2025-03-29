@@ -58,7 +58,7 @@ $user = auth()->user();
 <div id="rankModal" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50 opacity-0 transition-opacity duration-300">
   <div class="bg-white rounded-lg w-full max-w-xl p-4 shadow-lg scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
     <h2 class="text-lg font-bold text-center text-blue-600 mb-4">
-      🏅 今日 <span id="rankingGameName">威力彩</span> 排行榜
+      🏅 <span id="rankingGameName">威力彩</span> 排行榜
     </h2>
     <table class="w-full text-sm text-center">
       <thead class="bg-gray-100 text-gray-700">

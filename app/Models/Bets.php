@@ -27,7 +27,6 @@ class Bets extends Model
     public static function getNetProfitRanking($game, $limit = 10, $userId = null)
     {
         $query = self::query()
-            ->whereDate('stat_date', Carbon::today())
             ->with('user');
     
         if ($game) {
