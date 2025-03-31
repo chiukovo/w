@@ -112,6 +112,9 @@ class GenerateArticleCommand extends Command
                 'is_published' => true,
                 'published_at' => now(),
             ]);
+
+            // Sitemap ping
+            Http::get('https://www.google.com/ping?sitemap=' . urlencode(url('/sitemap.xml')));
     
             $this->info("✅ 成功產出 【{$category}】 文章：《{$title}》");
         } else {
