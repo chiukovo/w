@@ -65,7 +65,7 @@ $user = auth()->user();
         <tr>
           <th class="py-2">#</th>
           <th class="py-2">玩家</th>
-          <th class="py-2">投注</th>
+          <th class="py-2">注數</th>
           <th class="py-2">中獎</th>
         </tr>
       </thead>
