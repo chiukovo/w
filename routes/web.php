@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/rolovec', function () {
+    return view('rolovec/index');
+});
+
 Route::get('/lineage', 'App\Http\Controllers\ApiController@index')->name('index');
 Route::get('/lineage/rank', 'App\Http\Controllers\ApiController@rank')->name('rank');
 //前台api
