@@ -99,7 +99,7 @@
 
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-1">
         <div class="flex flex-col items-center justify-center w-full">
-          <div class="text-lg sm:text-xl font-bold text-gray-600">目前等級</div>
+          <div class="text-lg sm:text-xl font-bold text-gray-600">精煉等級</div>
           <div class="text-4xl sm:text-5xl font-extrabold text-pink-600 tracking-wider drop-shadow">+@{{ refineLevel }}</div>
         </div>
         <div class="flex flex-col items-center justify-center w-full mt-2 sm:mt-0">
