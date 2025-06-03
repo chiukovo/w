@@ -194,7 +194,7 @@
           else if (refineLevel.value >= 11 && totalRefine.value <= 17) title = "精煉之神就是你"
           else if (refineLevel.value >= 10 && totalRefine.value <= 20) title = "今晚吃雞！"
           else if (refineLevel.value >= 10 && totalRefine.value <= 30) title = "這運氣有點歐喔！"
-          else if (totalRefine.value > 50 && refineLevel.value < 8) title = "安經在呼喚你…"
+          else if (totalRefine.value > 50 && refineLevel.value < 8) title = "乖乖安精吧孩子"
           else if (totalRefine.value > 40 && refineLevel.value < 10) title = "非洲人確認"
           else if (refineLevel.value >= 11 && totalRefine.value > 30) title = "手會痠嗎?"
           else if (refineLevel.value >= 7 && totalRefine.value >= 20) title = "進入了苦戰..."
