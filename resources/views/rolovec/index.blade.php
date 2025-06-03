@@ -17,7 +17,7 @@
 
   <!-- 行動裝置/Apple 裝置啟用桌面模式 -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="RO 精煉模擬器" />
+  <meta name="apple-mobile-web-app-title" content="RO 守護永恆的愛 Classic 精煉模擬器" />
 
   <!-- Favicon 建議 -->
   <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png" type="image/png" />
@@ -35,6 +35,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html, body {
+      width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9;
       touch-action: manipulation;
     }
     .animate-success { animation: shine 0.7s; }
@@ -155,6 +156,9 @@
         >
         <span class="text-gray-500 text-xs">Zeny</span>
       </div>
+      <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
+        有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © chiuko All rights reserved.
+      </p>
     </div>
   </div>
 
