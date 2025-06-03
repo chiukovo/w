@@ -69,7 +69,37 @@
       letter-spacing: .05em;
     }
     html, body { width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9; }
-
+    .pink-glow {
+      color: #ec4899; /* tailwind pink-600 */
+      text-shadow:
+        0 0 12px #fff,     /* 柔白光暈 */
+        0 0 18px #f9a8d4,  /* 粉紅外暈1 */
+        0 0 32px #f472b6,  /* 粉紅外暈2 */
+        0 0 52px #ec4899,  /* 粉紅主暈3 */
+        0 0 92px #f472b6,  /* 擴散一層 */
+        0 0 8px #fff;      /* 提亮中央 */
+      animation: pink-pulse 1.2s infinite alternate;
+    }
+    @keyframes pink-pulse {
+      0% {
+        text-shadow:
+          0 0 12px #fff,
+          0 0 18px #f9a8d4,
+          0 0 32px #f472b6,
+          0 0 52px #ec4899,
+          0 0 92px #f472b6,
+          0 0 8px #fff;
+      }
+      100% {
+        text-shadow:
+          0 0 24px #fff,
+          0 0 36px #f9a8d4,
+          0 0 72px #f472b6,
+          0 0 96px #ec4899,
+          0 0 162px #f472b6,
+          0 0 24px #fff;
+      }
+    }
     [v-cloak] { display: none; }
   </style>
 </head>
@@ -100,8 +130,13 @@
 
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-1">
         <div class="flex flex-col items-center justify-center w-full">
-          <div class="text-lg sm:text-xl font-bold text-gray-600">精煉等級</div>
-          <div class="text-4xl sm:text-5xl font-extrabold text-pink-600 tracking-wider drop-shadow">+@{{ refineLevel }}</div>
+        <div class="text-lg sm:text-xl font-bold text-gray-600">精煉等級</div>
+        <div
+          class="text-4xl sm:text-5xl font-extrabold tracking-wider drop-shadow"
+          :class="[refineLevel >= 10 ? 'pink-glow' : 'text-pink-600']"
+        >
+          +@{{ refineLevel }}
+        </div>
         </div>
         <div class="flex flex-col items-center justify-center w-full mt-2 sm:mt-0">
           <div class="text-lg sm:text-xl font-bold text-gray-600">總花費</div>
