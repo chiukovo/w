@@ -22,7 +22,15 @@
   <!-- Favicon 建議 -->
   <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png" type="image/png" />
 
-  <!-- Vue 3 + TailwindCSS -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-D4DRBBS5S0');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/vue@3"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -168,30 +176,32 @@
           if (msg.value.includes('掉一階')) return 'text-yellow-600'
           return ''
         })
-
-        // 標語判斷
+        const lastTitle = ref("RO守愛 Classic 精煉模擬器")
         const funnyTitle = computed(() => {
-          if (isMax.value) return "全服見證，+15王者誕生！"
-          // 低等級還衝很久
-          if (refineLevel.value <= 3 && totalRefine.value >= 30) return "再這樣GM要關心你了！"
-          if (refineLevel.value <= 3 && totalRefine.value >= 20) return "你是不是忘記開歐洲VPN？"
-          if (refineLevel.value < 2 && totalRefine.value >= 25) return "別鬧了，GM要來檢查你帳號！"
-          // 高等級+低次數 => 極歐
-          if (refineLevel.value >= 13 && totalRefine.value <= 22) return "GM親友你承認吧"
-          if (refineLevel.value >= 11 && totalRefine.value <= 17) return "精煉之神就是你"
-          if (refineLevel.value >= 10 && totalRefine.value <= 20) return "今晚吃雞！"
-          if (refineLevel.value >= 10 && totalRefine.value <= 30) return "這運氣有點歐喔！"
-          // 卡在某一階很久
-          if (totalRefine.value > 50 && refineLevel.value < 8) return "安經在呼喚你…"
-          if (totalRefine.value > 40 && refineLevel.value < 10) return "非洲人確認"
-          // 高等級但次數略多
-          if (refineLevel.value >= 11 && totalRefine.value > 30) return "有錢人的精煉法"
-          if (refineLevel.value >= 7 && totalRefine.value >= 20) return "唉呦不錯喔"
-          // 低等級但已經很有耐心
-          if (refineLevel.value < 5 && totalRefine.value >= 30) return "天黑黑 臉也黑"
-          // 一般路人
-          return "RO守愛 Classic 精煉模擬器"
-        });
+          let title = "RO守愛 Classic 精煉模擬器"
+          if (isMax.value) title = "全服見證，+15王者誕生！"
+          else if (refineLevel.value <= 3 && totalRefine.value >= 30) title = "再這樣GM要關心你了！"
+          else if (refineLevel.value <= 3 && totalRefine.value >= 20) title = "你是不是忘記開歐洲VPN？"
+          else if (refineLevel.value < 2 && totalRefine.value >= 25) title = "別鬧了，GM要來檢查你帳號！"
+          else if (refineLevel.value >= 13 && totalRefine.value <= 22) title = "GM親友你承認吧"
+          else if (refineLevel.value >= 11 && totalRefine.value <= 17) title = "精煉之神就是你"
+          else if (refineLevel.value >= 10 && totalRefine.value <= 20) title = "今晚吃雞！"
+          else if (refineLevel.value >= 10 && totalRefine.value <= 30) title = "這運氣有點歐喔！"
+          else if (totalRefine.value > 50 && refineLevel.value < 8) title = "安經在呼喚你…"
+          else if (totalRefine.value > 40 && refineLevel.value < 10) title = "非洲人確認"
+          else if (refineLevel.value >= 11 && totalRefine.value > 30) title = "手會痠嗎?"
+          else if (refineLevel.value >= 7 && totalRefine.value >= 20) title = "進入了苦戰..."
+          else if (refineLevel.value < 5 && totalRefine.value >= 30) title = "天黑黑 臉也黑"
+
+          // 只有當新標語不是預設時才更新 lastTitle
+          if (title !== "RO守愛 Classic 精煉模擬器") {
+            lastTitle.value = title
+            return title
+          }
+          // 預設時回傳上一個特殊狀態（讓標語不會一秒就變回預設）
+          return lastTitle.value
+        })
+
         // 標題特效
         const titleClass = computed(() => {
           if (isMax.value) return 'text-pink-500 animate-pulse'
