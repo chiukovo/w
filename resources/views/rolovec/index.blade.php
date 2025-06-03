@@ -34,6 +34,9 @@
   <script src="https://unpkg.com/vue@3"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    html, body {
+      touch-action: manipulation;
+    }
     .animate-success { animation: shine 0.7s; }
     @keyframes shine {
       0%   { box-shadow: 0 0 0 0 #48ff48; }
