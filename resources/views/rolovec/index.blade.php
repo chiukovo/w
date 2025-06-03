@@ -57,11 +57,13 @@
       letter-spacing: .05em;
     }
     html, body { width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9; }
+
+    [v-cloak] { display: none; }
   </style>
 </head>
 
 <body class="min-h-screen flex items-center justify-center p-1 sm:p-2">
-  <div id="app" class="w-full flex items-center justify-center">
+  <div id="app" v-cloak class="w-full flex items-center justify-center">
     <div class="bg-white rounded-2xl shadow-xl px-2 py-3 sm:p-7 w-full max-w-xs sm:max-w-md mx-auto select-none">
       <h2
         class="text-2xl sm:text-3xl font-extrabold text-center mb-2 transition-all duration-200"
