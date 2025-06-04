@@ -68,7 +68,6 @@
       min-height: 3.3rem;
       letter-spacing: .05em;
     }
-    html, body { width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9; }
     .pink-glow {
       color: #ec4899; /* tailwind pink-600 */
       text-shadow:
