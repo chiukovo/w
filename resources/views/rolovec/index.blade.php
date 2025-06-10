@@ -320,11 +320,11 @@
             if (willBreak) {
               broken.value = true
               msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value}）`
-              imgSrc.value = '/img/rolovec/error.png'
+              imgSrc.value = '/img/rolovec/error.png?v=1'
               animateClass.value = 'animate-fail'
             } else {
               msg.value = `精煉失敗！掉一階（+${refineLevel.value}）`
-              imgSrc.value = '/img/rolovec/error.png'
+              imgSrc.value = '/img/rolovec/error.png?v=1'
               animateClass.value = 'animate-fail'
             }
           }
