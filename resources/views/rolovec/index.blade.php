@@ -154,15 +154,20 @@
           :disabled="broken || isMax"
           :class="(broken || isMax) ? 'opacity-60 cursor-not-allowed' : ''"
         >精煉</button>
-        <button @click="doRepair"
-          class="flex-1 big-btn bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow"
-          v-show="broken"
-        >修理</button>
+        <div class="flex flex-col items-center justify-center flex-1" v-show="broken">
+          <button @click="doRepair"
+            class="w-full big-btn bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow mb-1"
+          >修理</button>
+        </div>
       </div>
       <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>
 
       <!-- 次要統計 -->
       <div class="bg-gray-50 rounded-xl px-4 py-3 mt-2 shadow-inner text-base sm:text-lg">
+        <div v-if="repairCount3 > 0 || repairCount4 > 0" class="text-pink-600 font-bold animate-bounce mt-2 text-center">
+          <span v-if="repairCount3 > 0">🔨 +3 紅槌：@{{ repairCount3 }} 把　</span><br>
+          <span v-if="repairCount4 > 0">🔨 +4 紅槌：@{{ repairCount4 }} 把　</span>
+        </div>
         <div class="flex justify-between items-center mb-1">
           <span class="text-gray-600">成功率</span>
           <span class="font-bold text-green-600">@{{ isMax ? '---' : `${successRate}%` }}</span>
@@ -179,6 +184,7 @@
           <span class="text-gray-600">精煉次數</span>
           <span class="font-bold text-gray-700">@{{ totalRefine }}</span>
         </div>
+
       </div>
 
       <!-- 修理費設定 -->
@@ -221,9 +227,8 @@
         const funnyTitle = computed(() => {
           let title = "RO守愛 Classic 精煉模擬器"
           if (isMax.value) title = "全服見證，+15王者誕生！"
-          else if (refineLevel.value <= 3 && totalRefine.value >= 30) title = "再這樣GM要關心你了！"
-          else if (refineLevel.value <= 3 && totalRefine.value >= 20) title = "你是不是忘記開歐洲VPN？"
-          else if (refineLevel.value < 2 && totalRefine.value >= 25) title = "別鬧了，GM要來檢查你帳號！"
+          else if (refineLevel.value <= 3 && totalRefine.value >= 30) title = "雜質認證"
+          else if (refineLevel.value <= 4 && totalRefine.value >= 20) title = "紅槌哥(姊) 您好"
           else if (refineLevel.value >= 13 && totalRefine.value <= 22) title = "GM親友你承認吧"
           else if (refineLevel.value >= 11 && totalRefine.value <= 17) title = "精煉之神就是你"
           else if (refineLevel.value >= 10 && totalRefine.value <= 20) title = "今晚吃雞！"
@@ -288,6 +293,9 @@
           return (getTheoryProb(refineLevel.value) * 100).toFixed(3) + '%';
         });
 
+        const repairCount3 = ref(0)
+        const repairCount4 = ref(0)
+
         function doRefine() {
           if (broken.value || isMax.value) return
           totalRefine.value++
@@ -319,7 +327,9 @@
             }
             if (willBreak) {
               broken.value = true
-              msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value}）`
+              if (failLevel === 4) repairCount3.value++
+              if (failLevel === 5) repairCount4.value++
+              msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value}）` + ((failLevel === 3 || failLevel === 4) ? `\n哎呀！+${failLevel} 紅槌又來啦！` : '')
               imgSrc.value = '/img/rolovec/error.png?v=1'
               animateClass.value = 'animate-fail'
             } else {
@@ -342,6 +352,7 @@
           totalCost, totalMaterial, totalRefine,
           msg, animateClass, msgClass,
           successRate, zenyCost, materialCost,
+          repairCount3, repairCount4,
           doRefine, doRepair,
           funnyTitle, titleClass,
           passRateText, theoRateText
