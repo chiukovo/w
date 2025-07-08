@@ -160,6 +160,13 @@
           >修理</button>
         </div>
       </div>
+      <!-- 重製按鈕（不明顯，右下角小字） -->
+      <div class="w-full flex justify-end">
+        <button @click="doReset"
+          class="text-xs text-gray-400 hover:text-gray-600 underline px-2 py-1"
+          style="background: none; border: none; box-shadow: none;"
+        >重製</button>
+      </div>
       <!-- 自動精煉區塊 -->
       <div class="flex flex-col items-center justify-center gap-2 mb-4 mt-2 w-full">
         <div class="flex flex-col sm:flex-row items-center gap-2 w-full justify-center">
@@ -365,10 +372,24 @@
           imgSrc.value = '/img/rolovec/success.png'
           animateClass.value = ''
         }
+        function doReset() {
+          refineLevel.value = 0
+          broken.value = false
+          imgSrc.value = '/img/rolovec/success.png'
+          repairCost.value = 2000000
+          totalCost.value = 0
+          totalMaterial.value = 0
+          totalRefine.value = 0
+          msg.value = '歡迎精煉，祝你+15！'
+          animateClass.value = ''
+          repairCount3.value = 0
+          repairCount4.value = 0
+          autoRefineActive.value = false
+        }
         // 自動精煉控制
         let autoRefineTimer = null
         const autoRefineActive = ref(false)
-        const autoRefineInterval = ref(500)
+        const autoRefineInterval = ref(180)
         function autoRefineStep() {
           if (broken.value) {
             doRepair()
@@ -406,7 +427,7 @@
           msg, animateClass, msgClass,
           successRate, zenyCost, materialCost,
           repairCount3, repairCount4,
-          doRefine, doRepair,
+          doRefine, doRepair, doReset,
           toggleAutoRefine,
           autoRefineActive,
           autoRefineInterval,
