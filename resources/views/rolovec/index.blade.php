@@ -160,6 +160,24 @@
           >修理</button>
         </div>
       </div>
+      <!-- 自動精煉區塊 -->
+      <div class="flex flex-col items-center justify-center gap-2 mb-4 mt-2 w-full">
+        <div class="flex flex-col sm:flex-row items-center gap-2 w-full justify-center">
+          <button @click="toggleAutoRefine" v-if="!isMax"
+            class="big-btn bg-pink-400 hover:bg-pink-500 text-white font-bold rounded-xl transition shadow px-4 mb-2 sm:mb-0"
+            :disabled="isMax"
+            :class="isMax ? 'opacity-60 cursor-not-allowed' : ''"
+            style="min-width: 120px;"
+          >@{{ autoRefineActive ? '停止' : '自動精煉' }}</button>
+          <label class="ml-0 sm:ml-2 text-gray-500 text-base whitespace-nowrap">速度：</label>
+          <select v-model.number="autoRefineInterval" class="rounded border border-blue-300 px-2 py-1 text-base focus:ring focus:border-blue-500 outline-none w-28">
+            <option :value="500">正常</option>
+            <option :value="300">快</option>
+            <option :value="180">很快</option>
+            <option :value="80">超快</option>
+          </select>
+        </div>
+      </div>
       <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>
 
       <!-- 次要統計 -->
@@ -347,6 +365,41 @@
           imgSrc.value = '/img/rolovec/success.png'
           animateClass.value = ''
         }
+        // 自動精煉控制
+        let autoRefineTimer = null
+        const autoRefineActive = ref(false)
+        const autoRefineInterval = ref(500)
+        function autoRefineStep() {
+          if (broken.value) {
+            doRepair()
+            // 修理後自動繼續
+            setTimeout(() => {
+              if (autoRefineActive.value && !isMax.value) autoRefineStep()
+            }, autoRefineInterval.value)
+            return
+          }
+          if (isMax.value) {
+            autoRefineActive.value = false
+            autoRefineTimer && clearTimeout(autoRefineTimer)
+            autoRefineTimer = null
+            return
+          }
+          doRefine()
+          autoRefineTimer = setTimeout(() => {
+            if (autoRefineActive.value && !isMax.value) autoRefineStep()
+          }, autoRefineInterval.value)
+        }
+        function toggleAutoRefine() {
+          if (autoRefineActive.value) {
+            autoRefineActive.value = false
+            autoRefineTimer && clearTimeout(autoRefineTimer)
+            autoRefineTimer = null
+          } else {
+            if (isMax.value) return
+            autoRefineActive.value = true
+            autoRefineStep()
+          }
+        }
         return {
           refineLevel, broken, isMax, imgSrc, repairCost,
           totalCost, totalMaterial, totalRefine,
@@ -354,6 +407,9 @@
           successRate, zenyCost, materialCost,
           repairCount3, repairCount4,
           doRefine, doRepair,
+          toggleAutoRefine,
+          autoRefineActive,
+          autoRefineInterval,
           funnyTitle, titleClass,
           passRateText, theoRateText
         }
