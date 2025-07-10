@@ -210,6 +210,9 @@
           <span class="text-gray-600">精煉次數</span>
           <span class="font-bold text-gray-700">@{{ totalRefine }}</span>
         </div>
+        <div class="w-full flex justify-center mt-4">
+          <button @click="showStats = true" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition text-base">統計</button>
+        </div>
 
       </div>
 
@@ -222,6 +225,38 @@
         >
         <span class="text-gray-500 text-xs">Zeny</span>
       </div>
+      <div v-if="showStats" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
+          <button @click="showStats = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">各等級精煉統計</h3>
+          <table class="w-full text-sm mb-2">
+            <thead>
+              <tr class="border-b">
+                <th class="py-1 text-left">等級</th>
+                <th class="py-1 text-right">嘗試</th>
+                <th class="py-1 text-right">成功率</th>
+                <th class="py-1 text-right">理論率</th>
+                <th class="py-1 text-right">損壞</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, idx) in statsRows" :key="row.level" :class="idx % 2 === 1 ? 'bg-gray-50' : ''">
+                <td class="py-1">+@{{ row.level }}</td>
+                <td class="py-1 text-right">@{{ row.count }}</td>
+                <td class="py-1 text-right">@{{ row.rate }}</td>
+                <td class="py-1 text-right">@{{ row.theory }}</td>
+                <td class="py-1 text-right">@{{ row.broken }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-xs text-gray-400 text-center mb-2">* 成功率=實際衝過次數/嘗試次數，理論率為數學期望</div>
+          <div class="text-sm text-gray-600 text-center mt-2">修理總次數：<span class="font-bold text-blue-600">@{{ totalRepair }}</span></div>
+        </div>
+      </div>
+      <style>
+        .animate-fadein { animation: fadein 0.2s; }
+        @keyframes fadein { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
+      </style>
       <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
         有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © chiuko All rights reserved.
       </p>
@@ -249,6 +284,14 @@
           if (msg.value.includes('掉一階')) return 'text-yellow-600'
           return ''
         })
+
+        // 統計彈窗
+        const showStats = ref(false)
+        // 各等級嘗試次數、成功次數、損壞次數
+        const refineTry = ref(Array(16).fill(0)) // 0~15
+        const refinePass = ref(Array(16).fill(0))
+        const refineBroken = ref(Array(16).fill(0))
+
         const lastTitle = ref("RO守愛 Classic 精煉模擬器")
         const funnyTitle = computed(() => {
           let title = "RO守愛 Classic 精煉模擬器"
@@ -327,11 +370,19 @@
         function doRefine() {
           if (broken.value || isMax.value) return
           totalRefine.value++
+          // 統計：記錄本次嘗試
+          if (refineLevel.value >= 4 && refineLevel.value < 15) {
+            refineTry.value[refineLevel.value + 1]++
+          }
           totalCost.value += zenyCost.value
           totalMaterial.value += materialCost.value
           let rate = successRate.value
           let roll = Math.random()
           if (rate === 100 || roll < rate / 100) {
+            // 統計：記錄本次成功
+            if (refineLevel.value >= 4 && refineLevel.value < 15) {
+              refinePass.value[refineLevel.value + 1]++
+            }
             refineLevel.value++
             msg.value = rate === 100 ? '精煉成功！（100%）' : `精煉成功！（${rate}%）`
             imgSrc.value = '/img/rolovec/success.png'
@@ -373,6 +424,10 @@
               broken.value = true
               if (failLevel === 4) repairCount3.value++
               if (failLevel === 5) repairCount4.value++
+              // 統計：損壞次數
+              if (failLevel >= 5 && failLevel <= 15) {
+                refineBroken.value[failLevel]++
+              }
               msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value}）` + ((failLevel === 3 || failLevel === 4) ? `\n哎呀！+${failLevel} 紅槌又來啦！` : '')
               imgSrc.value = '/img/rolovec/error.png?v=1'
               animateClass.value = 'animate-fail'
@@ -404,6 +459,12 @@
           repairCount3.value = 0
           repairCount4.value = 0
           autoRefineActive.value = false
+          // 統計歸零
+          for (let i = 0; i < 16; i++) {
+            refineTry.value[i] = 0
+            refinePass.value[i] = 0
+            refineBroken.value[i] = 0
+          }
         }
         // 自動精煉控制
         let autoRefineTimer = null
@@ -442,6 +503,39 @@
             autoRefineStep()
           }
         }
+        // 統計表資料
+        // 統計表資料（含理論率、損壞次數）
+        const statsRows = computed(() => {
+          const arr = []
+          for (let i = 5; i <= 15; i++) {
+            const count = refineTry.value[i]
+            const pass = refinePass.value[i]
+            // 理論率
+            let theory = '--'
+            if (i <= 6) theory = i === 5 || i === 6 ? '50%' : '100%'
+            else theory = '40%'
+            // 損壞次數
+            const broken = refineBroken.value[i] || 0
+            arr.push({
+              level: i,
+              count: count,
+              rate: count > 0 ? ((pass / count * 100).toFixed(1) + '%') : '--',
+              theory: theory,
+              broken: broken
+            })
+          }
+          return arr
+        })
+
+        // 修理總次數（+5~+15損壞次數總和）
+        const totalRepair = computed(() => {
+          let sum = 0
+          for (let i = 5; i <= 15; i++) {
+            sum += refineBroken.value[i] || 0
+          }
+          return sum
+        })
+
         return {
           refineLevel, broken, isMax, imgSrc, repairCost,
           totalCost, totalMaterial, totalRefine,
@@ -453,7 +547,9 @@
           autoRefineActive,
           autoRefineInterval,
           funnyTitle, titleClass,
-          passRateText, theoRateText
+          passRateText, theoRateText,
+          showStats, statsRows,
+          totalRepair
         }
       }
     }).mount('#app')
