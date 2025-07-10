@@ -33,6 +33,9 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2560043137442562" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/vue@3"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 音效 -->
+  <audio id="audio-success" src="/mp4/refine_success.wav" preload="auto"></audio>
+  <audio id="audio-fail" src="/mp4/refine_failed.wav" preload="auto"></audio>
   <style>
     html, body {
       width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9;
@@ -167,23 +170,21 @@
           style="background: none; border: none; box-shadow: none;"
         >重製</button>
       </div>
-      <!-- 自動精煉區塊 -->
-      <div class="flex flex-col items-center justify-center gap-2 mb-4 mt-2 w-full">
-        <div class="flex flex-col sm:flex-row items-center gap-2 w-full justify-center">
-          <button @click="toggleAutoRefine" v-if="!isMax"
-            class="big-btn bg-pink-400 hover:bg-pink-500 text-white font-bold rounded-xl transition shadow px-4 mb-2 sm:mb-0"
-            :disabled="isMax"
-            :class="isMax ? 'opacity-60 cursor-not-allowed' : ''"
-            style="min-width: 120px;"
-          >@{{ autoRefineActive ? '停止' : '自動精煉' }}</button>
-          <label class="ml-0 sm:ml-2 text-gray-500 text-base whitespace-nowrap">速度：</label>
-          <select v-model.number="autoRefineInterval" class="rounded border border-blue-300 px-2 py-1 text-base focus:ring focus:border-blue-500 outline-none w-28">
-            <option :value="500">正常</option>
-            <option :value="300">快</option>
-            <option :value="180">很快</option>
-            <option :value="80">超快</option>
-          </select>
-        </div>
+      <!-- 自動精煉區塊：自動與速度同一行 -->
+      <div class="flex items-center justify-center gap-2 mb-4 mt-2 w-full">
+        <button @click="toggleAutoRefine" v-if="!isMax"
+          class="big-btn bg-pink-400 hover:bg-pink-500 text-white font-bold rounded-xl transition shadow px-4"
+          :disabled="isMax"
+          :class="isMax ? 'opacity-60 cursor-not-allowed' : ''"
+          style="min-width: 110px;"
+        >@{{ autoRefineActive ? '停止' : '自動' }}</button>
+        <label class="ml-2 text-gray-500 text-base whitespace-nowrap">速度：</label>
+        <select v-model.number="autoRefineInterval" class="rounded border border-blue-300 px-2 py-1 text-base focus:ring focus:border-blue-500 outline-none w-28">
+          <option :value="500">正常</option>
+          <option :value="300">快</option>
+          <option :value="180">很快</option>
+          <option :value="80">超快</option>
+        </select>
       </div>
       <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>
 
@@ -321,6 +322,8 @@
         const repairCount3 = ref(0)
         const repairCount4 = ref(0)
 
+        // 是否自動精煉中
+        let isAutoRefineStep = false;
         function doRefine() {
           if (broken.value || isMax.value) return
           totalRefine.value++
@@ -333,6 +336,14 @@
             msg.value = rate === 100 ? '精煉成功！（100%）' : `精煉成功！（${rate}%）`
             imgSrc.value = '/img/rolovec/success.png'
             animateClass.value = 'animate-success'
+            // 播放成功音效（非自動精煉時）
+            if (!isAutoRefineStep) {
+              const audioSuccess = document.getElementById('audio-success')
+              if (audioSuccess) {
+                audioSuccess.currentTime = 0;
+                audioSuccess.play();
+              }
+            }
             if (refineLevel.value === 15) {
               setTimeout(() => {
                 msg.value = '🎉 恭喜你成功達到 +15！🎉'
@@ -349,6 +360,14 @@
               willBreak = true
             } else if (failLevel >= 4 && failLevel <= 9) {
               if (Math.random() < 0.5) willBreak = true
+            }
+            // 播放失敗音效（非自動精煉時）
+            if (!isAutoRefineStep) {
+              const audioFail = document.getElementById('audio-fail')
+              if (audioFail) {
+                audioFail.currentTime = 0;
+                audioFail.play();
+              }
             }
             if (willBreak) {
               broken.value = true
@@ -405,7 +424,9 @@
             autoRefineTimer = null
             return
           }
+          isAutoRefineStep = true;
           doRefine()
+          isAutoRefineStep = false;
           autoRefineTimer = setTimeout(() => {
             if (autoRefineActive.value && !isMax.value) autoRefineStep()
           }, autoRefineInterval.value)
