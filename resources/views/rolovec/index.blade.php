@@ -193,7 +193,7 @@
         <!-- 自訂精煉等級 -->
         <div class="flex items-center justify-center gap-2 mb-2">
           <label for="customRefineLevel" class="text-gray-600 text-sm">自訂精煉等級：</label>
-          <input id="customRefineLevel" type="number" min="0" max="15" v-model.number="refineLevel" :disabled="isMax" class="w-16 text-center rounded border border-pink-300 px-2 py-1 text-lg font-bold focus:ring focus:border-pink-500 outline-none" style="max-width: 4.5rem;" />
+          <input id="customRefineLevel" type="number" min="0" max="14" v-model.number="refineLevel" :disabled="isMax" @change="onCustomRefineChange" class="w-16 text-center rounded border border-pink-300 px-2 py-1 text-lg font-bold focus:ring focus:border-pink-500 outline-none" style="max-width: 4.5rem;" />
           <span class="text-lg font-extrabold tracking-wider drop-shadow" :class="[refineLevel >= 10 ? 'pink-glow' : 'text-pink-600']">+@{{ refineLevel }}</span>
         </div>
         <!-- 修理費設定 -->
@@ -270,10 +270,16 @@
   </div>
 
   <script>
-    const { createApp, ref, computed } = Vue
+    const { createApp, ref, computed, watch } = Vue
     createApp({
       setup() {
         const refineLevel = ref(0)
+        // 限制自訂精煉等級不可超過14，且只在手動輸入時生效，不影響精煉流程
+        function onCustomRefineChange(e) {
+          let val = Number(e.target.value)
+          if (val > 14) refineLevel.value = 14
+          if (val < 0) refineLevel.value = 0
+        }
         const broken = ref(false)
         const isMax = computed(() => refineLevel.value >= 15)
         const imgSrc = ref('/img/rolovec/success.png')
