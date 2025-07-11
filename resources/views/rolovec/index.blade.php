@@ -190,6 +190,21 @@
 
       <!-- 次要統計 -->
       <div class="bg-gray-50 rounded-xl px-4 py-3 mt-2 shadow-inner text-base sm:text-lg">
+        <!-- 自訂精煉等級 -->
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <label for="customRefineLevel" class="text-gray-600 text-sm">自訂精煉等級：</label>
+          <input id="customRefineLevel" type="number" min="0" max="15" v-model.number="refineLevel" :disabled="isMax" class="w-16 text-center rounded border border-pink-300 px-2 py-1 text-lg font-bold focus:ring focus:border-pink-500 outline-none" style="max-width: 4.5rem;" />
+          <span class="text-lg font-extrabold tracking-wider drop-shadow" :class="[refineLevel >= 10 ? 'pink-glow' : 'text-pink-600']">+@{{ refineLevel }}</span>
+        </div>
+        <!-- 修理費設定 -->
+        <div class="flex items-center justify-between gap-2 mb-2 px-1 text-base sm:text-lg">
+          <label for="repairCostInput" class="text-gray-500">修理費：</label>
+          <input id="repairCostInput" type="number" v-model.number="repairCost" min="0" step="1000"
+            class="w-28 rounded border border-blue-300 px-2 py-1 text-right focus:ring focus:border-blue-500 outline-none"
+            :disabled="isMax"
+          >
+          <span class="text-gray-500 text-xs">Zeny</span>
+        </div>
         <div v-if="repairCount3 > 0 || repairCount4 > 0" class="text-pink-600 font-bold animate-bounce mt-2 text-center">
           <span v-if="repairCount3 > 0">🔨 +3 紅槌：@{{ repairCount3 }} 把　</span><br>
           <span v-if="repairCount4 > 0">🔨 +4 紅槌：@{{ repairCount4 }} 把　</span>
@@ -216,15 +231,6 @@
 
       </div>
 
-      <!-- 修理費設定 -->
-      <div class="flex items-center justify-between gap-2 mt-3 mb-1 px-1 text-base sm:text-lg">
-        <label for="repairCostInput" class="text-gray-500">修理費：</label>
-        <input id="repairCostInput" type="number" v-model.number="repairCost" min="0" step="1000"
-          class="w-28 rounded border border-blue-300 px-2 py-1 text-right focus:ring focus:border-blue-500 outline-none"
-          :disabled="isMax"
-        >
-        <span class="text-gray-500 text-xs">Zeny</span>
-      </div>
       <div v-if="showStats" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
           <button @click="showStats = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
