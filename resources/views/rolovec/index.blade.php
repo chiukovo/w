@@ -163,8 +163,12 @@
           >修理</button>
         </div>
       </div>
-      <!-- 重製按鈕（不明顯，右下角小字） -->
-      <div class="w-full flex justify-end">
+      <!-- 重製按鈕（右下角小字）和音效開關 -->
+      <div class="w-full flex justify-end items-center gap-2">
+        <button @click="toggleSound"
+          class="text-xs rounded bg-gray-100 hover:bg-gray-300 text-gray-500 px-2 py-1 mr-1 transition"
+          style="border: none; box-shadow: none; min-width: 56px;"
+        >@{{ soundEnabled ? '🔊' : '🔇' }}</button>
         <button @click="doReset"
           class="text-xs text-gray-400 hover:text-gray-600 underline px-2 py-1"
           style="background: none; border: none; box-shadow: none;"
@@ -379,6 +383,10 @@
 
         // 是否自動精煉中
         let isAutoRefineStep = false;
+        const soundEnabled = ref(true)
+        function toggleSound() {
+          soundEnabled.value = !soundEnabled.value
+        }
         function doRefine() {
           if (broken.value || isMax.value) return
           totalRefine.value++
@@ -400,7 +408,7 @@
             imgSrc.value = '/img/rolovec/success.png'
             animateClass.value = 'animate-success'
             // 播放成功音效（非自動精煉時）
-            if (!isAutoRefineStep) {
+            if (!isAutoRefineStep && soundEnabled.value) {
               const audioSuccess = document.getElementById('audio-success')
               if (audioSuccess) {
                 audioSuccess.currentTime = 0;
@@ -425,7 +433,7 @@
               if (Math.random() < 0.5) willBreak = true
             }
             // 播放失敗音效（非自動精煉時）
-            if (!isAutoRefineStep) {
+            if (!isAutoRefineStep && soundEnabled.value) {
               const audioFail = document.getElementById('audio-fail')
               if (audioFail) {
                 audioFail.currentTime = 0;
@@ -457,6 +465,13 @@
           msg.value = '裝備已修理，可再次精煉！'
           imgSrc.value = '/img/rolovec/success.png'
           animateClass.value = ''
+          if (soundEnabled.value) {
+            const audioSuccess = document.getElementById('audio-success')
+            if (audioSuccess) {
+              audioSuccess.currentTime = 0;
+              audioSuccess.play();
+            }
+          }
         }
         function doReset() {
           refineLevel.value = 0
@@ -561,7 +576,9 @@
           funnyTitle, titleClass,
           passRateText, theoRateText,
           showStats, statsRows,
-          totalRepair
+          totalRepair,
+          soundEnabled,
+          toggleSound,
         }
       }
     }).mount('#app')
