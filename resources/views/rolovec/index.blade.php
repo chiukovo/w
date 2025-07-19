@@ -34,8 +34,8 @@
   <script src="https://unpkg.com/vue@3"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- 音效 -->
-  <audio id="audio-success" src="/mp4/refine_success.wav" preload="auto"></audio>
-  <audio id="audio-fail" src="/mp4/refine_failed.wav" preload="auto"></audio>
+  <audio id="audio-success" src="/mp4/refine_success.wav" preload="auto" volume="0.25"></audio>
+  <audio id="audio-fail" src="/mp4/refine_failed.wav" preload="auto" volume="0.25"></audio>
   <style>
     html, body {
       width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9;
@@ -387,6 +387,15 @@
         function toggleSound() {
           soundEnabled.value = !soundEnabled.value
         }
+        // 音效預設音量
+        function setAudioVolume() {
+          const audioSuccess = document.getElementById('audio-success')
+          const audioFail = document.getElementById('audio-fail')
+          if (audioSuccess) audioSuccess.volume = 0.25
+          if (audioFail) audioFail.volume = 0.25
+        }
+        setTimeout(setAudioVolume, 0)
+
         function doRefine() {
           if (broken.value || isMax.value) return
           totalRefine.value++
