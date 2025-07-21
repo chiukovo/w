@@ -122,8 +122,6 @@
     }
     @media (min-width: 640px) {
       .big-btn {
-        min-width: 128px !important;
-        max-width: 140px !important;
       }
     }
     .fade-enter-active, .fade-leave-active { transition: all 0.25s; }
@@ -169,51 +167,44 @@
       </div>
       <div class="mt-1 mb-3 text-center text-sm text-blue-500 font-semibold tracking-wide" v-if="isMax">
         🎉 恭喜你成功達到 +15 🎉
-      </div>
-      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>  
+      </div>      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>  
       <!-- 按鈕 -->
-      <div class="flex gap-3 mb-2">
+      <div class="flex flex-row gap-3 mb-2 w-full">
         <button @click="doRefine"
-          class="flex-1 big-btn bg-yellow-400 hover:bg-yellow-500 text-white font-bold rounded-xl transition shadow"
+          class="big-btn bg-yellow-400 hover:bg-yellow-500 text-white font-bold rounded-xl transition shadow flex-1"
           :disabled="broken || isMax"
           :class="(broken || isMax) ? 'opacity-60 cursor-not-allowed' : ''"
         >精煉</button>
-        <div class="flex flex-col items-center justify-center flex-1" v-show="broken">
-          <button @click="doRepair"
-            class="w-full big-btn bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow mb-1"
-          >修理</button>
-        </div>
+        <button @click="doRepair" v-show="broken"
+          class="big-btn bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition shadow flex-1"
+        >修理</button>
       </div>
 
-      <!-- 精煉下方功能按鈕區塊（RWD優化，桌機同排不換行） -->
-      <div class="flex flex-wrap sm:flex-nowrap gap-2 mb-4 justify-center items-center max-w-md mx-auto">
+      <!-- 精煉下方功能按鈕區塊（水平排列，每個按鈕flex-1） -->
+      <div class="flex flex-row gap-2 mb-4 w-full">
         <button @click="toggleSound"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
-          style="min-width: 64px; max-width: 140px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
         >
-          <span class="text-xl">@{{ soundEnabled ? '🔊' : '🔇' }}</span>
-          <span class="text-xs sm:text-base mt-1">音效</span>
+          <span class="text-lg">@{{ soundEnabled ? '🔊' : '🔇' }}</span>
+          <span class="text-xs mt-1">音效</span>
         </button>
         <button @click="doReset"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
-          style="min-width: 64px; max-width: 140px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
         >
-          <span class="text-xl">♻️</span>
-          <span class="text-xs sm:text-base mt-1">重製</span>
+          <span class="text-lg">♻️</span>
+          <span class="text-xs mt-1">重製</span>
         </button>
         <button @click="showSetting = true"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
-          style="min-width: 64px; max-width: 140px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
         >
-          <span class="text-xl">⚙️</span>
-          <span class="text-xs sm:text-base mt-1">設置</span>
+          <span class="text-lg">⚙️</span>
+          <span class="text-xs mt-1">設置</span>
         </button>
         <button @click="showStats = true"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
-          style="min-width: 64px; max-width: 140px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
         >
-          <span class="text-xl">📊</span>
-          <span class="text-xs sm:text-base mt-1">統計</span>
+          <span class="text-lg">📊</span>
+          <span class="text-xs mt-1">統計</span>
         </button>
       </div>
 
