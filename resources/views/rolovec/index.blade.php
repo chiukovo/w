@@ -12,7 +12,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="RO 守護永恆的愛 Classic 精煉模擬器" />
   <meta property="og:description" content="最完整RO精煉模擬器！自動計算精煉花費與運氣，讓你無痛練習衝裝，體驗非洲人歐洲人手氣！" />
-  <meta property="og:image" content="https://94ichouo.com/img/rolovec/success.png?v=2" />
+  <meta property="og:image" content="https://94ichouo.com/img/rolovec/success.png?v=3" />
   <meta property="og:url" content="https://94ichouo.com/rolovec" />
 
   <!-- 行動裝置/Apple 裝置啟用桌面模式 -->
@@ -20,7 +20,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
 
   <!-- Favicon 建議 -->
-  <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png?v=2" type="image/png" />
+  <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png?v=3" type="image/png" />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
   <script>
@@ -368,7 +368,7 @@
         }
         const broken = ref(false)
         const isMax = computed(() => refineLevel.value >= 15)
-        const imgSrc = ref('/img/rolovec/success.png?v=2')
+        const imgSrc = ref('/img/rolovec/success.png?v=3')
         const repairCost = ref(2000000) // 預設200萬
         const totalCost = ref(0)
         const totalMaterial = ref(0)
@@ -496,7 +496,7 @@
             }
             refineLevel.value++
             msg.value = rate === 100 ? '精煉成功！（100%）' : `精煉成功！（${rate}%）`
-            imgSrc.value = '/img/rolovec/success.png?v=2'
+            imgSrc.value = '/img/rolovec/success.png?v=3'
             animateClass.value = 'animate-success'
             // 播放成功音效（非自動精煉時）
             if (!isAutoRefineStep && soundEnabled.value) {
@@ -554,7 +554,7 @@
           totalCost.value += repairCost.value
           broken.value = false
           msg.value = '裝備已修理，可再次精煉！'
-          imgSrc.value = '/img/rolovec/success.png?v=2'
+          imgSrc.value = '/img/rolovec/success.png?v=3'
           animateClass.value = ''
           if (soundEnabled.value) {
             const audioSuccess = document.getElementById('audio-success')
@@ -567,7 +567,7 @@
         function doReset() {
           refineLevel.value = 0
           broken.value = false
-          imgSrc.value = '/img/rolovec/success.png?v=2'
+          imgSrc.value = '/img/rolovec/success.png?v=3'
           repairCost.value = 2000000
           totalCost.value = 0
           totalMaterial.value = 0
