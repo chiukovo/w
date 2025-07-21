@@ -126,6 +126,7 @@
           >
             +@{{ refineLevel }}
           </div>
+          <div class="text-xs text-gray-400 mt-1">成功率：<span class="font-bold text-green-600">@{{ isMax ? '---' : `${successRate}%` }}</span></div>
         </div>
       </div>
 
@@ -319,7 +320,7 @@
         const totalCost = ref(0)
         const totalMaterial = ref(0)
         const totalRefine = ref(0)
-        const msg = ref('隨便玩玩 別走心^_^')
+        const msg = ref('手感來了再去遊戲點裝')
         const animateClass = ref('')
         const msgClass = computed(() => {
           if (isMax.value) return 'text-pink-500 text-xl font-bold animate-pulse'
@@ -518,7 +519,7 @@
           totalCost.value = 0
           totalMaterial.value = 0
           totalRefine.value = 0
-          msg.value = '歡迎精煉，祝你+15！'
+          msg.value = '手感來了再去遊戲點裝'
           animateClass.value = ''
           repairCount3.value = 0
           repairCount4.value = 0
