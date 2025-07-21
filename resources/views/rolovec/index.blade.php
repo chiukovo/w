@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="description" content="RO 守護永恆的愛 Classic 精煉模擬器，真實還原官方裝備衝裝成功率與損壞規則，手機/電腦皆可用。支援統計花費、修理、運氣計算，讓你一秒體驗非洲人、歐洲人手感！" />
   <meta name="keywords" content="RO, 精煉, 守護永恆的愛, classic, 衝裝, 裝備模擬, 精煉模擬, 衝裝模擬, 精煉成功率, 裝備損壞, RO模擬器, 手遊, 遊戲工具, 傳說裝備, 遊戲, Ragnarok, MMO, RAGNAROK M" />
-  <meta name="author" content="chiuko" />
+  <meta name="author" content="藍色白色的吉普車" />
 
   <!-- Open Graph 社群分享 -->
   <meta property="og:type" content="website" />
@@ -108,19 +108,9 @@
 
 <body class="min-h-screen flex items-center justify-center p-1 sm:p-2">
   <div id="app" v-cloak class="w-full flex items-center justify-center">
-    <div class="bg-white rounded-2xl shadow-xl px-2 py-3 sm:p-7 w-full max-w-xs sm:max-w-md mx-auto select-none">
-      <h2
-        class="text-2xl sm:text-3xl font-extrabold text-center mb-2 transition-all duration-200"
-        :class="[
-          'tracking-wide leading-snug',
-          titleClass
-        ]"
-      >
-        @{{ funnyTitle }}
-      </h2>
-      
-      <!-- 主要重點區塊 -->
-      <div class="flex flex-col items-center mb-2">
+    <div class="bg-white rounded-2xl shadow-xl px-2 py-3 sm:p-7 w-full max-w-xs sm:max-w-md mx-auto select-none">      
+      <!-- 主要重點區塊（精煉等級移到圖片右側，RWD優化） -->
+      <div class="flex items-center justify-center mb-2">
         <div id="imgBox"
           class="relative mb-3 w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center rounded-2xl border-4 border-blue-400 shadow bg-white transition-all duration-300"
           :class="[broken ? 'broken-effect' : '', animateClass, isMax ? 'celebrate' : '']"
@@ -128,22 +118,22 @@
         >
           <img :src="imgSrc" alt="裝備圖" class="w-28 h-28 sm:w-36 sm:h-36 object-contain pointer-events-none select-none transition-all duration-150">
         </div>
+        <div class="flex flex-col items-center justify-center ml-3 sm:ml-6">
+          <div class="text-lg sm:text-xl font-bold text-gray-600 mb-1">精煉等級</div>
+          <div
+            class="text-4xl sm:text-5xl font-extrabold tracking-wider drop-shadow"
+            :class="[refineLevel >= 10 ? 'pink-glow' : 'text-pink-600']"
+          >
+            +@{{ refineLevel }}
+          </div>
+        </div>
       </div>
 
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-1">
         <div class="flex flex-col items-center justify-center w-full">
-        <div class="text-lg sm:text-xl font-bold text-gray-600">精煉等級</div>
-        <div
-          class="text-4xl sm:text-5xl font-extrabold tracking-wider drop-shadow"
-          :class="[refineLevel >= 10 ? 'pink-glow' : 'text-pink-600']"
-        >
-          +@{{ refineLevel }}
-        </div>
-        </div>
-        <div class="flex flex-col items-center justify-center w-full mt-2 sm:mt-0">
-          <div class="text-lg sm:text-xl font-bold text-gray-600">總花費</div>
-          <div class="text-3xl sm:text-4xl font-extrabold text-yellow-500 tracking-wider drop-shadow">@{{ totalCost.toLocaleString() }}</div>
-          <div class="text-xs text-gray-400">(Zeny)</div>
+        <div class="text-lg sm:text-xl font-bold text-gray-600">總花費</div>
+        <div class="text-3xl sm:text-4xl font-extrabold text-yellow-500 tracking-wider drop-shadow">@{{ totalCost.toLocaleString() }}</div>
+        <div class="text-xs text-gray-400">(Zeny)</div>
         </div>
       </div>
       <div class="mt-1 mb-3 text-center text-sm text-blue-500 font-semibold tracking-wide" v-if="isMax">
@@ -306,7 +296,7 @@
         }
       </style>
       <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
-        有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © chiuko All rights reserved.
+        有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
       </p>
     </div>
   </div>
@@ -329,7 +319,7 @@
         const totalCost = ref(0)
         const totalMaterial = ref(0)
         const totalRefine = ref(0)
-        const msg = ref('歡迎精煉，祝你+15！')
+        const msg = ref('隨便玩玩 別走心^_^')
         const animateClass = ref('')
         const msgClass = computed(() => {
           if (isMax.value) return 'text-pink-500 text-xl font-bold animate-pulse'
