@@ -17,7 +17,7 @@
 
   <!-- 行動裝置/Apple 裝置啟用桌面模式 -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="RO 守護永恆的愛 Classic 精煉模擬器" />
+  <meta name="mobile-web-app-capable" content="yes" />
 
   <!-- Favicon 建議 -->
   <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png?v=2" type="image/png" />
@@ -37,6 +37,8 @@
   <audio id="audio-success" src="/mp4/refine_success.wav" preload="auto" volume="0.25"></audio>
   <audio id="audio-fail" src="/mp4/refine_failed.wav" preload="auto" volume="0.25"></audio>
   <style>
+    .fade-enter-active, .fade-leave-active { transition: all 0.25s; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(20px); }
     html, body {
       width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9;
       touch-action: manipulation;
@@ -103,6 +105,34 @@
       }
     }
     [v-cloak] { display: none; }
+    .animate-fadein { animation: fadein 0.2s; }
+    @keyframes fadein { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
+    @media (max-width: 480px) {
+      .big-btn {
+        font-size: 1rem;
+        min-height: 2.5rem;
+        padding: 0.3rem 0.2rem;
+      }
+      .big-btn span {
+        font-size: 1.1rem;
+      }
+      .big-btn .text-xs {
+        font-size: 0.8rem;
+      }
+    }
+    @media (min-width: 640px) {
+      .big-btn {
+        min-width: 128px !important;
+        max-width: 140px !important;
+      }
+    }
+    .fade-enter-active, .fade-leave-active { transition: all 0.25s; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(20px); }
+    /* 美化滾動條 */
+    .scrollbar-thin { scrollbar-width: thin; }
+    .scrollbar-thumb-blue-200::-webkit-scrollbar { width: 6px; }
+    .scrollbar-thumb-blue-200::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 6px; }
+    .scrollbar-track-blue-50::-webkit-scrollbar-track { background: #eff6ff; }
   </style>
 </head>
 
@@ -278,29 +308,6 @@
           <div class="text-sm text-gray-600 text-center mt-2">修理總次數：<span class="font-bold text-blue-600">@{{ totalRepair }}</span></div>
         </div>
       </div>
-      <style>
-        .animate-fadein { animation: fadein 0.2s; }
-        @keyframes fadein { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
-        @media (max-width: 480px) {
-          .big-btn {
-            font-size: 1rem;
-            min-height: 2.5rem;
-            padding: 0.3rem 0.2rem;
-          }
-          .big-btn span {
-            font-size: 1.1rem;
-          }
-          .big-btn .text-xs {
-            font-size: 0.8rem;
-          }
-        }
-        @media (min-width: 640px) {
-          .big-btn {
-            min-width: 128px !important;
-            max-width: 140px !important;
-          }
-        }
-      </style>
       <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
         有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
       </p>
@@ -354,15 +361,6 @@
           </form>
         </div>
       </div>
-      <style>
-        .fade-enter-active, .fade-leave-active { transition: all 0.25s; }
-        .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(20px); }
-        /* 美化滾動條 */
-        .scrollbar-thin { scrollbar-width: thin; }
-        .scrollbar-thumb-blue-200::-webkit-scrollbar { width: 6px; }
-        .scrollbar-thumb-blue-200::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 6px; }
-        .scrollbar-track-blue-50::-webkit-scrollbar-track { background: #eff6ff; }
-      </style>
     </div>
   </div>
 
