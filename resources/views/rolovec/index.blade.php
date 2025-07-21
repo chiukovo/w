@@ -12,7 +12,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="RO 守護永恆的愛 Classic 精煉模擬器" />
   <meta property="og:description" content="最完整RO精煉模擬器！自動計算精煉花費與運氣，讓你無痛練習衝裝，體驗非洲人歐洲人手氣！" />
-  <meta property="og:image" content="https://94ichouo.com/img/rolovec/success.png" />
+  <meta property="og:image" content="https://94ichouo.com/img/rolovec/success.png?v=2" />
   <meta property="og:url" content="https://94ichouo.com/rolovec" />
 
   <!-- 行動裝置/Apple 裝置啟用桌面模式 -->
@@ -20,7 +20,7 @@
   <meta name="apple-mobile-web-app-title" content="RO 守護永恆的愛 Classic 精煉模擬器" />
 
   <!-- Favicon 建議 -->
-  <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png" type="image/png" />
+  <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png?v=2" type="image/png" />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
   <script>
@@ -108,7 +108,7 @@
 
 <body class="min-h-screen flex items-center justify-center p-1 sm:p-2">
   <div id="app" v-cloak class="w-full flex items-center justify-center">
-    <div class="bg-white rounded-2xl shadow-xl px-2 py-3 sm:p-7 w-full max-w-xs sm:max-w-md mx-auto select-none">      
+    <div class="m4 bg-white rounded-2xl shadow-xl px-2 py-3 sm:p-7 w-full max-w-xs sm:max-w-md mx-auto select-none">    
       <!-- 主要重點區塊（精煉等級移到圖片右側，RWD優化） -->
       <div class="flex items-center justify-center mb-2">
         <div id="imgBox"
@@ -140,7 +140,7 @@
       <div class="mt-1 mb-3 text-center text-sm text-blue-500 font-semibold tracking-wide" v-if="isMax">
         🎉 恭喜你成功達到 +15 🎉
       </div>
-
+      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>  
       <!-- 按鈕 -->
       <div class="flex gap-3 mb-2">
         <button @click="doRefine"
@@ -155,32 +155,32 @@
         </div>
       </div>
 
-      <!-- 精煉下方功能按鈕區塊（RWD優化，icon置中，文字縮小/隱藏） -->
-      <div class="flex flex-wrap gap-2 mb-4 justify-center items-center">
+      <!-- 精煉下方功能按鈕區塊（RWD優化，桌機同排不換行） -->
+      <div class="flex flex-wrap sm:flex-nowrap gap-2 mb-4 justify-center items-center max-w-md mx-auto">
         <button @click="toggleSound"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
-          style="min-width: 64px; max-width: 100px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
+          style="min-width: 64px; max-width: 140px;"
         >
           <span class="text-xl">@{{ soundEnabled ? '🔊' : '🔇' }}</span>
           <span class="text-xs sm:text-base mt-1">音效</span>
         </button>
         <button @click="doReset"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
-          style="min-width: 64px; max-width: 100px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
+          style="min-width: 64px; max-width: 140px;"
         >
           <span class="text-xl">♻️</span>
           <span class="text-xs sm:text-base mt-1">重製</span>
         </button>
         <button @click="showSetting = true"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
-          style="min-width: 64px; max-width: 100px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
+          style="min-width: 64px; max-width: 140px;"
         >
           <span class="text-xl">⚙️</span>
           <span class="text-xs sm:text-base mt-1">設置</span>
         </button>
         <button @click="showStats = true"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
-          style="min-width: 64px; max-width: 100px;"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-32"
+          style="min-width: 64px; max-width: 140px;"
         >
           <span class="text-xl">📊</span>
           <span class="text-xs sm:text-base mt-1">統計</span>
@@ -225,7 +225,6 @@
           <option :value="80">超快</option>
         </select>
       </div>
-      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>
 
       <!-- 統計彈窗（新增詳細資訊） -->
       <div v-if="showStats" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
@@ -295,6 +294,12 @@
             font-size: 0.8rem;
           }
         }
+        @media (min-width: 640px) {
+          .big-btn {
+            min-width: 128px !important;
+            max-width: 140px !important;
+          }
+        }
       </style>
       <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
         有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
@@ -315,7 +320,7 @@
         }
         const broken = ref(false)
         const isMax = computed(() => refineLevel.value >= 15)
-        const imgSrc = ref('/img/rolovec/success.png')
+        const imgSrc = ref('/img/rolovec/success.png?v=2')
         const repairCost = ref(2000000) // 預設200萬
         const totalCost = ref(0)
         const totalMaterial = ref(0)
@@ -443,7 +448,7 @@
             }
             refineLevel.value++
             msg.value = rate === 100 ? '精煉成功！（100%）' : `精煉成功！（${rate}%）`
-            imgSrc.value = '/img/rolovec/success.png'
+            imgSrc.value = '/img/rolovec/success.png?v=2'
             animateClass.value = 'animate-success'
             // 播放成功音效（非自動精煉時）
             if (!isAutoRefineStep && soundEnabled.value) {
@@ -486,12 +491,12 @@
               if (failLevel >= 5 && failLevel <= 15) {
                 refineBroken.value[failLevel]++
               }
-              msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value}）` + ((failLevel === 3 || failLevel === 4) ? `\n哎呀！+${failLevel} 紅槌又來啦！` : '')
-              imgSrc.value = '/img/rolovec/error.png?v=1'
+              msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value})`
+              imgSrc.value = '/img/rolovec/error.png?v=2'
               animateClass.value = 'animate-fail'
             } else {
               msg.value = `精煉失敗！掉一階（+${refineLevel.value}）`
-              imgSrc.value = '/img/rolovec/error.png?v=1'
+              imgSrc.value = '/img/rolovec/error.png?v=2'
               animateClass.value = 'animate-fail'
             }
           }
@@ -501,7 +506,7 @@
           totalCost.value += repairCost.value
           broken.value = false
           msg.value = '裝備已修理，可再次精煉！'
-          imgSrc.value = '/img/rolovec/success.png'
+          imgSrc.value = '/img/rolovec/success.png?v=2'
           animateClass.value = ''
           if (soundEnabled.value) {
             const audioSuccess = document.getElementById('audio-success')
@@ -514,7 +519,7 @@
         function doReset() {
           refineLevel.value = 0
           broken.value = false
-          imgSrc.value = '/img/rolovec/success.png'
+          imgSrc.value = '/img/rolovec/success.png?v=2'
           repairCost.value = 2000000
           totalCost.value = 0
           totalMaterial.value = 0
