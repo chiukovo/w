@@ -163,16 +163,60 @@
           >修理</button>
         </div>
       </div>
-      <!-- 重製按鈕（右下角小字）和音效開關 -->
-      <div class="w-full flex justify-end items-center gap-2">
+
+      <!-- 精煉下方功能按鈕區塊（RWD優化，icon置中，文字縮小/隱藏） -->
+      <div class="flex flex-wrap gap-2 mb-4 justify-center items-center">
         <button @click="toggleSound"
-          class="text-xs rounded bg-gray-100 hover:bg-gray-300 text-gray-500 px-2 py-1 mr-1 transition"
-          style="border: none; box-shadow: none; min-width: 56px;"
-        >@{{ soundEnabled ? '🔊' : '🔇' }}</button>
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
+          style="min-width: 64px; max-width: 100px;"
+        >
+          <span class="text-xl">@{{ soundEnabled ? '🔊' : '🔇' }}</span>
+          <span class="text-xs sm:text-base mt-1">音效</span>
+        </button>
         <button @click="doReset"
-          class="text-xs text-gray-400 hover:text-gray-600 underline px-2 py-1"
-          style="background: none; border: none; box-shadow: none;"
-        >重製</button>
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
+          style="min-width: 64px; max-width: 100px;"
+        >
+          <span class="text-xl">♻️</span>
+          <span class="text-xs sm:text-base mt-1">重製</span>
+        </button>
+        <button @click="showSetting = true"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
+          style="min-width: 64px; max-width: 100px;"
+        >
+          <span class="text-xl">⚙️</span>
+          <span class="text-xs sm:text-base mt-1">設置</span>
+        </button>
+        <button @click="showStats = true"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-2 py-2 w-16 sm:w-24"
+          style="min-width: 64px; max-width: 100px;"
+        >
+          <span class="text-xl">📊</span>
+          <span class="text-xs sm:text-base mt-1">統計</span>
+        </button>
+      </div>
+
+      <!-- 設置彈窗 -->
+      <div v-if="showSetting" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
+          <button @click="showSetting = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">設置</h3>
+          <div class="mb-4">
+            <label for="settingRepairCost" class="text-gray-600 text-sm mb-2 block">自訂修理費：</label>
+            <input id="settingRepairCost" type="number" v-model.number="settingRepairCost" min="0" step="1000"
+              class="w-full rounded border border-blue-300 px-2 py-1 text-right focus:ring focus:border-blue-500 outline-none text-lg font-bold" />
+            <span class="text-gray-500 text-xs">Zeny</span>
+          </div>
+          <div class="mb-4">
+            <label for="settingRefineLevel" class="text-gray-600 text-sm mb-2 block">自訂精煉等級：</label>
+            <input id="settingRefineLevel" type="number" v-model.number="settingRefineLevel" min="0" max="14"
+              class="w-full rounded border border-pink-300 px-2 py-1 text-center focus:ring focus:border-pink-500 outline-none text-lg font-bold" />
+            <span class="text-gray-500 text-xs">+等級（0~14）</span>
+          </div>
+          <div class="flex justify-center">
+            <button @click="applySetting" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition text-base">確認</button>
+          </div>
+        </div>
       </div>
       <!-- 自動精煉區塊：自動與速度同一行 -->
       <div class="flex items-center justify-center gap-2 mb-4 mt-2 w-full">
@@ -192,53 +236,34 @@
       </div>
       <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>
 
-      <!-- 次要統計 -->
-      <div class="bg-gray-50 rounded-xl px-4 py-3 mt-2 shadow-inner text-base sm:text-lg">
-        <!-- 自訂精煉等級 -->
-        <div class="flex items-center justify-center gap-2 mb-2">
-          <label for="customRefineLevel" class="text-gray-600 text-sm">自訂精煉等級：</label>
-          <input id="customRefineLevel" type="number" min="0" max="14" v-model.number="refineLevel" :disabled="isMax" @change="onCustomRefineChange" class="w-16 text-center rounded border border-pink-300 px-2 py-1 text-lg font-bold focus:ring focus:border-pink-500 outline-none" style="max-width: 4.5rem;" />
-          <span class="text-lg font-extrabold tracking-wider drop-shadow" :class="[refineLevel >= 10 ? 'pink-glow' : 'text-pink-600']">+@{{ refineLevel }}</span>
-        </div>
-        <!-- 修理費設定 -->
-        <div class="flex items-center justify-between gap-2 mb-2 px-1 text-base sm:text-lg">
-          <label for="repairCostInput" class="text-gray-500">修理費：</label>
-          <input id="repairCostInput" type="number" v-model.number="repairCost" min="0" step="1000"
-            class="w-28 rounded border border-blue-300 px-2 py-1 text-right focus:ring focus:border-blue-500 outline-none"
-            :disabled="isMax"
-          >
-          <span class="text-gray-500 text-xs">Zeny</span>
-        </div>
-        <div v-if="repairCount3 > 0 || repairCount4 > 0" class="text-pink-600 font-bold animate-bounce mt-2 text-center">
-          <span v-if="repairCount3 > 0">🔨 +3 紅槌：@{{ repairCount3 }} 把　</span><br>
-          <span v-if="repairCount4 > 0">🔨 +4 紅槌：@{{ repairCount4 }} 把　</span>
-        </div>
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-gray-600">成功率</span>
-          <span class="font-bold text-green-600">@{{ isMax ? '---' : `${successRate}%` }}</span>
-        </div>
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-gray-600">材料消耗</span>
-          <span class="font-bold text-pink-700">@{{ isMax ? '---' : materialCost.toLocaleString() }}</span>
-        </div>
-        <div class="flex justify-between items-center mb-1">
-          <span class="text-gray-600">修理費</span>
-          <span class="font-bold text-blue-600">@{{ repairCost.toLocaleString() }}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600">精煉次數</span>
-          <span class="font-bold text-gray-700">@{{ totalRefine }}</span>
-        </div>
-        <div class="w-full flex justify-center mt-4">
-          <button @click="showStats = true" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition text-base">統計</button>
-        </div>
-
-      </div>
-
+      <!-- 統計彈窗（新增詳細資訊） -->
       <div v-if="showStats" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
           <button @click="showStats = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
-          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">各等級精煉統計</h3>
+          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">精煉統計</h3>
+          <div class="mb-4">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-gray-600">成功率</span>
+              <span class="font-bold text-green-600">@{{ isMax ? '---' : `${successRate}%` }}</span>
+            </div>
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-gray-600">材料消耗</span>
+              <span class="font-bold text-pink-700">@{{ isMax ? '---' : materialCost.toLocaleString() }}</span>
+            </div>
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-gray-600">修理費</span>
+              <span class="font-bold text-blue-600">@{{ repairCost.toLocaleString() }}</span>
+            </div>
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-gray-600">精煉次數</span>
+              <span class="font-bold text-gray-700">@{{ totalRefine }}</span>
+            </div>
+            <div v-if="repairCount3 > 0 || repairCount4 > 0" class="text-pink-600 font-bold animate-bounce mt-2 text-center">
+              <span v-if="repairCount3 > 0">🔨 +3 紅槌：@{{ repairCount3 }} 把　</span><br>
+              <span v-if="repairCount4 > 0">🔨 +4 紅槌：@{{ repairCount4 }} 把　</span>
+            </div>
+          </div>
+          <h4 class="text-base font-bold text-blue-600 mb-2 text-center">各等級精煉統計</h4>
           <table class="w-full text-sm mb-2">
             <thead>
               <tr class="border-b">
@@ -266,6 +291,19 @@
       <style>
         .animate-fadein { animation: fadein 0.2s; }
         @keyframes fadein { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
+        @media (max-width: 480px) {
+          .big-btn {
+            font-size: 1rem;
+            min-height: 2.5rem;
+            padding: 0.3rem 0.2rem;
+          }
+          .big-btn span {
+            font-size: 1.1rem;
+          }
+          .big-btn .text-xs {
+            font-size: 0.8rem;
+          }
+        }
       </style>
       <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
         有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © chiuko All rights reserved.
@@ -572,6 +610,21 @@
           return sum
         })
 
+        const showSetting = ref(false)
+        const settingRepairCost = ref(repairCost.value)
+        const settingRefineLevel = ref(refineLevel.value)
+        function applySetting() {
+          repairCost.value = settingRepairCost.value
+          refineLevel.value = Math.max(0, Math.min(14, settingRefineLevel.value))
+          showSetting.value = false
+        }
+        watch(showSetting, (val) => {
+          if (val) {
+            settingRepairCost.value = repairCost.value
+            settingRefineLevel.value = refineLevel.value
+          }
+        })
+
         return {
           refineLevel, broken, isMax, imgSrc, repairCost,
           totalCost, totalMaterial, totalRefine,
@@ -588,6 +641,10 @@
           totalRepair,
           soundEnabled,
           toggleSound,
+          showSetting,
+          settingRepairCost,
+          settingRefineLevel,
+          applySetting,
         }
       }
     }).mount('#app')
