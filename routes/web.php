@@ -48,3 +48,8 @@ Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'ind
 //下注
 Route::post('/api/bets/{type}', 'App\Http\Controllers\TaiwanlotteryController@bets');
 Route::get('/api/rankings/win-rate', 'App\Http\Controllers\TaiwanlotteryController@rankings');
+
+Route::prefix('api')->group(function () {
+    Route::get('comments', [\App\Http\Controllers\Api\CommentController::class, 'index']);
+    Route::post('comments', [\App\Http\Controllers\Api\CommentController::class, 'store']);
+});

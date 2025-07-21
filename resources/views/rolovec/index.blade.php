@@ -304,6 +304,65 @@
       <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
         有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
       </p>
+
+      <!-- 聊天視窗風格留言板（全部預設收合，icon美化） -->
+      <div class="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 w-full max-w-xs sm:max-w-md select-none">
+        <div class="relative">
+          <div @click="commentPanelOpen = !commentPanelOpen" class="flex items-center cursor-pointer bg-gradient-to-r from-gray-100 via-blue-50 to-gray-100 rounded-xl px-4 py-2 shadow-lg border border-blue-200 hover:from-blue-100 hover:to-blue-100 transition relative">
+            <span class="text-blue-700 font-bold text-base flex-1 flex items-center gap-2">
+              <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 0 1-4.39-1.01L3 21l1.01-3.61A7.96 7.96 0 0 1 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z"/></svg>
+              留言板
+              <span v-if="commentHasNew" class="ml-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            </span>
+            <span class="text-blue-400 text-xl transition-transform" :class="commentPanelOpen ? 'rotate-180' : ''">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+            </span>
+          </div>
+          <transition name="fade">
+            <div v-if="commentPanelOpen" class="bg-white rounded-xl px-4 py-3 shadow-xl border-blue-200 border mt-2">
+              <div class="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50 pr-1">
+                <div v-if="comments.length === 0" class="text-gray-400 text-center py-2">目前沒有留言，快來分享你的精煉心得！</div>
+                <div v-else class="flex flex-col gap-2 mb-2">
+                  <div v-for="(c, idx) in comments" :key="c.id || idx" class="rounded-lg border border-blue-100 bg-white px-3 py-2 shadow-sm" style="flex-direction: column-reverse;">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-bold text-blue-700 text-sm">@{{ c.name || '匿名' }}</span>
+                      <span class="text-xs text-gray-400">@{{ c.time }}</span>
+                    </div>
+                    <div class="text-gray-700 whitespace-pre-line text-base">@{{ c.text }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-center mt-2">
+                <button @click="showCommentModal = true" class="bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition px-4 py-1 text-sm flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m0 0l-6-6m6 6l6-6"/></svg>
+                  我要留言
+                </button>
+              </div>
+            </div>
+          </transition>
+        </div>
+      </div>
+      <!-- 留言彈窗 -->
+      <div v-if="showCommentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
+          <button @click="showCommentModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">我要留言</h3>
+          <form @submit.prevent="addComment" class="flex flex-col gap-2 mb-2">
+            <input v-model="commentName" type="text" maxlength="20" required placeholder="暱稱 (必填)" class="rounded border border-blue-300 px-2 py-1 text-base focus:ring focus:border-blue-500 outline-none" />
+            <textarea v-model="commentText" rows="2" maxlength="200" required placeholder="留言內容 (限200字)" class="rounded border border-pink-300 px-2 py-1 text-base focus:ring focus:border-pink-500 outline-none resize-none"></textarea>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition px-4 py-2 mt-1">送出留言</button>
+          </form>
+        </div>
+      </div>
+      <style>
+        .fade-enter-active, .fade-leave-active { transition: all 0.25s; }
+        .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(20px); }
+        /* 美化滾動條 */
+        .scrollbar-thin { scrollbar-width: thin; }
+        .scrollbar-thumb-blue-200::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thumb-blue-200::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 6px; }
+        .scrollbar-track-blue-50::-webkit-scrollbar-track { background: #eff6ff; }
+      </style>
     </div>
   </div>
 
@@ -621,6 +680,112 @@
           }
         })
 
+        // 留言板功能
+        const commentPanelOpen = ref(false)
+        const comments = ref([])
+        const commentName = ref(localStorage.getItem('commentName') || '')
+        const commentText = ref('')
+        const showCommentModal = ref(false)
+        const commentLoading = ref(false)
+        const commentError = ref('')
+        const commentHasNew = ref(false)
+        let lastCommentCount = 0
+        let lastCommentId = null
+
+        // API: 取得留言列表
+        async function fetchComments(isAuto = false) {
+          commentLoading.value = !isAuto
+          commentError.value = ''
+          try {
+            const res = await fetch('/api/comments')
+            if (!res.ok) throw new Error('留言載入失敗')
+            const data = await res.json()
+            comments.value = (data || []).map(c => ({
+              id: c.id,
+              name: c.name,
+              text: c.content,
+              time: c.created_at ? new Date(c.created_at).toLocaleString('zh-TW', { hour12: false }) : ''
+            }))
+            // 紅點判斷：自動輪詢時只比對，不覆蓋 lastCommentId
+            if (isAuto && !commentPanelOpen.value) {
+              if (lastCommentId !== null && comments.value.length > 0 && comments.value[0].id !== lastCommentId) {
+                commentHasNew.value = true
+              }
+            }
+            // 非自動輪詢（首次載入或展開）才覆蓋 lastCommentId
+            if (!isAuto && comments.value.length > 0) {
+              lastCommentId = comments.value[0].id
+            }
+          } catch (e) {
+            if (!isAuto) commentError.value = e.message || '留言載入失敗'
+          } finally {
+            commentLoading.value = false
+          }
+        }
+
+        // API: 新增留言
+        async function addComment() {
+          commentError.value = ''
+          if (!commentName.value.trim()) {
+            commentError.value = '暱稱必填'
+            return
+          }
+          if (!commentText.value.trim()) {
+            commentError.value = '留言內容必填'
+            return
+          }
+          if (commentText.value.length > 200) {
+            commentError.value = '留言內容限200字內'
+            return
+          }
+          if (commentName.value.length > 20) {
+            commentError.value = '暱稱限20字內'
+            return
+          }
+          commentLoading.value = true
+          try {
+            const res = await fetch('/api/comments', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: commentName.value.trim(), content: commentText.value.trim() })
+            })
+            if (!res.ok) {
+              const err = await res.json()
+              commentError.value = err.message || '送出失敗'
+              return
+            }
+            // 暱稱記錄 localStorage
+            localStorage.setItem('commentName', commentName.value.trim())
+            commentText.value = ''
+            showCommentModal.value = false
+            await fetchComments()
+          } catch (e) {
+            commentError.value = e.message || '送出失敗'
+          } finally {
+            commentLoading.value = false
+          }
+        }
+
+        // 展開留言板時自動載入，並清除紅點，並更新 lastCommentId
+        watch(commentPanelOpen, (open) => {
+          if (open) {
+            fetchComments()
+            commentHasNew.value = false // 展開時紅點消失
+            // 展開時覆蓋 lastCommentId
+            if (comments.value.length > 0) {
+              lastCommentId = comments.value[0].id
+            }
+          }
+        })
+
+        // 定時10秒自動檢查新留言
+        setInterval(() => {
+          fetchComments(true)
+        }, 5000)
+
+        // 首次載入自動呼叫一次留言API
+        fetchComments()
+
         return {
           refineLevel, broken, isMax, imgSrc, repairCost,
           totalCost, totalMaterial, totalRefine,
@@ -641,6 +806,8 @@
           settingRepairCost,
           settingRefineLevel,
           applySetting,
+          commentPanelOpen, comments, commentName, commentText, addComment, showCommentModal,
+          commentLoading, commentError,commentHasNew
         }
       }
     }).mount('#app')
