@@ -306,19 +306,17 @@
       <!-- 聊天視窗風格留言板（全部預設收合，icon美化） -->
       <div class="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 w-full max-w-xs sm:max-w-md select-none">
         <div class="relative">
-          <div @click="commentPanelOpen = !commentPanelOpen" class="flex items-center cursor-pointer bg-gradient-to-r from-gray-100 via-blue-50 to-gray-100 rounded-xl px-4 py-2 shadow-lg border border-blue-200 hover:from-blue-100 hover:to-blue-100 transition relative">
-            <span class="text-blue-700 font-bold text-base flex-1 flex items-center gap-2">
+          <div @click="commentPanelOpen = !commentPanelOpen" class="flex items-center cursor-pointer bg-gradient-to-r from-gray-100 via-blue-50 to-gray-100 rounded-xl px-4 py-2 shadow-lg border border-blue-200 hover:from-blue-100 hover:to-blue-100 transition relative">            <span class="text-blue-700 font-bold text-base flex-1 flex items-center gap-2">
               <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 0 1-4.39-1.01L3 21l1.01-3.61A7.96 7.96 0 0 1 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z"/></svg>
               留言板
+              <span v-if="commentTotal > 0" class="ml-1 text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">@{{ commentTotal }}</span>
               <span v-if="commentHasNew" class="ml-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
             </span>
             <span class="text-blue-400 text-xl transition-transform" :class="commentPanelOpen ? 'rotate-180' : ''">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
             </span>
           </div>
-          <transition name="fade">
-            <div v-if="commentPanelOpen" class="bg-white rounded-xl px-4 py-3 shadow-xl border-blue-200 border mt-2">
-              <div class="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50 pr-1">
+          <transition name="fade">            <div v-if="commentPanelOpen" class="bg-white rounded-xl px-4 py-3 shadow-xl border-blue-200 border mt-2">              <div ref="commentScrollContainer" @scroll="onCommentScroll" class="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50 pr-1">
                 <div v-if="comments.length === 0" class="text-gray-400 text-center py-2">目前沒有留言，快來分享你的精煉心得！</div>
                 <div v-else class="flex flex-col gap-2 mb-2">
                   <div v-for="(c, idx) in comments" :key="c.id || idx" class="rounded-lg border border-blue-100 bg-white px-3 py-2 shadow-sm" style="flex-direction: column-reverse;">
@@ -328,6 +326,10 @@
                     </div>
                     <div class="text-gray-700 whitespace-pre-line text-base">@{{ c.text }}</div>
                   </div>
+                </div>
+                <!-- 加載更多的loading狀態 -->
+                <div v-if="commentLoadingMore" class="text-center py-2">
+                  <span class="text-xs text-gray-400">正在加載更多...</span>
                 </div>
               </div>
               <div class="flex justify-center mt-2">
@@ -667,9 +669,7 @@
             settingRepairCost.value = repairCost.value
             settingRefineLevel.value = refineLevel.value
           }
-        })
-
-        // 留言板功能
+        })        // 留言板功能
         const commentPanelOpen = ref(false)
         const comments = ref([])
         const commentName = ref(localStorage.getItem('commentName') || '')
@@ -678,37 +678,100 @@
         const commentLoading = ref(false)
         const commentError = ref('')
         const commentHasNew = ref(false)
+        const commentTotal = ref(0)
+        const commentCurrentPage = ref(1)
+        const commentHasMore = ref(true)
+        const commentScrollContainer = ref(null)
+        const commentLoadingMore = ref(false)
         let lastCommentCount = 0
-        let lastCommentId = null
-
-        // API: 取得留言列表
-        async function fetchComments(isAuto = false) {
-          commentLoading.value = !isAuto
+        let lastCommentId = null        // API: 取得留言列表
+        async function fetchComments(isAuto = false, loadMore = false) {
+          // 防止重複加載
+          if (loadMore && commentLoadingMore.value) return
+          
+          if (loadMore) {
+            commentLoadingMore.value = true
+          } else if (!isAuto) {
+            commentLoading.value = true
+          }
           commentError.value = ''
           try {
-            const res = await fetch('/api/comments')
+            const page = loadMore ? commentCurrentPage.value + 1 : 1
+            // 自動更新只拉第一頁
+            const url = isAuto ? '/api/comments?page=1' : `/api/comments?page=${page}`
+            const res = await fetch(url)
             if (!res.ok) throw new Error('留言載入失敗')
             const data = await res.json()
-            comments.value = (data || []).map(c => ({
+            
+            const newComments = (data.data || []).map(c => ({
               id: c.id,
               name: c.name,
               text: c.content,
               time: c.created_at ? new Date(c.created_at).toLocaleString('zh-TW', { hour12: false }) : ''
             }))
+              if (loadMore) {
+              // 如果返回的資料為空，表示沒有更多資料了
+              if (newComments.length === 0) {
+                commentHasMore.value = false
+              } else {
+                // 加載更多時追加到現有留言
+                comments.value = [...comments.value, ...newComments]
+                commentCurrentPage.value = page
+              }
+            } else if (isAuto) {
+              // 自動更新時只更新第一頁
+              if (comments.value.length > 0) {
+                // 保留除第一頁外的留言，只更新第一頁內容
+                const firstPageSize = 5
+                const restComments = comments.value.slice(firstPageSize)
+                comments.value = [...newComments, ...restComments]
+              } else {
+                comments.value = newComments
+              }
+            } else {
+              // 首次加載或刷新時替換所有留言
+              comments.value = newComments
+              commentCurrentPage.value = 1
+            }
+            
+            commentTotal.value = data.total || 0
+            // 只有在非loadMore或返回有資料時才更新has_more狀態
+            if (!loadMore || newComments.length > 0) {
+              commentHasMore.value = data.has_more || false
+            }
+            
             // 紅點判斷：自動輪詢時只比對，不覆蓋 lastCommentId
             if (isAuto && !commentPanelOpen.value) {
-              if (lastCommentId !== null && comments.value.length > 0 && comments.value[0].id !== lastCommentId) {
+              if (lastCommentId !== null && newComments.length > 0 && newComments[0].id !== lastCommentId) {
                 commentHasNew.value = true
               }
             }
             // 非自動輪詢（首次載入或展開）才覆蓋 lastCommentId
-            if (!isAuto && comments.value.length > 0) {
-              lastCommentId = comments.value[0].id
+            if (!isAuto && !loadMore && newComments.length > 0) {
+              lastCommentId = newComments[0].id
             }
           } catch (e) {
             if (!isAuto) commentError.value = e.message || '留言載入失敗'
           } finally {
-            commentLoading.value = false
+            if (loadMore) {
+              commentLoadingMore.value = false
+            } else if (!isAuto) {
+              commentLoading.value = false
+            }
+          }
+        }        // 滾動到底部加載更多
+        function onCommentScroll(event) {
+          const container = event.target
+          const scrollTop = container.scrollTop
+          const scrollHeight = container.scrollHeight
+          const clientHeight = container.clientHeight
+          
+          // 滾動到底部前50px時觸發加載，並防止重複加載
+          if (scrollTop + clientHeight >= scrollHeight - 50 && 
+              commentHasMore.value && 
+              !commentLoading.value && 
+              !commentLoadingMore.value) {
+            fetchComments(false, true)
           }
         }
 
@@ -794,9 +857,9 @@
           showSetting,
           settingRepairCost,
           settingRefineLevel,
-          applySetting,
-          commentPanelOpen, comments, commentName, commentText, addComment, showCommentModal,
-          commentLoading, commentError,commentHasNew
+          applySetting,          commentPanelOpen, comments, commentName, commentText, addComment, showCommentModal,
+          commentLoading, commentError, commentHasNew, commentTotal, commentCurrentPage, 
+          commentHasMore, commentScrollContainer, onCommentScroll, commentLoadingMore
         }
       }
     }).mount('#app')
