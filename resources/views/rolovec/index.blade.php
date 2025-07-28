@@ -927,6 +927,8 @@
           if (nickname.value) {
             await doReset()
           }
+
+          await fetchComments()
           document.title = funnyTitle.value
         })
         watch(refineLevel, (val) => {
