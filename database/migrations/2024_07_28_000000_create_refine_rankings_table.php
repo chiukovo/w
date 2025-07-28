@@ -8,7 +8,7 @@ return new class extends Migration {
     {
         Schema::create('refine_rankings', function (Blueprint $table) {
             $table->id();
-            $table->string('nickname', 32)->unique(); // 暱稱唯一
+            $table->string('nickname', 32); // 暱稱唯一
             $table->unsignedInteger('refine_count'); // 精煉次數
             $table->timestamp('achieved_at'); // 達成+15的時間
             $table->unsignedBigInteger('total_cost')->default(0); // 達成時總花費
