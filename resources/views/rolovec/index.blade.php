@@ -217,7 +217,8 @@
       <div v-if="showSetting" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
           <button @click="showSetting = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
-          <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
+          <h3>關於本站</h3>
+          <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center select-text">
             有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
           </p>
         </div>
