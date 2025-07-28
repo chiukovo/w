@@ -46,7 +46,7 @@ class RefineController extends Controller
         if (!$nickname) {
             return response()->json(['message' => '暱稱必填'], 422);
         }
-        $ip = $request->ip();
+        $ip = getClientIp();
         $sessionKey = "refine_{$nickname}_{$ip}";
         $state = session($sessionKey);
         if (!$state) {
