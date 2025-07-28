@@ -200,7 +200,7 @@
           <span class="text-xs mt-1">重製</span>
         </button>
         <button @click="showStats = true"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-yellow-300 text-yellow-700 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
         >
           <span class="text-lg">📊</span>
           <span class="text-xs mt-1">統計</span>
@@ -926,7 +926,11 @@
           if (nickname.value) {
             await doReset()
           }
+          document.title = funnyTitle.value
         })
+        watch(refineLevel, (val) => {
+          document.title = `+${val}｜RO守愛 Classic 精煉模擬器`;
+        }, { immediate: true })
 
         // 排行榜彈窗
         const showRankModal = ref(false)
