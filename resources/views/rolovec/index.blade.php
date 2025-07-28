@@ -79,7 +79,7 @@
         0 0 12px #fff,     /* 柔白光暈 */
         0 0 18px #f9a8d4,  /* 粉紅外暈1 */
         0 0 32px #f472b6,  /* 粉紅外暈2 */
-        0 0 52px #ec4899,  /* 粉紅主暈3 */
+        0 0 52px #ec4899,  /* 粹紅主暈3 */
         0 0 92px #f472b6,  /* 擴散一層 */
         0 0 8px #fff;      /* 提亮中央 */
       animation: pink-pulse 1.2s infinite alternate;
@@ -158,6 +158,13 @@
         </div>
       </div>
 
+      <!-- 暱稱顯示區塊 -->
+      <div class="flex items-center justify-center mb-1">
+        <span class="text-base font-bold text-blue-700 cursor-pointer select-none" @click="showNicknameModal = true">
+          暱稱：<span v-if="nickname">@{{ nickname }}</span><span v-else class="text-gray-400 underline">未輸入</span>
+        </span>
+      </div>
+
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-1">
         <div class="flex flex-col items-center justify-center w-full">
         <div class="text-lg sm:text-xl font-bold text-gray-600">總花費</div>
@@ -194,17 +201,17 @@
           <span class="text-lg">♻️</span>
           <span class="text-xs mt-1">重製</span>
         </button>
-        <button @click="showSetting = true"
-          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
-        >
-          <span class="text-lg">⚙️</span>
-          <span class="text-xs mt-1">設置</span>
-        </button>
         <button @click="showStats = true"
           class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-blue-300 text-blue-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
         >
           <span class="text-lg">📊</span>
           <span class="text-xs mt-1">統計</span>
+        </button>
+        <button @click="showSetting = true"
+          class="big-btn flex flex-col items-center justify-center bg-gray-100 hover:bg-gray-300 text-gray-500 font-bold rounded-xl transition shadow px-1 py-2 flex-1"
+        >
+          <span class="text-lg">ℹ️</span>
+          <span class="text-xs mt-1">關於</span>
         </button>
       </div>
 
@@ -212,25 +219,12 @@
       <div v-if="showSetting" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
           <button @click="showSetting = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
-          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">設置</h3>
-          <div class="mb-4">
-            <label for="settingRepairCost" class="text-gray-600 text-sm mb-2 block">自訂修理費：</label>
-            <input id="settingRepairCost" type="number" v-model.number="settingRepairCost" min="0" step="1000"
-              class="w-full rounded border border-blue-300 px-2 py-1 text-right focus:ring focus:border-blue-500 outline-none text-lg font-bold" />
-            <span class="text-gray-500 text-xs">Zeny</span>
-          </div>
-          <div class="mb-4">
-            <label for="settingRefineLevel" class="text-gray-600 text-sm mb-2 block">自訂精煉等級：</label>
-            <input id="settingRefineLevel" type="number" v-model.number="settingRefineLevel" min="0" max="14"
-              class="w-full rounded border border-pink-300 px-2 py-1 text-center focus:ring focus:border-pink-500 outline-none text-lg font-bold" />
-            <span class="text-gray-500 text-xs">+等級（0~14）</span>
-          </div>
-          <div class="flex justify-center">
-            <button @click="applySetting" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition text-base">確認</button>
-          </div>
+          <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
+            有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
+          </p>
         </div>
       </div>
-      <!-- 自動精煉區塊：自動與速度同一行 -->
+      <!-- 自動精煉區塊：自動與排行榜同一行 -->
       <div class="flex items-center justify-center gap-2 mb-4 mt-2 w-full">
         <button @click="toggleAutoRefine" v-if="!isMax"
           class="big-btn bg-pink-400 hover:bg-pink-500 text-white font-bold rounded-xl transition shadow px-4"
@@ -238,13 +232,27 @@
           :class="isMax ? 'opacity-60 cursor-not-allowed' : ''"
           style="min-width: 110px;"
         >@{{ autoRefineActive ? '停止' : '自動' }}</button>
-        <label class="ml-2 text-gray-500 text-base whitespace-nowrap">速度：</label>
-        <select v-model.number="autoRefineInterval" class="rounded border border-blue-300 px-2 py-1 text-base focus:ring focus:border-blue-500 outline-none w-28">
-          <option :value="500">正常</option>
-          <option :value="300">快</option>
-          <option :value="180">很快</option>
-          <option :value="80">超快</option>
-        </select>
+        <button @click="showRankModal = true; fetchRankings();"
+          class="big-btn flex flex-row items-center justify-center bg-yellow-200 hover:bg-yellow-300 text-yellow-700 font-bold rounded-xl transition shadow px-4 relative"
+          style="min-width: 110px;">
+          <span class="text-lg mr-1">🏆</span>
+          排行榜
+          <!-- 紅點動畫已移除 -->
+        </button>
+      </div>
+      <!-- 排行按鈕區塊（含icon） -->
+      <!-- 已移除歐皇/臉黑排行按鈕，改為單一排行榜按鈕於自動右方 -->
+
+      <!-- 暱稱輸入彈窗 -->
+      <div v-if="showNicknameModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
+          <button @click="showNicknameModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">請輸入暱稱</h3>
+          <input v-model="nicknameInput" maxlength="10" placeholder="請輸入暱稱" class="rounded border border-blue-300 px-3 py-2 text-base focus:ring focus:border-blue-500 outline-none w-full text-center font-bold mb-3" />
+          <div class="flex justify-center">
+            <button @click="saveNickname" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition text-base">儲存</button>
+          </div>
+        </div>
       </div>
 
       <!-- 統計彈窗（新增詳細資訊） -->
@@ -299,9 +307,42 @@
           <div class="text-sm text-gray-600 text-center mt-2">修理總次數：<span class="font-bold text-blue-600">@{{ totalRepair }}</span></div>
         </div>
       </div>
-      <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center" style="font-size: 11px;">
-        有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
-      </p>
+
+      <!-- 排行榜彈窗 -->
+      <div v-if="showRankModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
+          <button @click="showRankModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">排行榜</h3>
+          <div class="flex justify-center gap-2 mb-3">
+            <button @click="rankType = 'ou'" :class="rankType === 'ou' ? 'bg-yellow-300 text-yellow-800' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold">歐皇排行</button>
+            <button @click="rankType = 'hei'" :class="rankType === 'hei' ? 'bg-gray-400 text-white' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold">臉黑排行</button>
+          </div>
+          <div v-if="rankLoading" class="text-center text-gray-400 py-4">載入中...</div>
+          <div v-else-if="rankError" class="text-center text-red-500 py-4">@{{ rankError }}</div>
+          <div v-else>
+            <table class="w-full text-sm mb-2">
+              <thead>
+                <tr class="border-b">
+                  <th class="py-1 text-left">名次</th>
+                  <th class="py-1 text-left">暱稱</th>
+                  <th class="py-1 text-right">精煉次數</th>
+                  <th class="py-1 text-right">總花費</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, idx) in (rankType === 'ou' ? ouRank : heiRank)" :key="row.id || idx" :class="idx % 2 === 1 ? 'bg-gray-50' : ''">
+                  <td class="py-1">@{{ idx + 1 }}</td>
+                  <td class="py-1">@{{ row.nickname }}</td>
+                  <td class="py-1 text-right">@{{ row.refine_count }}</td>
+                  <td class="py-1 text-right">@{{ formatCost(row.total_cost) }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-xs text-gray-400 text-center">* 歐皇排行：精煉次數最少<br>* 臉黑排行：精煉次數最多</div>
+          </div>
+        </div>
+      </div>
+      <!-- END 排行榜彈窗 -->
 
       <!-- 聊天視窗風格留言板（全部預設收合，icon美化） -->
       <div class="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 w-full max-w-xs sm:max-w-md select-none">
@@ -358,7 +399,7 @@
   </div>
 
   <script>
-    const { createApp, ref, computed, watch } = Vue
+    const { createApp, ref, computed, watch, onMounted } = Vue
     createApp({
       setup() {
         const refineLevel = ref(0)
@@ -371,6 +412,7 @@
         const broken = ref(false)
         const isMax = computed(() => refineLevel.value >= 15)
         const imgSrc = ref('/img/rolovec/success.png?v=3')
+        // 修理費固定 200 萬
         const repairCost = ref(2000000) // 預設200萬
         const totalCost = ref(0)
         const totalMaterial = ref(0)
@@ -480,82 +522,115 @@
         }
         setTimeout(setAudioVolume, 0)
 
-        function doRefine() {
-          if (broken.value || isMax.value) return
-          totalRefine.value++
-          // 統計：記錄本次嘗試
-          if (refineLevel.value >= 4 && refineLevel.value < 15) {
-            refineTry.value[refineLevel.value + 1]++
+        // 暱稱功能
+        const nickname = ref(localStorage.getItem('nickname') || '')
+        const nicknameInput = ref(nickname.value)
+        const showNicknameModal = ref(false)
+        function saveNickname() {
+          if (!nicknameInput.value.trim()) return
+          nickname.value = nicknameInput.value.trim()
+          localStorage.setItem('nickname', nickname.value)
+          showNicknameModal.value = false
+        }
+        // 改寫 doRefine，呼叫後端API，遇到「請先初始化」自動補init再重試
+        async function doRefine() {
+          if (!nickname.value) {
+            showNicknameModal.value = true
+            return
           }
-          totalCost.value += zenyCost.value
-          totalMaterial.value += materialCost.value
-          let rate = successRate.value
-          let roll = Math.random()
-          if (rate === 100 || roll < rate / 100) {
-            // 統計：記錄本次成功
-            if (refineLevel.value >= 4 && refineLevel.value < 15) {
-              refinePass.value[refineLevel.value + 1]++
+          // 呼叫API
+          let res = await fetch('/api/refine/do', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nickname: nickname.value })
+          })
+          let data = await res.json()
+          // 若需初始化則自動補init再重試一次
+          if (!res.ok && data.message === '請先初始化') {
+            const initRes = await fetch('/api/refine/init', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ nickname: nickname.value })
+            })
+            const initData = await initRes.json()
+            if (!initRes.ok) {
+              msg.value = initData.message || '初始化失敗';
+              return
             }
-            refineLevel.value++
-            msg.value = rate === 100 ? '精煉成功！（100%）' : `精煉成功！（${rate}%）`
-            imgSrc.value = '/img/rolovec/success.png?v=3'
-            animateClass.value = 'animate-success'
-            // 播放成功音效（非自動精煉時）
-            if (!isAutoRefineStep && soundEnabled.value) {
+            // 再次嘗試精煉
+            res = await fetch('/api/refine/do', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ nickname: nickname.value })
+            })
+            data = await res.json()
+          }
+          if (!res.ok) {
+            msg.value = data.message || '精煉失敗';
+            return
+          }
+          refineLevel.value = data.refineLevel
+          totalCost.value = data.totalCost
+          totalRefine.value = data.totalRefine
+          broken.value = data.broken
+          msg.value = data.msg
+          animateClass.value = data.success ? 'animate-success' : 'animate-fail'
+          imgSrc.value = data.success ? '/img/rolovec/success.png?v=3' : '/img/rolovec/error.png?v=2'
+          // +15特效
+          if (data.isMax) {
+            setTimeout(() => {
+              msg.value = '🎉 恭喜你成功達到 +15！🎉'
+              animateClass.value = ''
+            }, 600)
+          }
+          // 音效
+          if (!isAutoRefineStep && soundEnabled.value) {
+            if (data.success) {
               const audioSuccess = document.getElementById('audio-success')
               if (audioSuccess) {
                 audioSuccess.currentTime = 0;
                 audioSuccess.play();
               }
-            }
-            if (refineLevel.value === 15) {
-              setTimeout(() => {
-                msg.value = '🎉 恭喜你成功達到 +15！🎉'
-                animateClass.value = ''
-              }, 600)
-            }
-          } else {
-            // 失敗一律掉1級
-            refineLevel.value = Math.max(0, refineLevel.value - 1)
-            let failLevel = refineLevel.value + 1 // 失敗前的等級
-            // +10~+14必壞、+4~+9 50%壞、其餘不壞
-            let willBreak = false
-            if (failLevel >= 10 && failLevel <= 14) {
-              willBreak = true
-            } else if (failLevel >= 4 && failLevel <= 9) {
-              if (Math.random() < 0.5) willBreak = true
-            }
-            // 播放失敗音效（非自動精煉時）
-            if (!isAutoRefineStep && soundEnabled.value) {
+            } else {
               const audioFail = document.getElementById('audio-fail')
               if (audioFail) {
                 audioFail.currentTime = 0;
                 audioFail.play();
               }
             }
-            if (willBreak) {
-              broken.value = true
-              if (failLevel === 4) repairCount3.value++
-              if (failLevel === 5) repairCount4.value++
-              // 統計：損壞次數
-              if (failLevel >= 5 && failLevel <= 15) {
-                refineBroken.value[failLevel]++
-              }
-              msg.value = `精煉失敗！裝備損壞！（掉至+${refineLevel.value})`
-              imgSrc.value = '/img/rolovec/error.png?v=2'
-              animateClass.value = 'animate-fail'
-            } else {
-              msg.value = `精煉失敗！掉一階（+${refineLevel.value}）`
-              imgSrc.value = '/img/rolovec/error.png?v=2'
-              animateClass.value = 'animate-fail'
+          }
+          // 寫入後端回傳的精煉統計
+          if (data.stats) {
+            for (let i = 0; i < 16; i++) {
+              refineTry.value[i] = data.stats.try[i] || 0
+              refinePass.value[i] = data.stats.pass[i] || 0
+              refineBroken.value[i] = data.stats.broken[i] || 0
             }
           }
         }
-        function doRepair() {
+        async function doRepair() {
           if (!broken.value) return
-          totalCost.value += repairCost.value
-          broken.value = false
-          msg.value = '裝備已修理，可再次精煉！'
+          if (!nickname.value) {
+            showNicknameModal.value = true
+            return
+          }
+          // 呼叫後端修理API，直接用預設 200 萬
+          const res = await fetch('/api/refine/repair', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nickname: nickname.value })
+          })
+          const data = await res.json()
+          if (!res.ok) {
+            msg.value = data.message || '修理失敗'
+            return
+          }
+          // 以後端回傳狀態為主
+          refineLevel.value = data.refineLevel ?? 0
+          broken.value = data.broken ?? false
+          totalCost.value = data.totalCost ?? 0
+          totalRefine.value = data.totalRefine ?? 0
+          msg.value = data.msg || '裝備已修理，可再次精煉！'
           imgSrc.value = '/img/rolovec/success.png?v=3'
           animateClass.value = ''
           if (soundEnabled.value) {
@@ -566,14 +641,30 @@
             }
           }
         }
-        function doReset() {
-          refineLevel.value = 0
-          broken.value = false
+        async function doReset() {
+          if (!nickname.value) {
+            showNicknameModal.value = true
+            return
+          }
+          // 呼叫後端初始化API
+          const res = await fetch('/api/refine/init', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nickname: nickname.value })
+          })
+          const data = await res.json()
+          if (!res.ok) {
+            msg.value = data.message || '重製失敗';
+            return
+          }
+          // 重設前端狀態（以後端回傳為主）
+          refineLevel.value = data.refineLevel ?? 0
+          broken.value = data.broken ?? false
+          totalCost.value = data.totalCost ?? 0
+          totalRefine.value = data.totalRefine ?? 0
           imgSrc.value = '/img/rolovec/success.png?v=3'
           repairCost.value = 2000000
-          totalCost.value = 0
           totalMaterial.value = 0
-          totalRefine.value = 0
           msg.value = '手感來了再去遊戲點裝'
           animateClass.value = ''
           repairCount3.value = 0
@@ -590,35 +681,41 @@
         let autoRefineTimer = null
         const autoRefineActive = ref(false)
         const autoRefineInterval = ref(180)
-        function autoRefineStep() {
+        const MIN_AUTO_REFINE_INTERVAL = 300 // ms
+        watch(autoRefineInterval, (val) => {
+          if (val < MIN_AUTO_REFINE_INTERVAL) autoRefineInterval.value = MIN_AUTO_REFINE_INTERVAL
+        })
+        // 自動精煉效能最佳化：async/await，確保每次都等 API 回來再排下一輪
+        async function autoRefineStep() {
+          if (!autoRefineActive.value) return
           if (broken.value) {
-            doRepair()
-            // 修理後自動繼續
-            setTimeout(() => {
-              if (autoRefineActive.value && !isMax.value) autoRefineStep()
-            }, autoRefineInterval.value)
+            await doRepair()
+            if (!autoRefineActive.value) return
+            if (!isMax.value) {
+              autoRefineTimer = setTimeout(() => { autoRefineStep() }, autoRefineInterval.value)
+            }
             return
           }
           if (isMax.value) {
             autoRefineActive.value = false
-            autoRefineTimer && clearTimeout(autoRefineTimer)
-            autoRefineTimer = null
+            if (autoRefineTimer) { clearTimeout(autoRefineTimer); autoRefineTimer = null }
             return
           }
           isAutoRefineStep = true;
-          doRefine()
+          await doRefine()
           isAutoRefineStep = false;
-          autoRefineTimer = setTimeout(() => {
-            if (autoRefineActive.value && !isMax.value) autoRefineStep()
-          }, autoRefineInterval.value)
+          if (!autoRefineActive.value) return
+          if (!isMax.value) {
+            autoRefineTimer = setTimeout(() => { autoRefineStep() }, autoRefineInterval.value)
+          }
         }
         function toggleAutoRefine() {
           if (autoRefineActive.value) {
             autoRefineActive.value = false
-            autoRefineTimer && clearTimeout(autoRefineTimer)
-            autoRefineTimer = null
+            if (autoRefineTimer) { clearTimeout(autoRefineTimer); autoRefineTimer = null }
           } else {
             if (isMax.value) return
+            if (autoRefineInterval.value < MIN_AUTO_REFINE_INTERVAL) autoRefineInterval.value = MIN_AUTO_REFINE_INTERVAL
             autoRefineActive.value = true
             autoRefineStep()
           }
@@ -657,19 +754,10 @@
         })
 
         const showSetting = ref(false)
-        const settingRepairCost = ref(repairCost.value)
-        const settingRefineLevel = ref(refineLevel.value)
         function applySetting() {
-          repairCost.value = settingRepairCost.value
-          refineLevel.value = Math.max(0, Math.min(14, settingRefineLevel.value))
           showSetting.value = false
         }
-        watch(showSetting, (val) => {
-          if (val) {
-            settingRepairCost.value = repairCost.value
-            settingRefineLevel.value = refineLevel.value
-          }
-        })        // 留言板功能
+        // 留言板功能
         const commentPanelOpen = ref(false)
         const comments = ref([])
         const commentName = ref(localStorage.getItem('commentName') || '')
@@ -835,10 +923,56 @@
           fetchComments(true)
         }, 5000)
 
-        // 首次載入自動呼叫一次留言API
-        fetchComments()
+        // 頁面載入時自動初始化 refine 狀態
+        onMounted(async () => {
+          if (nickname.value) {
+            await doReset()
+          }
+        })
+
+        // 排行榜彈窗
+        const showRankModal = ref(false)
+        const rankType = ref('ou') // 'ou' or 'hei'
+        const ouRank = ref([])
+        const heiRank = ref([])
+        const rankLoading = ref(false)
+        const rankError = ref('')
+        // 取得排行榜API
+        async function fetchRankings() {
+          rankLoading.value = true
+          rankError.value = ''
+          try {
+            const res = await fetch('/api/refine/rankings')
+            if (!res.ok) throw new Error('排行榜載入失敗')
+            const data = await res.json()
+            ouRank.value = data.ou || []
+            heiRank.value = data.hei || []
+            // 紅點已移除，不再設定 rankHasNew
+          } catch (e) {
+            rankError.value = e.message || '排行榜載入失敗'
+          } finally {
+            rankLoading.value = false
+          }
+        }
+        function showOuRank() {
+          rankType.value = 'ou'
+          showRankModal.value = true
+          fetchRankings()
+        }
+        function showHeiRank() {
+          rankType.value = 'hei'
+          showRankModal.value = true
+          fetchRankings()
+        }
+
+        function formatCost(cost) {
+          if (cost >= 1000000) return (cost / 1000000).toFixed(cost % 1000000 === 0 ? 0 : 1) + 'm';
+          if (cost >= 1000) return (cost / 1000).toFixed(cost % 1000 === 0 ? 0 : 1) + 'k';
+          return cost.toLocaleString();
+        }
 
         return {
+          // rankHasNew, fetchRankings 不再回傳 rankHasNew
           refineLevel, broken, isMax, imgSrc, repairCost,
           totalCost, totalMaterial, totalRefine,
           msg, animateClass, msgClass,
@@ -855,11 +989,14 @@
           soundEnabled,
           toggleSound,
           showSetting,
-          settingRepairCost,
-          settingRefineLevel,
-          applySetting,          commentPanelOpen, comments, commentName, commentText, addComment, showCommentModal,
+          applySetting,
+          commentPanelOpen, comments, commentName, commentText, addComment, showCommentModal,
           commentLoading, commentError, commentHasNew, commentTotal, commentCurrentPage, 
-          commentHasMore, commentScrollContainer, onCommentScroll, commentLoadingMore
+          commentHasMore, commentScrollContainer, onCommentScroll, commentLoadingMore,
+          nickname, nicknameInput, showNicknameModal, saveNickname,
+          showRankModal, rankType, ouRank, heiRank, rankLoading, rankError, showOuRank, showHeiRank,
+          fetchRankings,
+          formatCost
         }
       }
     }).mount('#app')

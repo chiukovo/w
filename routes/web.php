@@ -53,3 +53,11 @@ Route::prefix('api')->group(function () {
     Route::get('comments', [\App\Http\Controllers\Api\CommentController::class, 'index']);
     Route::post('comments', [\App\Http\Controllers\Api\CommentController::class, 'store']);
 });
+
+// 精煉/排行榜API（全部交由RefineController管理）
+Route::post('/api/refine/init', [App\Http\Controllers\RefineController::class, 'init']);
+Route::post('/api/refine/do', [App\Http\Controllers\RefineController::class, 'doRefine']);
+Route::post('/api/refine/rank', [App\Http\Controllers\RefineController::class, 'saveRank']);
+Route::get('/api/refine/rankings', [App\Http\Controllers\RefineController::class, 'rankings']);
+// 修理API路由
+Route::post('/api/refine/repair', [App\Http\Controllers\RefineController::class, 'repair']);
