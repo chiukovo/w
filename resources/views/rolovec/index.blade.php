@@ -172,9 +172,7 @@
         <div class="text-xs text-gray-400">(Zeny)</div>
         </div>
       </div>
-      <div class="mt-1 mb-3 text-center text-sm text-blue-500 font-semibold tracking-wide" v-if="isMax">
-        🎉 恭喜你成功達到 +15 🎉
-      </div>      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>  
+      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>  
       <!-- 按鈕 -->
       <div class="flex flex-row gap-3 mb-2 w-full">
         <button @click="doRefine"
