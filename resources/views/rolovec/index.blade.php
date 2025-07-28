@@ -681,7 +681,7 @@
         let autoRefineTimer = null
         const autoRefineActive = ref(false)
         const autoRefineInterval = ref(180)
-        const MIN_AUTO_REFINE_INTERVAL = 300 // ms
+        const MIN_AUTO_REFINE_INTERVAL = 200 // ms
         watch(autoRefineInterval, (val) => {
           if (val < MIN_AUTO_REFINE_INTERVAL) autoRefineInterval.value = MIN_AUTO_REFINE_INTERVAL
         })
