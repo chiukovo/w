@@ -131,6 +131,20 @@
     .scrollbar-thumb-blue-200::-webkit-scrollbar { width: 6px; }
     .scrollbar-thumb-blue-200::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 6px; }
     .scrollbar-track-blue-50::-webkit-scrollbar-track { background: #eff6ff; }
+
+    /* 排行榜彈窗尊榮特效 */
+    .rank-modal-gold {
+      border: 1px solid #fde68a;
+      box-shadow: 0 0 12px #fde68a;
+    }
+    .rank-crown {
+      text-shadow: 0 0 8px #facc15, 0 0 16px #fde68a;
+    }
+    .rank-row-gold {
+      background: linear-gradient(90deg,#fef9c3 0%,#fde68a 100%);
+      font-weight: bold;
+      color: #b45309;
+    }
   </style>
 </head>
 
@@ -155,6 +169,7 @@
             +@{{ refineLevel }}
           </div>
           <div class="text-xs text-gray-400 mt-1">成功率：<span class="font-bold text-green-600">@{{ isMax ? '---' : `${successRate}%` }}</span></div>
+          <div class="text-xs text-gray-400 mt-1">精煉次數：<span class="font-bold text-blue-600">@{{ totalRefine }}</span></div>
         </div>
       </div>
 
@@ -309,17 +324,20 @@
 
       <!-- 排行榜彈窗 -->
       <div v-if="showRankModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-        <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
+        <div class="bg-white rounded-2xl shadow-xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein border border-yellow-200">
           <button @click="showRankModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
-          <h3 class="text-lg font-bold text-center mb-3 text-blue-600">排行榜</h3>
+          <h3 class="text-2xl font-extrabold text-center mb-3 text-gray-800 drop-shadow flex items-center justify-center gap-2">
+            <span class="text-3xl">👑</span>
+            排行榜
+          </h3>
           <div class="flex justify-center gap-2 mb-3">
-            <button @click="rankType = 'ou'" :class="rankType === 'ou' ? 'bg-yellow-300 text-yellow-800' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold">歐皇排行</button>
-            <button @click="rankType = 'hei'" :class="rankType === 'hei' ? 'bg-gray-400 text-white' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold">臉黑排行</button>
+            <button @click="rankType = 'ou'" :class="rankType === 'ou' ? 'bg-yellow-300 text-yellow-800 shadow' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold transition">歐皇排行</button>
+            <button @click="rankType = 'hei'" :class="rankType === 'hei' ? 'bg-gray-400 text-white shadow' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold transition">臉黑排行</button>
           </div>
           <div v-if="rankLoading" class="text-center text-gray-400 py-4">載入中...</div>
           <div v-else-if="rankError" class="text-center text-red-500 py-4">@{{ rankError }}</div>
           <div v-else>
-            <table class="w-full text-sm mb-2">
+            <table class="w-full text-sm mb-2 border-separate border-spacing-y-1">
               <thead>
                 <tr class="border-b">
                   <th class="py-1 text-left">名次</th>
@@ -329,15 +347,29 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, idx) in (rankType === 'ou' ? ouRank : heiRank)" :key="row.id || idx" :class="idx % 2 === 1 ? 'bg-gray-50' : ''">
-                  <td class="py-1">@{{ idx + 1 }}</td>
-                  <td class="py-1">@{{ row.nickname }}</td>
-                  <td class="py-1 text-right">@{{ row.refine_count }}</td>
-                  <td class="py-1 text-right">@{{ formatCost(row.total_cost) }}</td>
+                <tr v-for="(row, idx) in (rankType === 'ou' ? ouRank : heiRank)" :key="row.id || idx"
+                  :class=" [
+                    idx === 0 ? 'bg-gradient-to-r from-yellow-100 via-yellow-50 to-yellow-200 font-extrabold text-yellow-700' : '',
+                    idx === 1 ? 'bg-gradient-to-r from-gray-100 via-gray-50 to-gray-200 font-bold text-gray-700' : '',
+                    idx === 2 ? 'bg-gradient-to-r from-orange-100 via-orange-50 to-orange-200 font-bold text-orange-700' : '',
+                    idx % 2 === 1 ? 'bg-gray-50' : ''
+                  ]"
+                  style="border-radius: 12px;"
+                >
+                  <td class="py-1 text-xl font-extrabold">
+                    <span v-if="idx === 0" class="text-yellow-500">🥇</span>
+                    <span v-else-if="idx === 1" class="text-gray-400">🥈</span>
+                    <span v-else-if="idx === 2" class="text-orange-400">🥉</span>
+                    <span v-else>@{{ idx + 1 }}</span>
+                  </td>
+                  <td class="py-1 font-bold">@{{ row.nickname }}</td>
+                  <td class="py-1 text-right font-bold">@{{ row.refine_count }}</td>
+                  <td class="py-1 text-right font-bold">@{{ formatCost(row.total_cost) }}</td>
                 </tr>
               </tbody>
             </table>
-            <div class="text-xs text-gray-400 text-center">* 歐皇排行：精煉次數最少<br>* 臉黑排行：精煉次數最多</div>
+            <div class="text-xs text-yellow-600 text-center mt-2 font-bold">* 歐皇排行：精煉次數最少</div>
+            <div class="text-xs text-yellow-600 text-center mt-2 font-bold">* 臉黑排行：精煉次數最多</div>
           </div>
         </div>
       </div>
