@@ -576,26 +576,6 @@
             body: JSON.stringify({ nickname: nickname.value })
           })
           let data = await res.json()
-          // 若需初始化則自動補init再重試一次
-          if (!res.ok && data.message === '請先初始化') {
-            const initRes = await fetch('/api/refine/init', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ nickname: nickname.value })
-            })
-            const initData = await initRes.json()
-            if (!initRes.ok) {
-              msg.value = initData.message || '初始化失敗';
-              return
-            }
-            // 再次嘗試精煉
-            res = await fetch('/api/refine/do', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ nickname: nickname.value })
-            })
-            data = await res.json()
-          }
           if (!res.ok) {
             msg.value = data.message || '精煉失敗';
             return
@@ -956,9 +936,6 @@
 
         // 頁面載入時自動初始化 refine 狀態
         onMounted(async () => {
-          if (nickname.value) {
-            await doReset()
-          }
 
           await fetchComments()
           document.title = funnyTitle.value

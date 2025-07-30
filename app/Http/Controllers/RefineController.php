@@ -48,9 +48,16 @@ class RefineController extends Controller
         }
         $ip = getClientIp();
         $sessionKey = "refine_{$nickname}_{$ip}";
-        $state = session($sessionKey);
+        $state = $request->session()->get($sessionKey);
         if (!$state) {
-            return response()->json(['message' => '請先初始化'], 400);
+            // session 不存在就初始化
+            $request->session()->put($sessionKey, [
+                'refineLevel' => 0,
+                'totalCost' => 0,
+                'totalRefine' => 0,
+                'broken' => false,
+            ]);
+            $state = $request->session()->get($sessionKey);
         }
 
         $refineLevel = $state['refineLevel'];
@@ -208,9 +215,16 @@ class RefineController extends Controller
         }
         $ip = getClientIp();
         $sessionKey = "refine_{$nickname}_{$ip}";
-        $state = session($sessionKey);
+        $state = $request->session()->get($sessionKey);
         if (!$state) {
-            return response()->json(['message' => '請先初始化'], 400);
+            // session 不存在就初始化
+            $request->session()->put($sessionKey, [
+                'refineLevel' => 0,
+                'totalCost' => 0,
+                'totalRefine' => 0,
+                'broken' => false,
+            ]);
+            $state = $request->session()->get($sessionKey);
         }
         $repairCost = $request->input('repairCost', 2000000); // 預設200萬
         $state['totalCost'] = ($state['totalCost'] ?? 0) + intval($repairCost);
