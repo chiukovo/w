@@ -936,6 +936,9 @@
 
         // 頁面載入時自動初始化 refine 狀態
         onMounted(async () => {
+          if (nickname.value) {
+            await doReset()
+          }
 
           await fetchComments()
           document.title = funnyTitle.value
