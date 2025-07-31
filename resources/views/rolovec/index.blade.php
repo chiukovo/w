@@ -187,7 +187,7 @@
         <div class="text-xs text-gray-400">(Zeny)</div>
         </div>
       </div>
-      <div id="msg" class="text-center mt-1 h-7 sm:text-lg text-base font-semibold min-h-[2.2rem]" :class="msgClass">@{{ msg }}</div>  
+      <div id="msg" class="text-center mt-1 flex flex-col items-center justify-center sm:text-lg text-base font-semibold min-h-[3rem]" :class="msgClass" v-html="msg"></div>  
       <!-- 按鈕 -->
       <div class="flex flex-row gap-3 mb-2 w-full">
         <button @click="doRefine"
@@ -231,7 +231,7 @@
       <!-- 設置彈窗 -->
       <div v-if="showSetting" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
-          <button @click="showSetting = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <button @click="showSetting = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" style="z-index: 999">&times;</button>
           <h3>關於本站</h3>
           <p class="mt-8 sm:mt-12 bg-white rounded-2xl shadow-xl text-gray-500 p-4 sm:p-8 text-center select-text">
             有任何問題 請聯繫 <a href="mailto:qcworkman@gmail.com" class="underline text-blue-600">qcworkman@gmail.com</a><br> copyright © 藍色白色的吉普車 All rights reserved.
@@ -260,7 +260,7 @@
       <!-- 暱稱輸入彈窗 -->
       <div v-if="showNicknameModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
-          <button @click="showNicknameModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <button @click="showNicknameModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" style="z-index: 999">&times;</button>
           <h3 class="text-lg font-bold text-center mb-3 text-blue-600">請輸入暱稱</h3>
           <input v-model="nicknameInput" maxlength="10" placeholder="請輸入暱稱" class="rounded border border-blue-300 px-3 py-2 text-base focus:ring focus:border-blue-500 outline-none w-full text-center font-bold mb-3" />
           <div class="flex justify-center">
@@ -272,7 +272,7 @@
       <!-- 統計彈窗（新增詳細資訊） -->
       <div v-if="showStats" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
-          <button @click="showStats = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <button @click="showStats = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" style="z-index: 999">&times;</button>
           <h3 class="text-lg font-bold text-center mb-3 text-blue-600">精煉統計</h3>
           <div class="mb-4">
             <div class="flex justify-between items-center mb-1">
@@ -325,7 +325,7 @@
       <!-- 排行榜彈窗 -->
       <div v-if="showRankModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein border border-yellow-200">
-          <button @click="showRankModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <button @click="showRankModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" style="z-index: 999">&times;</button>
           <h3 class="text-2xl font-extrabold text-center mb-3 text-gray-800 drop-shadow flex items-center justify-center gap-2">
             <span class="text-3xl">👑</span>
             排行榜
@@ -417,7 +417,7 @@
       <!-- 留言彈窗 -->
       <div v-if="showCommentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
         <div class="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-xs sm:max-w-md relative animate-fadein">
-          <button @click="showCommentModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <button @click="showCommentModal = false" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" style="z-index: 999">&times;</button>
           <h3 class="text-lg font-bold text-center mb-3 text-blue-600">我要留言</h3>
           <form @submit.prevent="addComment" class="flex flex-col gap-2 mb-2">
             <input v-model="commentName" type="text" maxlength="20" required placeholder="暱稱 (必填)" class="rounded border border-blue-300 px-2 py-1 text-base focus:ring focus:border-blue-500 outline-none" />
@@ -451,7 +451,8 @@
         const msg = ref('手感來了再去遊戲點裝')
         const animateClass = ref('')
         const msgClass = computed(() => {
-          if (isMax.value) return 'text-pink-500 text-xl font-bold animate-pulse'
+          // +15時（isMax）不加class，避免影響v-html內容排版
+          if (isMax.value) return ''
           if (msg.value.includes('成功')) return 'text-green-600'
           if (msg.value.includes('損壞')) return 'text-red-600'
           if (msg.value.includes('掉一階')) return 'text-yellow-600'
@@ -587,10 +588,14 @@
           msg.value = data.msg
           animateClass.value = data.success ? 'animate-success' : 'animate-fail'
           imgSrc.value = data.success ? '/img/rolovec/success.png?v=3' : '/img/rolovec/error.png?v=2'
-          // +15特效
+          // +15特效與名次顯示（避免跑版，名次用div包裹）
           if (data.isMax) {
             setTimeout(() => {
-              msg.value = '🎉 恭喜你成功達到 +15！🎉'
+              let rankMsg = ''
+              if (typeof data.hei_rank !== 'undefined' && typeof data.ou_rank !== 'undefined') {
+                rankMsg = `<div class='mt-1 text-base font-bold text-blue-800'>歐皇排行: ${data.ou_rank}</div><div class='mt-1 text-base font-bold text-yellow-600'>臉黑排行: ${data.hei_rank}</div>`
+              }
+              msg.value = `<span class='text-2xl font-bold text-orange-400'>🎉 恭喜達成+15 🎉</span>${rankMsg}`
               animateClass.value = ''
             }, 600)
           }

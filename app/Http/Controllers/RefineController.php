@@ -79,8 +79,11 @@ class RefineController extends Controller
             $result['msg'] = $isMax ? '已達+15' : '裝備損壞，請修理';
             return response()->json($result);
         }
+        $rate1 = 50;
+        $rate2 = 40;
+        
         $nextRefine = $refineLevel + 1;
-        $successRate = $nextRefine <= 4 ? 100 : (($nextRefine === 5 || $nextRefine === 6) ? 50 : 40);
+        $successRate = $nextRefine <= 4 ? 100 : (($nextRefine === 5 || $nextRefine === 6) ? $rate1 : $rate2);
         $zenyCost = $isMax ? 0 : ($nextRefine * 10000);
         $materialCost = $isMax ? 0 : ($refineLevel >= 10 ? 100000 : 20000);
         $totalCost += $zenyCost;
@@ -158,6 +161,16 @@ class RefineController extends Controller
                     'updated_at' => now(),
                 ]);
                 $result['inRank'] = true;
+                // ou排行：精煉次數最少（升冪）
+                $ouRank = DB::table('refine_rankings')
+                    ->where('refine_count', '<', $totalRefine)
+                    ->count();
+                $result['ou_rank'] = $ouRank + 1;
+                // hei排行：精煉次數最多（降冪）
+                $heiRank = DB::table('refine_rankings')
+                    ->where('refine_count', '>', $totalRefine)
+                    ->count();
+                $result['hei_rank'] = $heiRank + 1;
             }
         }
         // 頻率限制：每個 session 1 秒最多 2 次
