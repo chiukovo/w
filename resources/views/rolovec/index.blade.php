@@ -37,6 +37,18 @@
   <audio id="audio-success" src="/mp4/refine_success.wav" preload="auto" volume="0.25"></audio>
   <audio id="audio-fail" src="/mp4/refine_failed.wav" preload="auto" volume="0.25"></audio>
   <style>
+    html body{
+      font-family: 'LINESeedTW';
+    }
+    @font-face {
+      font-family: 'LINESeedTW';
+      src: url('/fonts/LINE_Seed_TW/LINE Seed TW_ver02/WOFF2/LINESeedTW_OTF_Th.woff2') format('woff2'),
+           url('/fonts/LINE_Seed_TW/LINE Seed TW_ver02/WOFF/LINESeedTW_OTF_Th.woff') format('woff'),
+           url('/fonts/LINE_Seed_TW/LINE Seed TW_ver02/TTF/LINESeedTW_TTF_Th.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
     .fade-enter-active, .fade-leave-active { transition: all 0.25s; }
     .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(20px); }
     html, body {
