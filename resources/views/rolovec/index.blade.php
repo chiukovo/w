@@ -37,9 +37,6 @@
   <audio id="audio-success" src="/mp4/refine_success.wav" preload="auto" volume="0.25"></audio>
   <audio id="audio-fail" src="/mp4/refine_failed.wav" preload="auto" volume="0.25"></audio>
   <style>
-    html body{
-      font-family: 'LINESeedTW';
-    }
     @font-face {
       font-family: 'LINESeedTW';
       src: url('/fonts/LINE_Seed_TW/LINE Seed TW_ver02/WOFF2/LINESeedTW_OTF_Th.woff2') format('woff2'),
@@ -54,6 +51,8 @@
     html, body {
       width: 100vw; max-width: 100vw; overflow-x: hidden; background: #f1f5f9;
       touch-action: manipulation;
+      font-family: 'LINESeedTW';
+      font-size: 18px;
     }
     .animate-success { animation: shine 0.7s; }
     @keyframes shine {
