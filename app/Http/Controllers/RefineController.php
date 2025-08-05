@@ -211,14 +211,14 @@ class RefineController extends Controller
     // 排行榜查詢
     public function rankings()
     {
-        $ou = DB::table('refine_rankings')->orderBy('refine_count')
-            ->orderBy('achieved_at')
+        $ou = DB::table('refine_rankings')
+            ->orderBy('refine_count')
             ->orderBy('total_cost', 'asc')
             ->limit(10)
             ->get(['nickname','refine_count','total_cost']);
 
-        $hei = DB::table('refine_rankings')->orderByDesc('refine_count')
-        ->orderBy('achieved_at')
+        $hei = DB::table('refine_rankings')
+        ->orderByDesc('refine_count')
         ->orderBy('total_cost', 'desc')
         ->limit(10)->get(['nickname','refine_count','total_cost']);
         return response()->json([
