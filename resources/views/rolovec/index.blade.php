@@ -359,7 +359,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, idx) in (rankType === 'ou' ? ouRank : rankType === 'hei' ? heiRank : todayRank)" :key="row.id || idx"
+                <tr v-for="(row, idx) in (rankType == 'ou' ? ouRank : rankType == 'hei' ? heiRank : todayRank)" :key="row.id || idx"
                   :class=" [
                     idx === 0 ? 'bg-gradient-to-r from-yellow-100 via-yellow-50 to-yellow-200 font-extrabold text-yellow-700' : '',
                     idx === 1 ? 'bg-gradient-to-r from-gray-100 via-gray-50 to-gray-200 font-bold text-gray-700' : '',
