@@ -1030,7 +1030,7 @@
           commentLoading, commentError, commentHasNew, commentTotal, commentCurrentPage, 
           commentHasMore, commentScrollContainer, onCommentScroll, commentLoadingMore,
           nickname, nicknameInput, showNicknameModal, saveNickname,
-          showRankModal, rankType, ouRank, heiRank, rankLoading, rankError, showOuRank, showHeiRank,
+          showRankModal, rankType, ouRank, heiRank, todayRank, rankLoading, rankError, showOuRank, showHeiRank,
           fetchRankings,
           formatCost
         }
