@@ -204,6 +204,7 @@
       <!-- 按鈕 -->
       <div class="flex flex-row gap-3 mb-2 w-full">
         <button @click="doRefine"
+          :disabled="refineLoading"
           class="big-btn bg-yellow-400 hover:bg-yellow-500 text-white font-bold rounded-xl transition shadow flex-1"
           :disabled="broken || isMax"
           :class="(broken || isMax) ? 'opacity-60 cursor-not-allowed' : ''"
@@ -448,6 +449,7 @@
     createApp({
       setup() {
         const refineLevel = ref(0)
+        const refineLoading = ref(false)
         // 限制自訂精煉等級不可超過14，且只在手動輸入時生效，不影響精煉流程
         function onCustomRefineChange(e) {
           let val = Number(e.target.value)
@@ -584,6 +586,9 @@
             showNicknameModal.value = true
             return
           }
+
+          if (refineLoading.value) return // 防止重複點擊
+          refineLoading.value = true
           // 呼叫API
           let res = await fetch('/api/refine/do', {
             method: 'POST',
@@ -595,6 +600,7 @@
             msg.value = data.message || '精煉失敗';
             return
           }
+          
           refineLevel.value = data.refineLevel
           totalCost.value = data.totalCost
           totalRefine.value = data.totalRefine
@@ -637,6 +643,8 @@
               refineBroken.value[i] = data.stats.broken[i] || 0
             }
           }
+
+          refineLoading.value = false
         }
         async function doRepair() {
           if (!broken.value) return
@@ -1040,6 +1048,7 @@
           nickname, nicknameInput, showNicknameModal, saveNickname,
           showRankModal, rankType, ouRank, heiRank, todayRank, rankLoading, rankError, showOuRank, showHeiRank,
           fetchRankings,
+          refineLoading,
           formatNT,
           formatCost
         }
