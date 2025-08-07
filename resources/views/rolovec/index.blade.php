@@ -12,7 +12,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="RO 守護永恆的愛 Classic 精煉模擬器" />
   <meta property="og:description" content="最完整RO精煉模擬器！自動計算精煉花費與運氣，讓你無痛練習衝裝，體驗非洲人歐洲人手氣！" />
-  <meta property="og:image" content="https://94ichouo.com/img/rolovec/success.png?v=3" />
+  <meta property="og:image" content="https://94ichouo.com/img/rolovec/success.png?v=4" />
   <meta property="og:url" content="https://94ichouo.com/rolovec" />
 
   <!-- 行動裝置/Apple 裝置啟用桌面模式 -->
@@ -20,7 +20,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
 
   <!-- Favicon 建議 -->
-  <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png?v=3" type="image/png" />
+  <link rel="icon" href="https://94ichouo.com/img/rolovec/success.png?v=4" type="image/png" />
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D4DRBBS5S0"></script>
   <script>
@@ -453,7 +453,7 @@
         }
         const broken = ref(false)
         const isMax = computed(() => refineLevel.value >= 15)
-        const imgSrc = ref('/img/rolovec/success.png?v=3')
+        const imgSrc = ref('/img/rolovec/success.png?v=4')
         // 修理費固定 200 萬
         const repairCost = ref(2000000) // 預設200萬
         const totalCost = ref(0)
@@ -598,7 +598,7 @@
           broken.value = data.broken
           msg.value = data.msg
           animateClass.value = data.success ? 'animate-success' : 'animate-fail'
-          imgSrc.value = data.success ? '/img/rolovec/success.png?v=3' : '/img/rolovec/error.png?v=2'
+          imgSrc.value = data.success ? '/img/rolovec/success.png?v=4' : '/img/rolovec/error.png?v=4'
           // +15特效與名次顯示（避免跑版，名次用div包裹）
           if (data.isMax) {
             setTimeout(() => {
@@ -658,7 +658,7 @@
           totalCost.value = data.totalCost ?? 0
           totalRefine.value = data.totalRefine ?? 0
           msg.value = data.msg || '裝備已修理，可再次精煉！'
-          imgSrc.value = '/img/rolovec/success.png?v=3'
+          imgSrc.value = '/img/rolovec/success.png?v=4'
           animateClass.value = ''
           if (soundEnabled.value) {
             const audioSuccess = document.getElementById('audio-success')
@@ -689,7 +689,7 @@
           broken.value = data.broken ?? false
           totalCost.value = data.totalCost ?? 0
           totalRefine.value = data.totalRefine ?? 0
-          imgSrc.value = '/img/rolovec/success.png?v=3'
+          imgSrc.value = '/img/rolovec/success.png?v=4'
           repairCost.value = 2000000
           totalMaterial.value = 0
           msg.value = '手感來了再去遊戲點裝'
