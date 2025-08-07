@@ -344,6 +344,7 @@
           <div class="flex justify-center gap-2 mb-3">
             <button @click="rankType = 'ou'" :class="rankType === 'ou' ? 'bg-yellow-300 text-yellow-800 shadow' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold transition">歐皇排行</button>
             <button @click="rankType = 'hei'" :class="rankType === 'hei' ? 'bg-gray-400 text-white shadow' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold transition">臉黑排行</button>
+            <button @click="rankType = 'today'" :class="rankType === 'today' ? 'bg-gray-400 text-white shadow' : 'bg-gray-100 text-gray-500'" class="px-4 py-1 rounded-xl font-bold transition">今日排行</button>
           </div>
           <div v-if="rankLoading" class="text-center text-gray-400 py-4">載入中...</div>
           <div v-else-if="rankError" class="text-center text-red-500 py-4">@{{ rankError }}</div>
@@ -358,7 +359,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, idx) in (rankType === 'ou' ? ouRank : heiRank)" :key="row.id || idx"
+                <tr v-for="(row, idx) in (rankType === 'ou' ? ouRank : rankType === 'hei' ? heiRank : todayRank)" :key="row.id || idx"
                   :class=" [
                     idx === 0 ? 'bg-gradient-to-r from-yellow-100 via-yellow-50 to-yellow-200 font-extrabold text-yellow-700' : '',
                     idx === 1 ? 'bg-gradient-to-r from-gray-100 via-gray-50 to-gray-200 font-bold text-gray-700' : '',
@@ -968,6 +969,7 @@
         const rankType = ref('ou') // 'ou' or 'hei'
         const ouRank = ref([])
         const heiRank = ref([])
+        const todayRank = ref([])
         const rankLoading = ref(false)
         const rankError = ref('')
         // 取得排行榜API
@@ -980,6 +982,7 @@
             const data = await res.json()
             ouRank.value = data.ou || []
             heiRank.value = data.hei || []
+            todayRank.value = data.today || []
             // 紅點已移除，不再設定 rankHasNew
           } catch (e) {
             rankError.value = e.message || '排行榜載入失敗'

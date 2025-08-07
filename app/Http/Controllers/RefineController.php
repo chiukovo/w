@@ -221,9 +221,19 @@ class RefineController extends Controller
         ->orderByDesc('refine_count')
         ->orderBy('total_cost', 'desc')
         ->limit(10)->get(['nickname','refine_count','total_cost']);
+        
+        // 今日排行
+        $today = DB::table('refine_rankings')
+            ->whereDate('achieved_at', now()->toDateString())
+            ->orderBy('refine_count')
+            ->orderBy('total_cost', 'asc')
+            ->limit(10)
+            ->get(['nickname','refine_count','total_cost']);
+            
         return response()->json([
             'ou' => $ou,
             'hei' => $hei,
+            'today' => $today,
         ]);
     }
 
