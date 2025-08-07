@@ -196,6 +196,8 @@
         <div class="text-lg sm:text-xl font-bold text-gray-600">總花費</div>
         <div class="text-3xl sm:text-4xl font-extrabold text-yellow-500 tracking-wider drop-shadow">@{{ totalCost.toLocaleString() }}</div>
         <div class="text-xs text-gray-400">(Zeny)</div>
+        <span class="ml-2 text-green-600">@{{ formatNT(totalCost) }}</span>
+        <div class="text-xs text-gray-400">(台幣)</div>
         </div>
       </div>
       <div id="msg" class="text-center mt-1 flex flex-col items-center justify-center sm:text-lg text-base font-semibold min-h-[3rem]" :class="msgClass" v-html="msg"></div>  
@@ -875,7 +877,13 @@
               commentLoading.value = false
             }
           }
-        }        // 滾動到底部加載更多
+        }
+        function formatNT(cost) {
+          // 72,000,000 zeny = NT 2950
+          const rate = 2950 / 72000000;
+          const nt = Math.round(cost * rate);
+          return `NT ${nt.toLocaleString()}`;
+        }
         function onCommentScroll(event) {
           const container = event.target
           const scrollTop = container.scrollTop
@@ -1032,6 +1040,7 @@
           nickname, nicknameInput, showNicknameModal, saveNickname,
           showRankModal, rankType, ouRank, heiRank, todayRank, rankLoading, rankError, showOuRank, showHeiRank,
           fetchRankings,
+          formatNT,
           formatCost
         }
       }
