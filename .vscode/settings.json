@@ -6,4 +6,5 @@
 			"savePath": "/public/css"
 		}
 	],
+	"nuxt.isNuxtApp": false,
 }
