@@ -357,7 +357,8 @@
                   <th class="py-1 text-left">名次</th>
                   <th class="py-1 text-left">暱稱</th>
                   <th class="py-1 text-right">精煉次數</th>
-                  <th class="py-1 text-right">總花費</th>
+                  <th class="py-1 text-right">花費Z幣</th>
+                  <th class="py-1 text-right">花費台幣</th>
                 </tr>
               </thead>
               <tbody>
@@ -379,6 +380,7 @@
                   <td class="py-1 font-bold">@{{ row.nickname }}</td>
                   <td class="py-1 text-right font-bold">@{{ row.refine_count }}</td>
                   <td class="py-1 text-right font-bold">@{{ formatCost(row.total_cost) }}</td>
+                  <td class="py-1 text-right font-bold">@{{ formatNT(row.total_cost) }}</td>
                 </tr>
               </tbody>
             </table>
